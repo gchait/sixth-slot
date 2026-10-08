@@ -9,3 +9,7 @@
 # Playwright
 /test-results/
 /playwright-report/
+
+# Generated data and its PokeAPI download cache
+/public/data/
+/.cache/

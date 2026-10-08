@@ -1,0 +1,285 @@
+# yaml-language-server: $schema=../game.schema.json
+#
+# Story progression for Pokémon FireRed and LeafGreen.
+#
+# Stage n means "after beating the first n battles listed under `battles`":
+# stage 0 is before Brock, stage 8 is before the Elite Four. Locations, items
+# and encounter methods take the stage at which the standard route first
+# reaches them, following the part order of Bulbapedia's walkthrough
+# (https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_FireRed_and_LeafGreen).
+# Locations reached only after the Champion are `postgame`; event-only
+# locations are `excluded`. A `location/area` key overrides its location for
+# that area.
+
+id: firered-leafgreen
+name: FireRed & LeafGreen
+versionGroup: firered-leafgreen
+pokedex: kanto
+sprites: generation-iii/firered-leafgreen
+starters: [bulbasaur, charmander, squirtle]
+
+# Only one Pokémon from each group can be obtained in a single playthrough.
+exclusiveGroups:
+  - [hitmonlee, hitmonchan] # Fighting Dojo prize
+  - [omanyte, kabuto] # Helix or Dome Fossil in Mt. Moon
+
+locations:
+  # Before Brock
+  pallet-town: 0
+  kanto-route-1: 0
+  viridian-city: 0
+  kanto-route-22: 0
+  kanto-route-2: 0
+  viridian-forest: 0
+  # Before Misty
+  kanto-route-3: 1
+  mt-moon: 1
+  kanto-route-4: 1
+  cerulean-city: 1
+  # Before Lt. Surge
+  kanto-route-24: 2
+  kanto-route-25: 2
+  kanto-route-5: 2
+  kanto-underground-path: 2
+  kanto-route-6: 2
+  vermilion-city: 2
+  ss-anne: 2
+  # Before Erika
+  kanto-route-11: 3
+  digletts-cave: 3
+  kanto-route-9: 3
+  kanto-route-10: 3
+  rock-tunnel: 3
+  kanto-route-8: 3
+  kanto-route-7: 3
+  celadon-city: 3
+  # Before Koga
+  celadon-city/prize-corner: 4
+  pokemon-tower: 4 # Ghosts can be caught only with the Silph Scope
+  kanto-route-12: 4
+  kanto-route-13: 4
+  kanto-route-14: 4
+  kanto-route-15: 4
+  fuchsia-city: 4
+  # Before Sabrina
+  kanto-safari-zone: 5
+  kanto-route-18: 5
+  kanto-route-17: 5
+  kanto-route-16: 5
+  saffron-city: 5
+  # Before Blaine
+  kanto-sea-route-19: 6
+  kanto-sea-route-20: 6
+  seafoam-islands: 6
+  cinnabar-island: 6
+  pokemon-mansion: 6
+  # Before Giovanni
+  one-island: 7
+  treasure-beach: 7
+  kindle-road: 7
+  mt-ember: 7
+  cape-brink: 7
+  three-isle-port: 7
+  bond-bridge: 7
+  berry-forest: 7
+  kanto-sea-route-21: 7
+  kanto-power-plant: 7
+  # Before the Elite Four
+  kanto-route-23: 8
+  kanto-victory-road-2: 8
+  # After the Champion
+  four-island: postgame
+  icefall-cave: postgame
+  five-island: postgame
+  five-isle-meadow: postgame
+  memorial-pillar: postgame
+  resort-gorgeous: postgame
+  water-labyrinth: postgame
+  lost-cave: postgame
+  water-path: postgame
+  ruin-valley: postgame
+  green-path: postgame
+  outcast-island: postgame
+  pattern-bush: postgame
+  kanto-altering-cave: postgame
+  trainer-tower: postgame
+  canyon-entrance: postgame
+  sevault-canyon: postgame
+  tanoby-ruins: postgame
+  monean-chamber: postgame
+  liptoo-chamber: postgame
+  weepth-chamber: postgame
+  dilford-chamber: postgame
+  scufib-chamber: postgame
+  rixy-chamber: postgame
+  viapos-chamber: postgame
+  cerulean-cave: postgame
+  roaming-kanto: postgame
+  # Event distributions
+  navel-rock: excluded
+  birth-island: excluded
+  kanto-pokecenter: excluded
+
+# Encounter methods that need an item first. Methods not listed need nothing.
+methods:
+  old-rod: 2 # Vermilion City
+  good-rod: 4 # Fuchsia City
+  super-rod: 4 # Route 12
+  surf: 5 # Safari Zone, usable with the Soul Badge
+  pokeflute: 4 # Lavender Town
+  rock-smash: 7 # Kindle Road
+
+# HMs that attack, by where they are obtained. Unlike TMs in this generation,
+# HMs can be taught to any number of Pokémon.
+hms:
+  cut: 2 # S.S. Anne
+  surf: 5 # Safari Zone
+  strength: 5 # Safari Zone Warden, after the Safari Zone
+  fly: 5 # Route 16
+  rock-smash: 7 # Kindle Road
+
+# In-game trades: the Pokémon each trader wants, the stage when the trader is
+# reached later than the location's stage, and where the trader is when
+# PokeAPI's location name is misleading.
+trades:
+  jynx: { gives: poliwhirl } # Cerulean City
+  nidoran-f: { gives: nidoran-m } # Route 5
+  nidoran-m: { gives: nidoran-f }
+  farfetchd: { gives: spearow } # Vermilion City
+  nidorina: { gives: nidorino } # Route 11
+  nidorino: { gives: nidorina }
+  mr-mime: { gives: abra, stage: 3, place: "Route 2 (east side)" } # Behind a Cut tree
+  lickitung: { gives: { firered: golduck, leafgreen: slowbro } } # Route 18
+  electrode: { gives: raichu } # Cinnabar Lab
+  tangela: { gives: venonat }
+  seel: { gives: ponyta }
+
+# Evolution items, by where they can first be bought or picked up.
+items:
+  moon-stone: 1 # Mt. Moon
+  fire-stone: 3 # Celadon Department Store
+  water-stone: 3
+  thunder-stone: 3
+  leaf-stone: 3
+
+battles:
+  - id: brock
+    name: Brock
+    title: Gym Leader
+    party:
+      - { species: geodude, level: 12, moves: [tackle, defense-curl] }
+      - { species: onix, level: 14, moves: [tackle, bind, rock-tomb] }
+  - id: misty
+    name: Misty
+    title: Gym Leader
+    party:
+      - { species: staryu, level: 18, moves: [tackle, harden, recover, water-pulse] }
+      - { species: starmie, level: 21, moves: [rapid-spin, swift, recover, water-pulse] }
+  - id: lt-surge
+    name: Lt. Surge
+    title: Gym Leader
+    party:
+      - { species: voltorb, level: 21, moves: [shock-wave, tackle, screech, sonic-boom] }
+      - { species: pikachu, level: 18, moves: [shock-wave, thunder-wave, quick-attack, double-team] }
+      - { species: raichu, level: 24, moves: [shock-wave, thunder-wave, quick-attack, double-team] }
+  - id: erika
+    name: Erika
+    title: Gym Leader
+    party:
+      - { species: victreebel, level: 29, moves: [stun-spore, acid, poison-powder, giga-drain] }
+      - { species: tangela, level: 24, moves: [poison-powder, constrict, ingrain, giga-drain] }
+      - { species: vileplume, level: 29, moves: [sleep-powder, acid, stun-spore, giga-drain] }
+  - id: koga
+    name: Koga
+    title: Gym Leader
+    party:
+      - { species: koffing, level: 37, moves: [self-destruct, sludge, smokescreen, toxic] }
+      - { species: muk, level: 39, moves: [minimize, sludge, acid-armor, toxic] }
+      - { species: koffing, level: 37, moves: [self-destruct, sludge, smokescreen, toxic] }
+      - { species: weezing, level: 43, moves: [tackle, sludge, smokescreen, toxic] }
+  - id: sabrina
+    name: Sabrina
+    title: Gym Leader
+    party:
+      - { species: kadabra, level: 38, moves: [psybeam, reflect, future-sight, calm-mind] }
+      - { species: mr-mime, level: 37, moves: [barrier, psybeam, baton-pass, calm-mind] }
+      - { species: venomoth, level: 38, moves: [psybeam, gust, leech-life, supersonic] }
+      - { species: alakazam, level: 43, moves: [psychic, recover, future-sight, calm-mind] }
+  - id: blaine
+    name: Blaine
+    title: Gym Leader
+    party:
+      - { species: growlithe, level: 42, moves: [bite, roar, take-down, fire-blast] }
+      - { species: ponyta, level: 40, moves: [stomp, bounce, fire-spin, fire-blast] }
+      - { species: rapidash, level: 42, moves: [stomp, bounce, fire-spin, fire-blast] }
+      - { species: arcanine, level: 47, moves: [bite, roar, take-down, fire-blast] }
+  - id: giovanni
+    name: Giovanni
+    title: Gym Leader
+    party:
+      - { species: rhyhorn, level: 45, moves: [take-down, rock-blast, scary-face, earthquake] }
+      - { species: dugtrio, level: 42, moves: [slash, sand-tomb, mud-slap, earthquake] }
+      - { species: nidoqueen, level: 44, moves: [double-kick, earthquake, poison-sting, body-slam] }
+      - { species: nidoking, level: 45, moves: [double-kick, earthquake, poison-sting, thrash] }
+      - { species: rhyhorn, level: 50, moves: [take-down, rock-blast, scary-face, earthquake] }
+  - id: lorelei
+    name: Lorelei
+    title: Elite Four
+    party:
+      - { species: dewgong, level: 52, moves: [surf, ice-beam, hail, safeguard] }
+      - { species: cloyster, level: 51, moves: [spikes, dive, hail, protect] }
+      - { species: slowbro, level: 52, moves: [ice-beam, surf, amnesia, yawn] }
+      - { species: jynx, level: 54, moves: [double-slap, ice-punch, lovely-kiss, attract] }
+      - { species: lapras, level: 54, moves: [body-slam, confuse-ray, surf, ice-beam] }
+  - id: bruno
+    name: Bruno
+    title: Elite Four
+    party:
+      - { species: onix, level: 51, moves: [earthquake, rock-tomb, iron-tail, roar] }
+      - { species: hitmonchan, level: 53, moves: [sky-uppercut, mach-punch, rock-tomb, counter] }
+      - { species: hitmonlee, level: 53, moves: [mega-kick, foresight, brick-break, facade] }
+      - { species: onix, level: 54, moves: [double-edge, iron-tail, earthquake, sand-tomb] }
+      - { species: machamp, level: 56, moves: [bulk-up, cross-chop, scary-face, rock-tomb] }
+  - id: agatha
+    name: Agatha
+    title: Elite Four
+    party:
+      - { species: gengar, level: 54, moves: [confuse-ray, shadow-punch, double-team, toxic] }
+      - { species: golbat, level: 54, moves: [confuse-ray, bite, air-cutter, poison-fang] }
+      - { species: haunter, level: 53, moves: [mean-look, curse, hypnosis, dream-eater] }
+      - { species: arbok, level: 56, moves: [bite, sludge-bomb, screech, iron-tail] }
+      - { species: gengar, level: 58, moves: [shadow-ball, sludge-bomb, hypnosis, nightmare] }
+  - id: lance
+    name: Lance
+    title: Elite Four
+    party:
+      - { species: gyarados, level: 56, moves: [bite, dragon-rage, twister, hyper-beam] }
+      - { species: dragonair, level: 54, moves: [safeguard, outrage, dragon-rage, hyper-beam] }
+      - { species: dragonair, level: 54, moves: [safeguard, outrage, thunder-wave, hyper-beam] }
+      - { species: aerodactyl, level: 58, moves: [wing-attack, ancient-power, scary-face, hyper-beam] }
+      - { species: dragonite, level: 60, moves: [safeguard, outrage, wing-attack, hyper-beam] }
+  - id: champion
+    name: Blue
+    title: Champion
+    partyByStarter:
+      bulbasaur:
+        - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
+        - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
+        - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
+        - { species: exeggutor, level: 59, moves: [giga-drain, egg-bomb, sleep-powder, light-screen] }
+        - { species: gyarados, level: 61, moves: [hydro-pump, dragon-rage, bite, thrash] }
+        - { species: charizard, level: 63, moves: [fire-blast, aerial-ace, slash, fire-spin] }
+      charmander:
+        - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
+        - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
+        - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
+        - { species: arcanine, level: 59, moves: [extreme-speed, flamethrower, roar, bite] }
+        - { species: exeggutor, level: 61, moves: [giga-drain, egg-bomb, sleep-powder, light-screen] }
+        - { species: blastoise, level: 63, moves: [hydro-pump, rain-dance, skull-bash, bite] }
+      squirtle:
+        - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
+        - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
+        - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
+        - { species: gyarados, level: 59, moves: [hydro-pump, dragon-rage, bite, thrash] }
+        - { species: arcanine, level: 61, moves: [extreme-speed, flamethrower, roar, bite] }
+        - { species: venusaur, level: 63, moves: [solar-beam, synthesis, sunny-day, growth] }

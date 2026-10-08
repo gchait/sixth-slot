@@ -19,6 +19,21 @@ export default defineConfig([
       globals: { ...globals.browser, ...globals.node },
       parserOptions: { projectService: true },
     },
+    rules: {
+      // Loaders signal HTTP errors by throwing React Router's data().
+      "@typescript-eslint/only-throw-error": [
+        "error",
+        {
+          allow: [
+            {
+              from: "package",
+              package: "react-router",
+              name: "DataWithResponseInit",
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     files: ["**/*.js"],

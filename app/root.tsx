@@ -8,19 +8,29 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import { TooltipProvider } from "~/components/ui/tooltip";
 import "./app.css";
+
+// Follows the system color scheme, set before first paint to avoid a flash.
+const colorScheme = `(() => {
+  const query = matchMedia("(prefers-color-scheme: dark)");
+  const apply = () => document.documentElement.classList.toggle("dark", query.matches);
+  apply();
+  query.addEventListener("change", apply);
+})();`;
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script dangerouslySetInnerHTML={{ __html: colorScheme }} />
         <Meta />
         <Links />
       </head>
       <body>
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
