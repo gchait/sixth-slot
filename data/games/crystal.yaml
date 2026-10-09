@@ -112,10 +112,10 @@ locations:
   cinnabar-island: 19
   kanto-sea-route-20: 19
   kanto-sea-route-19: 20
-  # After Blue: Route 22, and Route 28 on the way to Mt. Silver (part 27)
-  kanto-route-22: postgame
-  kanto-route-28: postgame
-  mt-silver: postgame
+  # Before Red (parts 27–28)
+  kanto-route-22: 21
+  kanto-route-28: 21
+  mt-silver: 21
 
 methods:
   old-rod: 1 # Route 32
@@ -265,7 +265,7 @@ battles:
       - { species: aerodactyl, level: 46, moves: [rock-slide, ancient-power, wing-attack, hyper-beam] }
       - { species: dragonite, level: 47, moves: [twister, thunder-wave, thunder, hyper-beam] }
       - { species: dragonite, level: 50, moves: [safeguard, outrage, fire-blast, hyper-beam] }
-  # Kanto's Gym Leaders, in the walkthrough's order after the Champion.
+  # Kanto's Gym Leaders and Red, in the walkthrough's order after the Champion.
   - id: lt-surge
     name: Lt. Surge
     title: Gym Leader
@@ -341,3 +341,14 @@ battles:
       - { species: gyarados, level: 58, moves: [twister, hydro-pump, rain-dance, hyper-beam] }
       - { species: exeggutor, level: 58, moves: [sunny-day, leech-seed, egg-bomb, solar-beam] }
       - { species: arcanine, level: 58, moves: [roar, swift, flamethrower, extreme-speed] }
+  - id: red
+    name: Red
+    title: Pokémon Trainer
+    postgame: true
+    party:
+      - { species: pikachu, level: 81, moves: [charm, quick-attack, thunderbolt, thunder] }
+      - { species: espeon, level: 73, moves: [mud-slap, swift, reflect, psychic] }
+      - { species: snorlax, level: 75, moves: [amnesia, snore, rest, body-slam] }
+      - { species: venusaur, level: 77, moves: [sunny-day, giga-drain, synthesis, solar-beam] }
+      - { species: charizard, level: 77, moves: [flamethrower, wing-attack, slash, fire-spin] }
+      - { species: blastoise, level: 77, moves: [rain-dance, blizzard, surf, whirlpool] }

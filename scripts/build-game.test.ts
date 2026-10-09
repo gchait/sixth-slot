@@ -288,7 +288,7 @@ describe("Crystal", () => {
     expect(stagesOf("tyrogue")).toEqual([8]);
   });
 
-  test("scores Kanto's Gym Leaders as post-game battles after Lance", () => {
+  test("scores Kanto's Gym Leaders and Red as post-game battles after Lance", () => {
     const postgame = crystal.battles.filter((b) => b.postgame);
     expect(postgame.map((b) => b.id)).toEqual([
       "lt-surge",
@@ -299,6 +299,7 @@ describe("Crystal", () => {
       "brock",
       "blaine",
       "blue",
+      "red",
     ]);
     expect(crystal.battles.at(-postgame.length - 1)!.id).toBe("lance");
   });

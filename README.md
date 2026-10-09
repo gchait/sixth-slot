@@ -24,7 +24,7 @@ Supported games: **Crystal**, **FireRed & LeafGreen** and **Emerald**.
   outside-battle moves are kept on the team. Each can be changed, and any
   Pokémon can be pinned or excluded.
 - Battles after the Champion, such as FireRed's second Elite Four round,
-  Emerald's first Gym Leader rematches or Crystal's Kanto Gym Leaders, can be
+  Emerald's first Gym Leader rematches or Crystal's Kanto Gym Leaders and Red, can be
   scored too. They count Pokémon
   caught on the way to them, but not post-game story areas.
 
