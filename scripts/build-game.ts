@@ -14,7 +14,13 @@ import type {
   StatKey,
   Stats,
 } from "../engine/data.ts";
-import { englishNames, spriteUrl, type Table, type Tables } from "./pokeapi.ts";
+import {
+  englishNames,
+  identifierById,
+  spriteUrl,
+  type Table,
+  type Tables,
+} from "./pokeapi.ts";
 
 /**
  * How much of a move's power counts toward a typical attack, by move effect:
@@ -136,12 +142,13 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   const typeIndex = new Map(typeRows.map((row, i) => [row.id, i]));
   const types = typeRows.map((row) => row.identifier);
   const typeChart = types.map(() => types.map(() => 1));
-  for (const row of t.type_efficacy) {
+  const setEfficacy = (row: Record<string, string>) => {
     const a = typeIndex.get(row.damage_type_id);
     const d = typeIndex.get(row.target_type_id);
     if (a !== undefined && d !== undefined)
       typeChart[a][d] = Number(row.damage_factor) / 100;
-  }
+  };
+  t.type_efficacy.forEach(setEfficacy);
   const pastEfficacy = groupBy(
     t.type_efficacy_past.map((row) => ({
       ...row,
@@ -149,14 +156,8 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     })),
     "pair",
   );
-  for (const rows of pastEfficacy.values()) {
-    for (const row of pastFor(rows, generation)) {
-      const a = typeIndex.get(row.damage_type_id);
-      const d = typeIndex.get(row.target_type_id);
-      if (a !== undefined && d !== undefined)
-        typeChart[a][d] = Number(row.damage_factor) / 100;
-    }
-  }
+  for (const rows of pastEfficacy.values())
+    pastFor(rows, generation).forEach(setEfficacy);
 
   // Moves as they were in this version group. Each changelog row holds the
   // values a move had before the version group it names.
@@ -202,12 +203,21 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     };
     return row.identifier;
   }
-  const levelUp = t.pokemon_move_methods.find(
-    (row) => row.identifier === "level-up",
-  )!.id;
-  const machine = t.pokemon_move_methods.find(
-    (row) => row.identifier === "machine",
-  )!.id;
+  const methodIds = identifierById(t.pokemon_move_methods);
+  /** This version group's learnable moves by `method`, by Pokémon. */
+  const movesBy = (
+    method: string,
+    keep: (row: Record<string, string>) => boolean = () => true,
+  ) =>
+    groupBy(
+      t.pokemon_moves.filter(
+        (row) =>
+          row.version_group_id === versionGroup.id &&
+          methodIds.get(row.pokemon_move_method_id) === method &&
+          keep(row),
+      ),
+      "pokemon_id",
+    );
   const hms: Record<string, number> = {};
   for (const [move, stage] of Object.entries(file.hms)) {
     const moveId = moveIdsByIdentifier.get(move);
@@ -215,23 +225,11 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     else if (damagingMove(moveId, "hms") && typeof stage === "number")
       hms[move] = stage;
   }
-  const hmUsers = groupBy(
-    t.pokemon_moves.filter(
-      (row) =>
-        row.version_group_id === versionGroup.id &&
-        row.pokemon_move_method_id === machine &&
-        moveRowsById.get(row.move_id)!.identifier in hms,
-    ),
-    "pokemon_id",
+  const hmUsers = movesBy(
+    "machine",
+    (row) => moveRowsById.get(row.move_id)!.identifier in hms,
   );
-  const learnsets = groupBy(
-    t.pokemon_moves.filter(
-      (row) =>
-        row.version_group_id === versionGroup.id &&
-        row.pokemon_move_method_id === levelUp,
-    ),
-    "pokemon_id",
-  );
+  const learnsets = movesBy("level-up");
 
   // Species in the regional Pokédex, plus anything a battle uses.
   // A species' regional number comes from the first Pokédex that lists it.
@@ -259,9 +257,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     t.pokemon_species_names,
     "pokemon_species_id",
   );
-  const abilityNames = new Map(
-    t.abilities.map((row) => [row.id, row.identifier]),
-  );
+  const abilityNames = identifierById(t.abilities);
   const abilitiesByPokemon = groupBy(t.pokemon_abilities, "pokemon_id");
   const pastAbilitiesByPokemon = groupBy(
     t.pokemon_abilities_past,
@@ -386,9 +382,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   const locationNames = englishNames(t.location_names, "location_id");
 
   // Evolutions between regional species, using methods that existed by this game.
-  const triggers = new Map(
-    t.evolution_triggers.map((row) => [row.id, row.identifier]),
-  );
+  const triggers = identifierById(t.evolution_triggers);
   const evolutionRows = groupBy(
     t.pokemon_evolution.filter((row) => {
       const evolved = speciesById.get(row.evolved_species_id)!;
@@ -726,9 +720,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   const areaNames = englishNames(t.location_area_prose, "location_area_id");
   const unmapped = new Set<string>();
   const usedTrades = new Set<string>();
-  const conditionValues = new Map(
-    t.encounter_condition_values.map((row) => [row.id, row.identifier]),
-  );
+  const conditionValues = identifierById(t.encounter_condition_values);
   const conditionsByEncounter = groupBy(
     t.encounter_condition_value_map,
     "encounter_id",

@@ -33,6 +33,8 @@ const spriteFolder = z
     "Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository, with transparent backgrounds.",
   );
 
+const starters = z.array(identifier).min(1);
+
 const opponent = z.strictObject({
   species: identifier,
   level: z.int().min(1).max(100),
@@ -72,7 +74,7 @@ export const gameSchema = z.strictObject({
       "The regional Pokédex, or several when the game splits it; numbers come from the first that lists a species.",
     ),
   sprites: spriteFolder,
-  starters: z.array(identifier).min(1),
+  starters,
   exclusiveGroups: z
     .array(z.array(identifier).min(2))
     .default([])
@@ -161,6 +163,6 @@ export const plannedSchema = z.array(
     versionGroup: identifier,
     name: z.string(),
     sprites: spriteFolder,
-    starters: z.array(identifier).min(1),
+    starters,
   }),
 );

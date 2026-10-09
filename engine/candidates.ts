@@ -121,11 +121,21 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
     });
   }
 
+  function formsTo(species: string): { line: string[]; forms: number[] } {
+    const { line, steps } = lineTo(species);
+    return { line, forms: formsOf(line, steps) };
+  }
+
+  /** The first battle the species itself can be held for, or -1. */
+  function firstHeld(species: string): number {
+    const { line, forms } = formsTo(species);
+    return forms.indexOf(line.length - 1);
+  }
+
   for (let changed = true; changed;) {
     changed = false;
     for (const species of Object.keys(game.species)) {
-      const { line, steps } = lineTo(species);
-      const first = formsOf(line, steps).findIndex((f) => f >= line.length - 1);
+      const first = firstHeld(species);
       if (first >= 0 && first < (heldFrom.get(species) ?? Infinity)) {
         heldFrom.set(species, first);
         changed = true;
@@ -138,7 +148,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
   );
   const candidates: Candidate[] = [];
   for (const species of Object.keys(game.species)) {
-    const { line, steps } = lineTo(species);
+    const { line, forms } = formsTo(species);
     const family = line[0];
     if (otherStarters.has(family)) continue;
     if (
@@ -147,17 +157,15 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
     )
       continue;
 
-    const forms = formsOf(line, steps);
     const last = line.length - 1;
     if (!forms.includes(last)) continue;
     const joins = forms.findIndex((f) => f >= 0);
     if (game.battles[joins].postgame && !options.includePostgame) continue;
 
     // A line that can still evolve is covered by the candidate for its evolution.
-    const evolvesFurther = (evolvesInto.get(species) ?? []).some((e) => {
-      const next = lineTo(e.to);
-      return formsOf(next.line, next.steps).includes(next.line.length - 1);
-    });
+    const evolvesFurther = (evolvesInto.get(species) ?? []).some(
+      (e) => firstHeld(e.to) >= 0,
+    );
     if (evolvesFurther) continue;
 
     candidates.push({

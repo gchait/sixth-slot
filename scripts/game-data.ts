@@ -7,8 +7,10 @@ import { inflateSync } from "node:zlib";
 import { parse } from "yaml";
 
 import { plannedSchema } from "../data/schema.ts";
-import { gameIds, loadGame, readGameFile } from "./games.ts";
-import { englishNames, loadTables, spriteUrl } from "./pokeapi.ts";
+import { spriteOf } from "../engine/data.ts";
+import { buildGame } from "./build-game.ts";
+import { gameIds, gameTables, readGameFile } from "./games.ts";
+import { download, englishNames, spriteUrl } from "./pokeapi.ts";
 
 const outDir = fileURLToPath(new URL("../public/data/", import.meta.url));
 const plannedFile = fileURLToPath(
@@ -61,9 +63,7 @@ export function cornerIsTransparent(png: Buffer): boolean {
 
 /** Reads a sprite's size, rejecting one drawn on a solid background. */
 export async function sprite(name: string, url: string): Promise<Sprite> {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
-  const png = Buffer.from(await response.arrayBuffer());
+  const png = Buffer.from(await (await download(url)).arrayBuffer());
   if (!cornerIsTransparent(png)) {
     throw new Error(
       `${url} has a solid background; use a transparent sprite set`,
@@ -88,7 +88,7 @@ export interface GameSummary {
 
 export async function writeGameData(): Promise<void> {
   mkdirSync(outDir, { recursive: true });
-  const tables = await loadTables();
+  const tables = await gameTables();
   const order = new Map(
     tables.version_groups.map((vg) => [vg.identifier, Number(vg.order)]),
   );
@@ -100,8 +100,10 @@ export async function writeGameData(): Promise<void> {
   const summaries: GameSummary[] = [];
   const releaseOrder = new Map<string, number>();
 
+  const playable = new Set<string>();
   for (const id of gameIds()) {
-    const game = await loadGame(id);
+    const file = readGameFile(id);
+    const game = buildGame(file, tables);
     writeFileSync(`${outDir}${id}.json`, JSON.stringify(game));
     summaries.push({
       id,
@@ -109,21 +111,16 @@ export async function writeGameData(): Promise<void> {
       versions: game.versions.map((v) => v.name),
       starters: await Promise.all(
         game.starters.map((s) =>
-          sprite(
-            game.species[s].name,
-            game.sprite.replace("{national}", String(game.species[s].national)),
-          ),
+          sprite(game.species[s].name, spriteOf(game, s)),
         ),
       ),
       planned: false,
     });
-    releaseOrder.set(id, order.get(readGameFile(id).versionGroup)!);
+    releaseOrder.set(id, order.get(file.versionGroup)!);
+    playable.add(file.versionGroup);
   }
 
   const planned = plannedSchema.parse(parse(readFileSync(plannedFile, "utf8")));
-  const playable = new Set(
-    gameIds().map((id) => readGameFile(id).versionGroup),
-  );
   for (const game of planned) {
     if (!order.has(game.versionGroup))
       throw new Error(

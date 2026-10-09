@@ -12,6 +12,18 @@ export function spriteUrl(folder: string, national: string): string {
   return `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/versions/${folder}/${national}.png`;
 }
 
+/** Fetches a URL, failing on any HTTP error. */
+export async function download(url: string): Promise<Response> {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+  return response;
+}
+
+/** Each row's identifier by its id, for PokeAPI's lookup tables. */
+export function identifierById(table: Table): Map<string, string> {
+  return new Map(table.map((row) => [row.id, row.identifier]));
+}
+
 /** English names from one of PokeAPI's name tables, by the id in `idKey`. */
 export function englishNames(table: Table, idKey: string): Map<string, string> {
   return new Map(
@@ -34,8 +46,7 @@ export async function loadTable(name: string): Promise<Table> {
   const path = `${cacheDir}${name}.csv`;
   if (!existsSync(path)) {
     const url = `https://raw.githubusercontent.com/PokeAPI/pokeapi/${POKEAPI_COMMIT}/data/v2/csv/${name}.csv`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+    const response = await download(url);
     mkdirSync(cacheDir, { recursive: true });
     writeFileSync(path, await response.text());
   }

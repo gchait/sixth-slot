@@ -112,3 +112,11 @@ export interface GameData {
   exclusiveGroups: string[][];
   battles: Battle[];
 }
+
+/** The sprite URL of one species. */
+export function spriteOf(game: GameData, species: string): string {
+  return game.sprite.replace(
+    "{national}",
+    String(game.species[species].national),
+  );
+}

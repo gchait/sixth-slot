@@ -1,4 +1,4 @@
-import type { GameData } from "../../engine/data.ts";
+import { spriteOf, type GameData } from "../../engine/data.ts";
 import { cn } from "~/lib/utils";
 
 export function Sprite({
@@ -15,7 +15,7 @@ export function Sprite({
   const s = game.species[species];
   return (
     <img
-      src={game.sprite.replace("{national}", String(s.national))}
+      src={spriteOf(game, species)}
       alt={s.name}
       width={size}
       height={size}

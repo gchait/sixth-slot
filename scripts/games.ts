@@ -33,7 +33,12 @@ export function readGameFile(id: string): GameFile {
 
 let tables: Promise<Tables> | undefined;
 
-export async function loadGame(id: string): Promise<GameData> {
+/** PokeAPI's tables, loaded once per process. */
+export function gameTables(): Promise<Tables> {
   tables ??= loadTables();
-  return buildGame(readGameFile(id), await tables);
+  return tables;
+}
+
+export async function loadGame(id: string): Promise<GameData> {
+  return buildGame(readGameFile(id), await gameTables());
 }
