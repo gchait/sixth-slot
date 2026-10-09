@@ -662,6 +662,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     });
   }
   const starters = file.starters.filter((s) => regionalSpecies(s, "starters"));
+  let level = 0;
   const battles: Battle[] = file.battles.map((battle) => {
     const parties: Record<string, Opponent[]> = {};
     const shared = battle.party && opponents(battle.party, battle.id);
@@ -675,7 +676,8 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       else if (shared) parties[starter] = shared;
       else errors.push(`${battle.id}: no party for starter ${starter}`);
     }
-    const aceLevel = Math.max(
+    level = Math.max(
+      level,
       ...Object.values(parties)
         .flat()
         .map((o) => o.level),
@@ -685,7 +687,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       name: battle.name,
       title: battle.title,
       postgame: battle.postgame,
-      aceLevel,
+      level,
       parties,
     };
   });

@@ -95,7 +95,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
   function canEvolve(evolution: Evolution, battle: number, heldSince: number) {
     const r = evolution.requires;
     return (
-      (r.level === undefined || r.level <= game.battles[battle].aceLevel) &&
+      (r.level === undefined || r.level <= game.battles[battle].level) &&
       (r.stage === undefined || r.stage <= battle) &&
       (!r.trade || options.allowTradeEvolutions) &&
       (!r.friendship || heldSince < battle) &&
@@ -184,7 +184,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
           // A move once learned stays known, so a line that can use the move
           // when it starts to work keeps it from then on.
           const form = forms[move.stage];
-          const level = game.battles[move.stage].aceLevel;
+          const level = game.battles[move.stage].level;
           return line
             .slice(0, form + 1)
             .some(

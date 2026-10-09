@@ -39,7 +39,7 @@ export interface Move {
 
 /** What an evolution needs; all of it must hold. */
 export interface EvolutionRequirements {
-  /** The level to reach, compared with each battle's strongest opponent. */
+  /** The level to reach, compared with the player's level at each battle. */
   level?: number;
   /** The stage by which an item, place or other means is available. */
   stage?: number;
@@ -99,8 +99,11 @@ export interface Battle {
   title: string;
   /** A battle after the Champion, such as a rematch, listed after every story battle. */
   postgame: boolean;
-  /** The highest level in any of the battle's parties. */
-  aceLevel: number;
+  /**
+   * The player's level by this battle, taken to be the highest opponent level
+   * in it or any battle before, since a team does not lose levels.
+   */
+  level: number;
   /** Keyed by the player's starter. */
   parties: Record<string, Opponent[]>;
 }

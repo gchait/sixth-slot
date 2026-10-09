@@ -129,7 +129,7 @@ describe("FireRed & LeafGreen", () => {
       "squirtle",
     ]);
     expect(champion.parties.bulbasaur.at(-1)!.species).toBe("charizard");
-    expect(champion.aceLevel).toBe(63);
+    expect(champion.level).toBe(63);
   });
 });
 
@@ -225,6 +225,13 @@ describe("Emerald", () => {
       });
     }
     expect(evolution("ninjask")!.requires.random).toBeUndefined();
+  });
+
+  test("keeps the player's level from dropping at lower-level rematches", () => {
+    const level = (id: string) =>
+      emerald.battles.find((b) => b.id === id)!.level;
+    expect(level("wallace")).toBe(58);
+    expect(level("roxanne-rematch")).toBe(58);
   });
 
   test("lists field moves by when they work outside battle", () => {
