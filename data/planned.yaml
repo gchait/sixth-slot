@@ -3,21 +3,26 @@
 
 - versionGroup: platinum
   name: Platinum
+  pokedex: [extended-sinnoh]
   sprites: generation-iv/platinum
   starters: [turtwig, chimchar, piplup]
 - versionGroup: heartgold-soulsilver
   name: HeartGold & SoulSilver
+  pokedex: [updated-johto]
   sprites: generation-iv/heartgold-soulsilver
   starters: [chikorita, cyndaquil, totodile]
 - versionGroup: black-white
   name: Black & White
+  pokedex: [original-unova]
   sprites: generation-v/black-white
   starters: [snivy, tepig, oshawott]
 - versionGroup: black-2-white-2
   name: Black 2 & White 2
+  pokedex: [updated-unova]
   sprites: generation-v/black-white
   starters: [snivy, tepig, oshawott]
 - versionGroup: x-y
   name: X & Y
+  pokedex: [kalos-central, kalos-coastal, kalos-mountain]
   sprites: generation-vi/x-y
   starters: [chespin, fennekin, froakie]

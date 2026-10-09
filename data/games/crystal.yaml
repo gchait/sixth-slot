@@ -158,9 +158,7 @@ encounterConditions:
   time-*: 0 # Any time of day
   swarm-no: 0
   swarm-yes: excluded # Only after a random phone call
-  # Game Corner prizes, with coins bought at ₽20 each: from the stage by which
-  # the walkthrough's trainers have paid twice the price, or never if the story
-  # pays less.
+  # Game Corner prizes, by the prize money paid so far
   coins-100: 1
   coins-800: 2
   coins-1500: 4

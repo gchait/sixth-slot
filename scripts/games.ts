@@ -1,15 +1,28 @@
-// Loads and validates the curated game files in data/games/.
+// Loads and validates the curated game files in data/games/ and the planned
+// games in data/planned.yaml.
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { parse } from "yaml";
 
-import { gameSchema, type GameFile } from "../data/schema.ts";
+import {
+  gameSchema,
+  plannedSchema,
+  type GameFile,
+  type PlannedGame,
+} from "../data/schema.ts";
 import type { GameData } from "../engine/data.ts";
 import { buildGame } from "./build-game.ts";
 import { loadTables, type Tables } from "./pokeapi.ts";
 
 const gamesDir = fileURLToPath(new URL("../data/games/", import.meta.url));
+const plannedFile = fileURLToPath(
+  new URL("../data/planned.yaml", import.meta.url),
+);
+
+export function readPlannedGames(): PlannedGame[] {
+  return plannedSchema.parse(parse(readFileSync(plannedFile, "utf8")));
+}
 
 export function gameIds(): string[] {
   return readdirSync(gamesDir)

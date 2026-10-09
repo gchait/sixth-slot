@@ -113,7 +113,7 @@
     },
     "encounterConditions": {
       "default": {},
-      "description": "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text.",
+      "description": "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text. A Game Corner prize (coins-N) is staged where the walkthrough's trainers have paid twice its price in coins at ₽20 each, and excluded if the story pays less.",
       "type": "object",
       "propertyNames": {
         "type": "string",

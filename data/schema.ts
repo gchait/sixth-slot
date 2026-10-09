@@ -35,6 +35,11 @@ const spriteFolder = z
 
 const starters = z.array(identifier).min(1);
 
+const pokedex = z
+  .array(identifier)
+  .min(1)
+  .describe("The regional Pokédex, or several when the game splits it.");
+
 const opponent = z.strictObject({
   species: identifier,
   level: z.int().min(1).max(100),
@@ -67,10 +72,7 @@ const battle = z
 export const gameSchema = z.strictObject({
   name: z.string(),
   versionGroup: identifier,
-  pokedex: z
-    .array(identifier)
-    .min(1)
-    .describe("The regional Pokédex, or several when the game splits it."),
+  pokedex,
   sprites: spriteFolder,
   starters,
   exclusiveGroups: z
@@ -122,7 +124,7 @@ export const gameSchema = z.strictObject({
     )
     .default({})
     .describe(
-      "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text.",
+      "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text. A Game Corner prize (coins-N) is staged where the walkthrough's trainers have paid twice its price in coins at ₽20 each, and excluded if the story pays less.",
     ),
   items: z
     .record(identifier, storyStage)
@@ -167,7 +169,11 @@ export const plannedSchema = z.array(
   z.strictObject({
     versionGroup: identifier,
     name: z.string(),
+    pokedex,
     sprites: spriteFolder,
     starters,
   }),
 );
+
+/** A game shown as coming soon. */
+export type PlannedGame = z.infer<typeof plannedSchema>[number];

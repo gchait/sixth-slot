@@ -453,9 +453,17 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   const locationsById = indexBy(t.locations, "id");
   const locationNames = englishNames(t.location_names, "location_id");
 
-  // Evolutions between regional species, using methods that existed by this game.
+  // Evolutions between regional species, by the methods of the latest version
+  // group up to this game. Rows that differ only in the form they name, such
+  // as Burmy's cloaks, are one method, and so are rows for every gender.
   const triggers = identifierById(t.evolution_triggers);
-  const evolutionRows = groupBy(
+  const perRow = new Set([
+    "id",
+    "required_pokemon_form_id",
+    "evolved_pokemon_form_id",
+  ]);
+  const evolutionRows = new Map<string, Table>();
+  for (const [evolvedId, rows] of groupBy(
     t.pokemon_evolution.filter((row) => {
       const evolved = speciesById.get(row.evolved_species_id)!;
       return (
@@ -465,7 +473,26 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       );
     }),
     "evolved_species_id",
-  );
+  )) {
+    const order = (row: Record<string, string>) =>
+      groupOrderById.get(row.version_group_id)!;
+    const latest = Math.max(...rows.map(order));
+    const methods = rows
+      .filter((row) => order(row) === latest)
+      .map((row) =>
+        Object.fromEntries(
+          Object.entries(row).filter(([column]) => !perRow.has(column)),
+        ),
+      );
+    const genders = new Set(methods.map((m) => m.gender_id));
+    const distinct = new Map(
+      methods.map((m) => {
+        const method = genders.size > 1 ? { ...m, gender_id: "" } : m;
+        return [JSON.stringify(method), method];
+      }),
+    );
+    evolutionRows.set(evolvedId, [...distinct.values()]);
+  }
   const evolutions: Evolution[] = [];
   const shed: { from: string; to: string }[] = [];
   const genders: Record<string, string> = { "1": "female", "2": "male" };

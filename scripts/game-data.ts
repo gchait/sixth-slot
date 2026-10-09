@@ -1,21 +1,20 @@
 // Writes generated/<game>.json for every file in data/games/, and an index of
 // those games and the planned ones, in release order.
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { inflateSync } from "node:zlib";
 
-import { parse } from "yaml";
-
-import { plannedSchema } from "../data/schema.ts";
 import { spriteOf } from "../engine/data.ts";
 import { buildGame } from "./build-game.ts";
-import { gameIds, gameTables, readGameFile } from "./games.ts";
+import {
+  gameIds,
+  gameTables,
+  readGameFile,
+  readPlannedGames,
+} from "./games.ts";
 import { englishNames, pinnedFile, spriteUrl } from "./pokeapi.ts";
 
 const outDir = fileURLToPath(new URL("../generated/", import.meta.url));
-const plannedFile = fileURLToPath(
-  new URL("../data/planned.yaml", import.meta.url),
-);
 
 export interface Sprite {
   name: string;
@@ -120,8 +119,7 @@ export async function writeGameData(): Promise<void> {
     playable.add(file.versionGroup);
   }
 
-  const planned = plannedSchema.parse(parse(readFileSync(plannedFile, "utf8")));
-  for (const game of planned) {
+  for (const game of readPlannedGames()) {
     if (!order.has(game.versionGroup))
       throw new Error(
         `data/planned.yaml: unknown version group ${game.versionGroup}`,
