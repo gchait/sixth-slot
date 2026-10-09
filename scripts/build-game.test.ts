@@ -265,6 +265,45 @@ describe("Emerald", () => {
   });
 });
 
+describe("Crystal", () => {
+  let crystal: GameData;
+  beforeAll(async () => {
+    crystal = await loadGame("crystal");
+  });
+  const stagesOf = (species: string) =>
+    (crystal.sources.crystal[species] ?? []).map((s) => s.stage);
+
+  test("has no abilities, which generation III introduced", () => {
+    expect(
+      Object.values(crystal.species).filter((s) => s.abilities.length > 0),
+    ).toEqual([]);
+  });
+
+  test("waits for Surf to reach Union Cave's Friday Lapras", () => {
+    expect(Math.min(...stagesOf("lapras"))).toBe(4);
+  });
+
+  test("leaves out the Odd Egg, which hatches at random", () => {
+    expect(stagesOf("elekid")).toEqual([]);
+    expect(stagesOf("tyrogue")).toEqual([8]);
+  });
+
+  test("scores Kanto's Gym Leaders as post-game battles after Lance", () => {
+    const postgame = crystal.battles.filter((b) => b.postgame);
+    expect(postgame.map((b) => b.id)).toEqual([
+      "lt-surge",
+      "sabrina",
+      "misty",
+      "erika",
+      "janine",
+      "brock",
+      "blaine",
+      "blue",
+    ]);
+    expect(crystal.battles.at(-postgame.length - 1)!.id).toBe("lance");
+  });
+});
+
 describe("game files with several Pokédexes", () => {
   test("cover every listed Pokédex, numbering species by the first", () => {
     const file = readGameFile("firered-leafgreen");

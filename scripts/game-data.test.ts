@@ -16,14 +16,10 @@ test("lists playable and planned games in release order, each once", async () =>
   expect(ids.indexOf("firered-leafgreen")).toBeLessThan(
     ids.indexOf("platinum"),
   );
-  expect(games.find((g) => g.id === "emerald")!.planned).toBe(false);
-  expect(games.find((g) => g.id === "crystal")).toMatchObject({
+  expect(games.find((g) => g.id === "crystal")!.planned).toBe(false);
+  expect(games.find((g) => g.id === "platinum")).toMatchObject({
     planned: true,
-    starters: [
-      { name: "Chikorita" },
-      { name: "Cyndaquil" },
-      { name: "Totodile" },
-    ],
+    starters: [{ name: "Turtwig" }, { name: "Chimchar" }, { name: "Piplup" }],
   });
 });
 

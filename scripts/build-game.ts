@@ -54,12 +54,13 @@ const statIdentifiers: Record<string, StatKey> = {
   speed: "spe",
 };
 
-/** Lowercase without accents, for comparing names. */
+/** Lowercase without accents and with "Mount" shortened, for comparing names. */
 function plain(name: string): string {
   return name
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/\bmount\b/g, "mt.");
 }
 
 function indexBy(
@@ -857,7 +858,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
         stage,
         location: place
           ? place
-          : !areaName
+          : !areaName || plain(areaName) === plain(locationName)
             ? locationName
             : plain(areaName).includes(plain(locationName))
               ? areaName

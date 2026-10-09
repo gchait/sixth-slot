@@ -62,8 +62,8 @@ test("plans a single-version game without a version choice", async ({
 
 test("lists planned games as coming soon, without a link", async ({ page }) => {
   await page.goto("./");
-  await expect(page.getByText("Crystal")).toBeVisible();
-  await expect(page.getByRole("link", { name: /Crystal/ })).toHaveCount(0);
+  await expect(page.getByText("Platinum")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Platinum/ })).toHaveCount(0);
   await expect(page.getByText("Coming soon").first()).toBeVisible();
 });
 

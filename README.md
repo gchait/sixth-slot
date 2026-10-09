@@ -4,7 +4,7 @@ Plan the best team for a Pokémon playthrough: pick your starter, and get five
 teammates the game actually lets you catch, balanced for every battle on the
 way to the Champion.
 
-Supported games: **FireRed & LeafGreen** and **Emerald**.
+Supported games: **Crystal**, **FireRed & LeafGreen** and **Emerald**.
 
 ## How teams are chosen
 

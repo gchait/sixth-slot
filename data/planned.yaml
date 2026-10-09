@@ -1,10 +1,6 @@
 # Games shown on the home page as coming soon. Remove a game from here when
 # its file in data/games/ lands.
 
-- versionGroup: crystal
-  name: Crystal
-  sprites: generation-ii/crystal/transparent
-  starters: [chikorita, cyndaquil, totodile]
 - versionGroup: platinum
   name: Platinum
   sprites: generation-iv/platinum
