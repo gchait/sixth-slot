@@ -67,6 +67,13 @@ test("lists planned games as coming soon, without a link", async ({ page }) => {
   await expect(page.getByText("Coming soon").first()).toBeVisible();
 });
 
+test("the not-found page links back home", async ({ page }) => {
+  await page.goto("./404/");
+  await expect(page).toHaveTitle("Page not found · sixth-slot");
+  await page.getByRole("link", { name: "← sixth-slot" }).click();
+  await expect(page.getByText("Coming soon").first()).toBeVisible();
+});
+
 test("scores post-game battles when asked to", async ({ page }) => {
   await page.goto("./firered-leafgreen/");
   await expect(

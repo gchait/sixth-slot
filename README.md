@@ -55,8 +55,11 @@ pnpm check        # typecheck, lint, format check, unit tests
 pnpm test:e2e     # build, serve, and run browser tests
 ```
 
-`pnpm build` writes a static site to `build/client/`. The first build or test
-run downloads PokeAPI's data tables into `.cache/`.
+`pnpm build` writes a static site to `build/client/`, replacing `build/` as a
+whole. A server for it answers addresses without a file with `404/index.html`
+and status 404, and can cache `assets/` for good, since those file names carry
+a hash of their content. The first build or test run downloads PokeAPI's data
+tables into `.cache/`.
 
 The code is split in three:
 
@@ -64,7 +67,7 @@ The code is split in three:
   encounter method and condition, item and HM becomes available, and the major
   battles.
 - `scripts/` combines those files with [PokeAPI](https://pokeapi.co)'s data
-  into `public/data/<game>.json`, checking every reference.
+  into `generated/<game>.json`, checking every reference.
 - `engine/` builds the candidates and searches for teams; `app/` is the site.
 
 ## Adding a game

@@ -1,4 +1,4 @@
-// The per-game data file the build writes to public/data/<game>.json. Stages
+// The per-game data file the build writes to generated/<game>.json. Stages
 // are those of the game files, described in data/schema.ts.
 
 export type StatKey = "hp" | "atk" | "def" | "spa" | "spd" | "spe";

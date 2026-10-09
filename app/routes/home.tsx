@@ -12,7 +12,7 @@ import {
 } from "~/components/ui/card";
 
 export async function loader() {
-  const text = await readFile("public/data/games.json", "utf8");
+  const text = await readFile("generated/games.json", "utf8");
   return {
     games: JSON.parse(text) as GameSummary[],
   };

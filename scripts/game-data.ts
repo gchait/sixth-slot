@@ -1,4 +1,4 @@
-// Writes public/data/<game>.json for every file in data/games/, and an index of
+// Writes generated/<game>.json for every file in data/games/, and an index of
 // those games and the planned ones, in release order.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -12,7 +12,7 @@ import { buildGame } from "./build-game.ts";
 import { gameIds, gameTables, readGameFile } from "./games.ts";
 import { download, englishNames, spriteUrl } from "./pokeapi.ts";
 
-const outDir = fileURLToPath(new URL("../public/data/", import.meta.url));
+const outDir = fileURLToPath(new URL("../generated/", import.meta.url));
 const plannedFile = fileURLToPath(
   new URL("../data/planned.yaml", import.meta.url),
 );

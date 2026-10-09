@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { useMemo, useState, useSyncExternalStore } from "react";
-import { data, Link, useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
 import type { Options } from "../../engine/candidates.ts";
 import type { GameData } from "../../engine/data.ts";
@@ -19,13 +19,9 @@ import { readOptions, writeOptions } from "~/lib/options";
 import { useSearch } from "~/lib/use-search";
 import { cn } from "~/lib/utils";
 
-export async function loader({ params }: Route.LoaderArgs) {
-  try {
-    const text = await readFile(`public/data/${params.game}.json`, "utf8");
-    return { game: JSON.parse(text) as GameData };
-  } catch {
-    throw data(null, { status: 404 });
-  }
+export async function loader({ pattern: id }: Route.LoaderArgs) {
+  const text = await readFile(`generated/${id}.json`, "utf8");
+  return { game: JSON.parse(text) as GameData };
 }
 
 export function meta({ loaderData }: Route.MetaArgs) {
