@@ -28,7 +28,7 @@ export function readGameFile(id: string): GameFile {
     );
     throw new Error(`data/games/${id}.yaml:\n${issues.join("\n")}`);
   }
-  return result.data;
+  return { id, ...result.data };
 }
 
 let tables: Promise<Tables> | undefined;

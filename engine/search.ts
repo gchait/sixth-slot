@@ -46,7 +46,7 @@ export function opponentsFor(game: GameData, options: Options): Slot[] {
   const battles = scoredBattles(game, options);
   return battles.flatMap((b) => {
     const { parties } = game.battles[b];
-    const party = parties[options.starter] ?? parties["*"];
+    const party = parties[options.starter];
     return party.map((opponent) => ({
       battle: b,
       opponent,

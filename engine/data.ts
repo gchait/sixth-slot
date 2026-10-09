@@ -8,8 +8,6 @@ export type Stats = Record<StatKey, number>;
 export interface Species {
   id: string;
   name: string;
-  /** Number in the game's regional Pokédex. */
-  dex: number;
   /** Number in the National Pokédex. */
   national: number;
   /** Indices into GameData.types. */
@@ -60,15 +58,21 @@ export interface Evolution {
   requires: EvolutionRequirements;
 }
 
-export interface Source {
+/** Where and when a species can be obtained: a trade, or an encounter at some levels. */
+export type Source = {
   stage: number;
   location: string;
   method: string;
-  minLevel: number;
-  maxLevel: number;
-  /** For an in-game trade, the species the player must give. */
-  gives?: string;
-}
+} & (
+  | {
+      /** The species an in-game trade asks for. */
+      gives: string;
+    }
+  | {
+      /** The lowest and highest level it is found at. */
+      levels: [number, number];
+    }
+);
 
 export interface Opponent {
   species: string;
@@ -85,14 +89,13 @@ export interface Battle {
   postgame: boolean;
   /** The highest level in any of the battle's parties. */
   aceLevel: number;
-  /** Keyed by the player's starter, or "*" when the party never changes. */
+  /** Keyed by the player's starter. */
   parties: Record<string, Opponent[]>;
 }
 
 export interface GameData {
   id: string;
   name: string;
-  generation: number;
   /** Sprite URL with {national} standing for the National Pokédex number. */
   sprite: string;
   versions: { id: string; name: string }[];
@@ -105,7 +108,6 @@ export interface GameData {
   evolutions: Evolution[];
   /** Where each species can be obtained outside the post-game story, per version. */
   sources: Record<string, Record<string, Source[]>>;
-  items: Record<string, string>;
   /** The stage at which each damaging HM is obtained. */
   hms: Record<string, number>;
   starters: string[];

@@ -231,18 +231,17 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   );
   const learnsets = movesBy("level-up");
 
-  // Species in the regional Pokédex, plus anything a battle uses.
-  // A species' regional number comes from the first Pokédex that lists it.
-  const pokedexNames = [file.pokedex].flat();
-  const regional = new Map<string, number>();
-  for (const name of pokedexNames) {
+  // Species in the regional Pokédexes, plus anything a battle uses.
+  const pokedexIds = file.pokedex.map((name) => {
     const pokedex = t.pokedexes.find((row) => row.identifier === name);
     if (!pokedex) throw new Error(`unknown pokedex ${name}`);
-    for (const row of t.pokemon_dex_numbers) {
-      if (row.pokedex_id === pokedex.id && !regional.has(row.species_id))
-        regional.set(row.species_id, Number(row.pokedex_number));
-    }
-  }
+    return pokedex.id;
+  });
+  const regional = new Set(
+    t.pokemon_dex_numbers
+      .filter((row) => pokedexIds.includes(row.pokedex_id))
+      .map((row) => row.species_id),
+  );
   const speciesByIdentifier = indexBy(t.pokemon_species, "identifier");
   const speciesById = indexBy(t.pokemon_species, "id");
   const defaultPokemon = new Map(
@@ -338,7 +337,6 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     species[row.identifier] = {
       id: row.identifier,
       name: speciesNames.get(speciesId) ?? row.identifier,
-      dex: regional.get(speciesId) ?? Number(speciesId),
       national: Number(speciesId),
       types: speciesTypes,
       stats: stats as Stats,
@@ -361,7 +359,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     if (!row) errors.push(`${context}: unknown species ${identifier}`);
     else if (!regional.has(row.id))
       errors.push(
-        `${context}: ${identifier} is not in the ${pokedexNames.join(" or ")} Pokédex`,
+        `${context}: ${identifier} is not in the ${file.pokedex.join(" or ")} Pokédex`,
       );
     else return identifier;
     return undefined;
@@ -520,7 +518,13 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       label.push(row.minimum_happiness ? "friendship" : "affection");
     }
     if (row.minimum_beauty) {
-      atStage(needStage(file.conditions.beauty, context, "conditions.beauty"));
+      atStage(
+        needStage(
+          file.evolutionConditions.beauty,
+          context,
+          "evolutionConditions.beauty",
+        ),
+      );
       label.push("beauty");
     }
     if (row.location_id) {
@@ -629,19 +633,16 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   const starters = file.starters.filter((s) => regionalSpecies(s, "starters"));
   const battles: Battle[] = file.battles.map((battle) => {
     const parties: Record<string, Opponent[]> = {};
-    if (battle.party) parties["*"] = opponents(battle.party, battle.id);
-    for (const [starter, party] of Object.entries(
-      battle.partyByStarter ?? {},
-    )) {
+    const shared = battle.party && opponents(battle.party, battle.id);
+    for (const starter of Object.keys(battle.partyByStarter ?? {})) {
       if (!starters.includes(starter))
         errors.push(`${battle.id}: ${starter} is not a starter`);
-      parties[starter] = opponents(party, `${battle.id} (${starter})`);
     }
-    if (battle.partyByStarter) {
-      for (const starter of starters) {
-        if (!parties[starter])
-          errors.push(`${battle.id}: no party for starter ${starter}`);
-      }
+    for (const starter of starters) {
+      const own = battle.partyByStarter?.[starter];
+      if (own) parties[starter] = opponents(own, `${battle.id} (${starter})`);
+      else if (shared) parties[starter] = shared;
+      else errors.push(`${battle.id}: no party for starter ${starter}`);
     }
     const aceLevel = Math.max(
       ...Object.values(parties)
@@ -682,7 +683,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     checkStage(`hms.${key}`, stage);
   for (const [key, trade] of Object.entries(file.trades))
     checkStage(`trades.${key}`, trade.stage);
-  checkStage("conditions.beauty", file.conditions.beauty);
+  checkStage("evolutionConditions.beauty", file.evolutionConditions.beauty);
 
   // Every location key must exist in PokeAPI.
   const locationsByIdentifier = indexBy(t.locations, "identifier");
@@ -812,7 +813,11 @@ export function buildGame(file: GameFile, t: Tables): GameData {
         area.identifier && !wild
           ? areaNames.get(area.id)?.replace(/ \([^()]*\)$/, "")
           : undefined;
-      const source = {
+      const levels: [number, number] = [
+        Number(encounter.min_level),
+        Number(encounter.max_level),
+      ];
+      const source: Source & { species: string } = {
         species: speciesIdentifier,
         stage,
         location: place
@@ -823,9 +828,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
               ? areaName
               : `${locationName} (${areaName})`,
         method: methodNames.get(method.id) ?? method.identifier,
-        minLevel: Number(encounter.min_level),
-        maxLevel: Number(encounter.max_level),
-        ...(gives ? { gives } : {}),
+        ...(gives ? { gives } : { levels }),
       };
       const key = `${source.species}|${source.location}|${source.method}`;
       const existing = merged.get(key);
@@ -833,8 +836,12 @@ export function buildGame(file: GameFile, t: Tables): GameData {
         merged.set(key, source);
       } else {
         existing.stage = Math.min(existing.stage, source.stage);
-        existing.minLevel = Math.min(existing.minLevel, source.minLevel);
-        existing.maxLevel = Math.max(existing.maxLevel, source.maxLevel);
+        if ("levels" in existing && "levels" in source) {
+          existing.levels = [
+            Math.min(existing.levels[0], source.levels[0]),
+            Math.max(existing.levels[1], source.levels[1]),
+          ];
+        }
       }
     }
     const bySpecies: Record<string, Source[]> = {};
@@ -871,7 +878,6 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   return {
     id: file.id,
     name: file.name,
-    generation,
     sprite: spriteUrl(file.sprites, "{national}"),
     versions,
     types,
@@ -880,7 +886,6 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     moves,
     evolutions,
     sources,
-    items,
     hms,
     starters,
     exclusiveGroups,

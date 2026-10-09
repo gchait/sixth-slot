@@ -65,14 +65,12 @@ const battle = z
   });
 
 export const gameSchema = z.strictObject({
-  id: identifier,
   name: z.string(),
   versionGroup: identifier,
   pokedex: z
-    .union([identifier, z.array(identifier).min(1)])
-    .describe(
-      "The regional Pokédex, or several when the game splits it; numbers come from the first that lists a species.",
-    ),
+    .array(identifier)
+    .min(1)
+    .describe("The regional Pokédex, or several when the game splits it."),
   sprites: spriteFolder,
   starters,
   exclusiveGroups: z
@@ -144,7 +142,7 @@ export const gameSchema = z.strictObject({
     .describe(
       "Moves an evolution needs that only a tutor or TM teaches, by when it can.",
     ),
-  conditions: z
+  evolutionConditions: z
     .strictObject({ beauty: storyStage.optional() })
     .default({})
     .describe(
@@ -156,7 +154,8 @@ export const gameSchema = z.strictObject({
     .describe("The story's major battles in order, then post-game battles."),
 });
 
-export type GameFile = z.infer<typeof gameSchema>;
+/** A game file, with the id its file name gives it. */
+export type GameFile = z.infer<typeof gameSchema> & { id: string };
 
 export const plannedSchema = z.array(
   z.strictObject({

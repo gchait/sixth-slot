@@ -3,10 +3,9 @@
 # Pokémon Emerald, staged by the order of play in Bulbapedia's walkthrough:
 # https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Emerald
 
-id: emerald
 name: Emerald
 versionGroup: emerald
-pokedex: hoenn
+pokedex: [hoenn]
 sprites: generation-iii/emerald
 starters: [treecko, torchic, mudkip]
 
@@ -137,7 +136,7 @@ items:
   deep-sea-scale: 7
   dragon-scale: 7 # Held by wild Horsea, Routes 132–134
 
-conditions:
+evolutionConditions:
   beauty: 6 # Pokéblocks, with the Pokéblock Case from Lilycove's Contest Hall
 
 hms:

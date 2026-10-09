@@ -2,10 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^[a-z0-9-]+$"
-    },
     "name": {
       "type": "string"
     },
@@ -14,21 +10,13 @@
       "pattern": "^[a-z0-9-]+$"
     },
     "pokedex": {
-      "anyOf": [
-        {
-          "type": "string",
-          "pattern": "^[a-z0-9-]+$"
-        },
-        {
-          "minItems": 1,
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^[a-z0-9-]+$"
-          }
-        }
-      ],
-      "description": "The regional Pokédex, or several when the game splits it; numbers come from the first that lists a species."
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "description": "The regional Pokédex, or several when the game splits it."
     },
     "sprites": {
       "type": "string",
@@ -223,7 +211,7 @@
         "description": "A stage, or postgame when only obtainable in the post-game story."
       }
     },
-    "conditions": {
+    "evolutionConditions": {
       "default": {},
       "description": "Evolution conditions other than level, items or trades, by when they can be met.",
       "type": "object",
@@ -355,7 +343,6 @@
     }
   },
   "required": [
-    "id",
     "name",
     "versionGroup",
     "pokedex",

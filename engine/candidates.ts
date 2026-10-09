@@ -77,7 +77,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
   const opensAt = (source: Source) =>
     Math.max(
       source.stage,
-      source.gives ? (heldFrom.get(source.gives) ?? Infinity) : 0,
+      "gives" in source ? (heldFrom.get(source.gives) ?? Infinity) : 0,
     );
 
   const heldBy = (species: string | undefined, battle: number) =>

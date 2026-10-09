@@ -73,8 +73,12 @@ describe("FireRed & LeafGreen", () => {
     expect(game.sources.firered["mr-mime"]).toEqual([
       expect.objectContaining({ stage: 3, gives: "abra" }),
     ]);
-    expect(game.sources.firered.lickitung[0].gives).toBe("golduck");
-    expect(game.sources.leafgreen.lickitung[0].gives).toBe("slowbro");
+    expect(game.sources.firered.lickitung[0]).toMatchObject({
+      gives: "golduck",
+    });
+    expect(game.sources.leafgreen.lickitung[0]).toMatchObject({
+      gives: "slowbro",
+    });
   });
 
   test("evolves by level, stone and trade", () => {
@@ -252,7 +256,7 @@ describe("game files with several Pokédexes", () => {
       file.items[item] = "postgame";
     const game = buildGame(file, tables);
     expect(Object.keys(game.species).length).toBeGreaterThan(151);
-    expect(game.species.pikachu.dex).toBe(25);
+    expect(game.species.chikorita).toBeDefined();
     expect(game.evolutions.find((e) => e.to === "steelix")).toBeUndefined();
     expect(game.evolutions.find((e) => e.to === "crobat")).toMatchObject({
       label: "friendship",

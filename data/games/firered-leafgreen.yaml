@@ -3,10 +3,9 @@
 # Pokémon FireRed and LeafGreen, staged by the order of play in Bulbapedia's walkthrough:
 # https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_FireRed_and_LeafGreen
 
-id: firered-leafgreen
 name: FireRed & LeafGreen
 versionGroup: firered-leafgreen
-pokedex: kanto
+pokedex: [kanto]
 sprites: generation-iii/firered-leafgreen
 starters: [bulbasaur, charmander, squirtle]
 
