@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 
 import type { Options } from "../../engine/candidates.ts";
-import type { GameData } from "../../engine/data.ts";
+import { fieldMoveNames, type GameData } from "../../engine/data.ts";
 import { Sprite } from "~/components/sprite";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
@@ -156,6 +156,15 @@ export function Controls({
             hint="Also score rematches and battles after the Champion."
             checked={options.includePostgame}
             onChange={(includePostgame) => set({ includePostgame })}
+          />
+        )}
+        {game.fieldMoves.length > 0 && (
+          <Setting
+            id="field"
+            label={`${fieldMoveNames(game)} on the team`}
+            hint="A member can use each outside battle from when it works there."
+            checked={options.carryFieldMoves}
+            onChange={(carryFieldMoves) => set({ carryFieldMoves })}
           />
         )}
       </div>

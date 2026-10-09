@@ -79,6 +79,18 @@ describe("buildCandidates", () => {
   });
 });
 
+describe("field moves", () => {
+  test("count only for lines that can use them from when they work", () => {
+    const carried = (id: string) => find(options(), id)!.fieldMoves;
+    expect(carried("charizard")).toEqual(["fly"]);
+    expect(carried("lapras")).toEqual(["surf"]);
+    // Aerodactyl is revived only after Fly works, and Dragonair learns
+    // Surf but cannot learn Fly until it evolves.
+    expect(carried("aerodactyl")).toEqual([]);
+    expect(carried("dragonite")).toEqual(["surf"]);
+  });
+});
+
 describe("evolution requirements", () => {
   const withRequirement = (
     to: string,

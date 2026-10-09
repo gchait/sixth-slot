@@ -1,7 +1,8 @@
 // Finds the best teams. A team's score is, averaged over every battle, the mean
 // over that battle's opponents of the team's best one-on-one matchup against it,
 // minus a penalty for weaknesses many members share. Only members obtainable by
-// a battle count for it, in the form they would have by then.
+// a battle count for it, in the form they would have by then. Teams can be
+// required to keep a member for each of the game's field moves.
 import {
   effectiveness,
   knownMoves,
@@ -10,7 +11,7 @@ import {
   type Matchup,
 } from "./battle.ts";
 import { buildCandidates, type Candidate, type Options } from "./candidates.ts";
-import type { GameData, Opponent } from "./data.ts";
+import { fieldMoveNames, type GameData, type Opponent } from "./data.ts";
 
 export const TEAM_SIZE = 6;
 /** Penalty per member beyond two that is weak to the same attacking type. */
@@ -159,6 +160,19 @@ export function search(
     groupOf.has(c.family) ? 1 << groupOf.get(c.family)! : 0;
   const groups = optional.map(groupMask);
   const families = optional.map((c) => c.family);
+  const fieldMask = (c: Candidate) =>
+    game.fieldMoves.reduce(
+      (mask, move, i) =>
+        c.fieldMoves.includes(move.id) ? mask | (1 << i) : mask,
+      0,
+    );
+  const fields = optional.map(fieldMask);
+  const needed = options.carryFieldMoves
+    ? (1 << game.fieldMoves.length) - 1
+    : 0;
+  // reachable[i] is the field moves some optional member from i on can carry.
+  const reachable = new Array<number>(n + 1).fill(0);
+  for (let i = n - 1; i >= 0; i--) reachable[i] = reachable[i + 1] | fields[i];
 
   const teams: Team[] = [];
   let evaluated = 0;
@@ -222,9 +236,12 @@ export function search(
   // Adding members raises the score by at most the sum of what each would add
   // alone, so a partial team cannot beat its score plus its best remaining gains.
   const gains = new Float64Array(n);
-  const explore = (score: number, start: number) => {
+  const explore = (score: number, start: number, carried: number) => {
     const depth = members.length;
     const left = TEAM_SIZE - depth;
+    const missing = needed & ~carried;
+    const coverable = left === 0 ? 0 : reachable[start];
+    if ((coverable & missing) !== missing) return;
     if (left === 0) {
       evaluated++;
       const total = score - sharedWeaknessPenalty(game, members);
@@ -254,16 +271,26 @@ export function search(
 
     for (let i = start; i <= n - left; i++) {
       if (score + gains[i] + rest <= threshold()) continue;
+      if (left === 1 && (fields[i] & missing) !== missing) continue;
       const c = optional[i];
       if (!join(c, families[i], types[i], groups[i])) continue;
-      explore(extend(depth, value[i]), i + 1);
+      explore(extend(depth, value[i]), i + 1, carried | fields[i]);
       leave(types[i], groups[i]);
     }
   };
   let base = 0;
   for (let o = 0; o < width; o++) base += best[members.length][o] * weights[o];
-  explore(base, 0);
+  explore(
+    base,
+    0,
+    required.reduce((mask, c) => mask | fieldMask(c), 0),
+  );
 
+  if (teams.length === 0 && needed !== 0) {
+    throw new Error(
+      `No team with these settings keeps a member for ${fieldMoveNames(game)}`,
+    );
+  }
   return { candidates: all, teams, evaluated };
 }
 

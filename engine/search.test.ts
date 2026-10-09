@@ -29,10 +29,13 @@ function exhaustive(o: Options, pool: Candidate[], starter: Candidate) {
       const families = team.map((c) => c.family);
       const groups = team.map(group).filter((g) => g >= 0);
       const types = team.flatMap(typesOf);
+      const carried = team.flatMap((c) => c.fieldMoves);
       return (
         new Set(families).size === team.length &&
         new Set(groups).size === groups.length &&
-        (!o.uniqueTypes || new Set(types).size === types.length)
+        (!o.uniqueTypes || new Set(types).size === types.length) &&
+        (!o.carryFieldMoves ||
+          game.fieldMoves.every((m) => carried.includes(m.id)))
       );
     })
     .map((team) => ({
@@ -43,18 +46,23 @@ function exhaustive(o: Options, pool: Candidate[], starter: Candidate) {
 }
 
 describe("search", () => {
-  test.each([true, false])(
-    "finds the same best teams as checking every team (unique types: %s)",
-    (uniqueTypes) => {
+  test.each([
+    [true, true],
+    [true, false],
+    [false, true],
+    [false, false],
+  ])(
+    "finds the same best teams as checking every team (unique types: %s, field moves: %s)",
+    (uniqueTypes, carryFieldMoves) => {
       const all = buildCandidates(game, options({ uniqueTypes }));
       const starter = all.find((c) => c.family === "charmander")!;
-      // A pool small enough to enumerate, mixing early and late joiners and an exclusive pair.
+      // A pool small enough to enumerate, mixing early and late joiners, an
+      // exclusive pair, and few Surf users, so that keeping one changes the top teams.
       const keep = new Set([
         "primeape",
         "raticate",
         "graveler",
         "snorlax",
-        "vaporeon",
         "jolteon",
         "mr-mime",
         "hitmonlee",
@@ -68,12 +76,23 @@ describe("search", () => {
       const pool = all.filter((c) => keep.has(c.id));
       const o = options({
         uniqueTypes,
+        carryFieldMoves,
         banned: all
           .filter((c) => c !== starter && !keep.has(c.id))
           .map((c) => c.id),
       });
 
       const expected = exhaustive(o, pool, starter).slice(0, 10);
+      if (carryFieldMoves) {
+        const free = exhaustive(
+          { ...o, carryFieldMoves: false },
+          pool,
+          starter,
+        );
+        expect(free.slice(0, 10).map((t) => t.score)).not.toEqual(
+          expected.map((t) => t.score),
+        );
+      }
       const { teams } = search(game, o, 10);
       expect(teams).toHaveLength(expected.length);
       teams.forEach((team, i) =>
@@ -101,6 +120,16 @@ describe("search", () => {
     expect(() => search(game, options({ pinned: ["pidgeot"] }))).toThrow(
       "Pidgeot cannot join Charizard",
     );
+  });
+
+  test("explains when no team can keep a member for every field move", () => {
+    const pinned = ["raticate", "primeape", "graveler", "mr-mime", "jolteon"];
+    expect(() => search(game, options({ pinned }))).toThrow(
+      "No team with these settings keeps a member for Fly and Surf",
+    );
+    expect(
+      search(game, options({ pinned, carryFieldMoves: false })).teams,
+    ).toHaveLength(1);
   });
 
   test("never pairs members of an exclusive group or family", () => {

@@ -67,6 +67,16 @@ test("lists planned games as coming soon, without a link", async ({ page }) => {
   await expect(page.getByText("Coming soon").first()).toBeVisible();
 });
 
+test("keeps a member for each field move unless told not to", async ({
+  page,
+}) => {
+  await page.goto(`${builder}?starter=squirtle`);
+  await expect(page.getByText("Fly", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Surf", { exact: true }).first()).toBeVisible();
+  await page.getByRole("switch", { name: "Fly and Surf on the team" }).click();
+  await expect(page).toHaveURL(/field=0/);
+});
+
 test("the not-found page links back home", async ({ page }) => {
   await page.goto("./404/");
   await expect(page).toHaveTitle("Page not found · sixth-slot");

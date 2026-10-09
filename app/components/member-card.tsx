@@ -96,6 +96,13 @@ export function MemberCard({
             </Badge>
             {isStarter && <Badge variant="outline">Starter</Badge>}
             {pinned && <Badge variant="outline">Pinned</Badge>}
+            {game.fieldMoves
+              .filter((move) => candidate.fieldMoves.includes(move.id))
+              .map((move) => (
+                <Badge key={move.id} variant="outline">
+                  {move.name}
+                </Badge>
+              ))}
           </div>
           {candidate.line.length > 1 && (
             <p className="text-muted-foreground text-xs">

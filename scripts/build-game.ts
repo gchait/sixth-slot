@@ -6,6 +6,7 @@ import type {
   Battle,
   Evolution,
   EvolutionRequirements,
+  FieldMove,
   GameData,
   Move,
   Opponent,
@@ -230,6 +231,23 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     (row) => moveRowsById.get(row.move_id)!.identifier in hms,
   );
   const learnsets = movesBy("level-up");
+  const fieldMoves: FieldMove[] = [];
+  for (const [move, stage] of Object.entries(file.fieldMoves)) {
+    const moveId = moveIdsByIdentifier.get(move);
+    if (!moveId) errors.push(`fieldMoves: unknown move ${move}`);
+    else
+      fieldMoves.push({ id: move, name: moveNames.get(moveId) ?? move, stage });
+    const obtained = file.hms[move];
+    if (
+      obtained !== undefined &&
+      !(typeof obtained === "number" && obtained <= stage)
+    )
+      errors.push(`fieldMoves.${move}: works before hms.${move} is obtained`);
+  }
+  const isFieldMove = (row: Record<string, string>) =>
+    moveRowsById.get(row.move_id)!.identifier in file.fieldMoves;
+  const fieldMachines = movesBy("machine", isFieldMove);
+  const fieldLevelUps = movesBy("level-up", isFieldMove);
 
   // Species in the regional Pokédexes, plus anything a battle uses.
   const pokedexIds = file.pokedex.map((name) => {
@@ -334,6 +352,16 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     }
     learnset.sort((a, b) => a[0] - b[0] || a[1].localeCompare(b[1]));
 
+    const fieldMoveLevels: Record<string, number> = {};
+    const knowFrom = (moveRow: Record<string, string>, level: number) => {
+      const move = moveRowsById.get(moveRow.move_id)!.identifier;
+      fieldMoveLevels[move] = Math.min(fieldMoveLevels[move] ?? level, level);
+    };
+    for (const moveRow of fieldMachines.get(pokemonId) ?? [])
+      knowFrom(moveRow, 1);
+    for (const moveRow of fieldLevelUps.get(pokemonId) ?? [])
+      knowFrom(moveRow, Math.max(1, Number(moveRow.level)));
+
     species[row.identifier] = {
       id: row.identifier,
       name: speciesNames.get(speciesId) ?? row.identifier,
@@ -346,6 +374,9 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       hms: (hmUsers.get(pokemonId) ?? [])
         .map((m) => moveRowsById.get(m.move_id)!.identifier)
         .sort(),
+      fieldMoves: Object.fromEntries(
+        Object.entries(fieldMoveLevels).sort(([a], [b]) => a.localeCompare(b)),
+      ),
     };
     return row.identifier;
   }
@@ -681,6 +712,8 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     checkStage(`items.${key}`, stage);
   for (const [key, stage] of Object.entries(file.hms))
     checkStage(`hms.${key}`, stage);
+  for (const [key, stage] of Object.entries(file.fieldMoves))
+    checkStage(`fieldMoves.${key}`, stage);
   for (const [key, trade] of Object.entries(file.trades))
     checkStage(`trades.${key}`, trade.stage);
   checkStage("evolutionConditions.beauty", file.evolutionConditions.beauty);
@@ -887,6 +920,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     evolutions,
     sources,
     hms,
+    fieldMoves,
     starters,
     exclusiveGroups,
     battles,

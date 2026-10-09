@@ -125,6 +125,11 @@ hms:
   fly: 5 # Route 16
   rock-smash: 7 # Kindle Road
 
+# Badges from https://bulbapedia.bulbagarden.net/wiki/HM
+fieldMoves:
+  fly: 5 # Once obtained; the Thunder Badge comes earlier
+  surf: 5 # Soul Badge
+
 trades:
   mr-mime: { stage: 3, place: "Route 2 (east side)" } # Behind a Cut tree
 

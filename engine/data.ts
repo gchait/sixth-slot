@@ -20,6 +20,11 @@ export interface Species {
   learnset: [number, string][];
   /** Damaging HMs the species can learn, as keys of GameData.hms. */
   hms: string[];
+  /**
+   * The game's field moves the species can learn, by the lowest level it can
+   * know each at: 1 when a machine teaches it.
+   */
+  fieldMoves: Record<string, number>;
 }
 
 export interface Move {
@@ -74,6 +79,13 @@ export type Source = {
     }
 );
 
+/** A move the team itself keeps for use outside battle, from `stage` on. */
+export interface FieldMove {
+  id: string;
+  name: string;
+  stage: number;
+}
+
 export interface Opponent {
   species: string;
   level: number;
@@ -110,9 +122,18 @@ export interface GameData {
   sources: Record<string, Record<string, Source[]>>;
   /** The stage at which each damaging HM is obtained. */
   hms: Record<string, number>;
+  fieldMoves: FieldMove[];
   starters: string[];
   exclusiveGroups: string[][];
   battles: Battle[];
+}
+
+/** The game's field moves by name, such as "Fly and Surf". */
+export function fieldMoveNames(game: GameData): string {
+  const names = game.fieldMoves.map((m) => m.name);
+  return names.length > 1
+    ? `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`
+    : (names[0] ?? "");
 }
 
 /** The sprite URL of one species. */

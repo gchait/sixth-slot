@@ -148,6 +148,11 @@ hms:
   dive: 7 # Mossdeep City, after Tate & Liza
   waterfall: 7 # Sootopolis City, before Juan
 
+# Badges from https://bulbapedia.bulbagarden.net/wiki/HM
+fieldMoves:
+  surf: 5 # Balance Badge
+  fly: 6 # Feather Badge
+
 encounterConditions:
   item-root-fossil: 4 # Mirage Tower, revived at the Devon Corporation
   item-claw-fossil: 4

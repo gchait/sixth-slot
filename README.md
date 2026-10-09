@@ -16,9 +16,13 @@ Supported games: **FireRed & LeafGreen** and **Emerald**.
   reachable.
 - One Pokémon per evolution family, and one from each either-or gift (such as
   Hitmonlee or Hitmonchan).
-- By default, no two members share a type, legendaries are left out, and
-  evolutions that need a trade with another player are off. Each can be
-  changed, and any Pokémon can be pinned or excluded.
+- A member can use each move the game file marks as needed outside battle all
+  the time, such as Fly, from when it works there. Moves needed only now and
+  then, such as Cut, are left to a Pokémon carried just for them.
+- By default, no two members share a type, legendaries are left out,
+  evolutions that need a trade with another player are off, and those
+  outside-battle moves are kept on the team. Each can be changed, and any
+  Pokémon can be pinned or excluded.
 - Battles after the Champion, such as FireRed's second Elite Four round or
   Emerald's first Gym Leader rematches, can be scored too. They count Pokémon
   caught on the way to them, but not post-game story areas.

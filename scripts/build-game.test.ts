@@ -170,6 +170,14 @@ describe("game file checks", () => {
     );
   });
 
+  test("rejects a field move that works before its HM is obtained", () => {
+    const file = readGameFile("firered-leafgreen");
+    file.fieldMoves.fly = 4;
+    expect(() => buildGame(file, tables)).toThrow(
+      "fieldMoves.fly: works before hms.fly is obtained",
+    );
+  });
+
   test("rejects an evolution item without a stage", () => {
     const file = readGameFile("firered-leafgreen");
     delete file.items["moon-stone"];
@@ -217,6 +225,14 @@ describe("Emerald", () => {
       });
     }
     expect(evolution("ninjask")!.requires.random).toBeUndefined();
+  });
+
+  test("lists field moves by when they work outside battle", () => {
+    expect(emerald.fieldMoves).toEqual([
+      { id: "surf", name: "Surf", stage: 5 },
+      { id: "fly", name: "Fly", stage: 6 },
+    ]);
+    expect(emerald.species.swellow.fieldMoves).toEqual({ fly: 1 });
   });
 
   test("narrows a location's stage to one encounter method", () => {

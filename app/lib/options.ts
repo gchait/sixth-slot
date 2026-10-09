@@ -6,6 +6,7 @@ const switchKeys = [
   "allowLegendaries",
   "allowTradeEvolutions",
   "includePostgame",
+  "carryFieldMoves",
 ] as const;
 
 type Switch = (typeof switchKeys)[number];
@@ -16,6 +17,7 @@ const switches: Record<Switch, string> = {
   allowLegendaries: "legendaries",
   allowTradeEvolutions: "trades",
   includePostgame: "postgame",
+  carryFieldMoves: "field",
 };
 
 const list = (value: string | null) =>
@@ -39,6 +41,7 @@ export function readOptions(params: URLSearchParams, game: GameData): Options {
     allowLegendaries: on("allowLegendaries"),
     allowTradeEvolutions: on("allowTradeEvolutions"),
     includePostgame: on("includePostgame"),
+    carryFieldMoves: on("carryFieldMoves"),
     pinned: list(params.get("pin")).filter((id) => id in game.species),
     banned: list(params.get("ban")).filter((id) => id in game.species),
   };

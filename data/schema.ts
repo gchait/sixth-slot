@@ -136,6 +136,12 @@ export const gameSchema = z.strictObject({
     .describe(
       "HMs that attack, by when they are obtained; HMs can be taught to any number of Pokémon.",
     ),
+  fieldMoves: z
+    .record(identifier, stage)
+    .default({})
+    .describe(
+      "Moves used outside battle throughout the game, too often to leave to a Pokémon kept only for them, by the stage from which they work outside battle. Teams keep a member that can use each from then on.",
+    ),
   moves: z
     .record(identifier, storyStage)
     .default({})

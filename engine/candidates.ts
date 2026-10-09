@@ -12,6 +12,8 @@ export interface Options {
   allowTradeEvolutions: boolean;
   /** Also score the battles after the Champion. */
   includePostgame: boolean;
+  /** Some member can use each of the game's field moves from when it works. */
+  carryFieldMoves: boolean;
   /** Candidate ids every team must include. */
   pinned: string[];
   /** Candidate ids no team may include. */
@@ -23,6 +25,7 @@ export const defaultOptions = {
   allowLegendaries: false,
   allowTradeEvolutions: false,
   includePostgame: false,
+  carryFieldMoves: true,
   pinned: [],
   banned: [],
 } satisfies Partial<Options>;
@@ -46,6 +49,8 @@ export interface Candidate {
    * includes waiting for the species it asks for.
    */
   sources: (Source & { species: string })[];
+  /** The game's field moves the line can use from when each works on. */
+  fieldMoves: string[];
 }
 
 export function buildCandidates(game: GameData, options: Options): Candidate[] {
@@ -174,6 +179,19 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
       family,
       forms,
       joins,
+      fieldMoves: game.fieldMoves
+        .filter((move) => {
+          // A move once learned stays known, so a line that can use the move
+          // when it starts to work keeps it from then on.
+          const form = forms[move.stage];
+          const level = game.battles[move.stage].aceLevel;
+          return line
+            .slice(0, form + 1)
+            .some(
+              (s) => (game.species[s].fieldMoves[move.id] ?? Infinity) <= level,
+            );
+        })
+        .map((move) => move.id),
       sources: line
         .flatMap((s) =>
           (sources[s] ?? [])
