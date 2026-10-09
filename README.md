@@ -16,15 +16,16 @@ Supported games: **Crystal**, **FireRed & LeafGreen** and **Emerald**.
   reachable.
 - One Pokémon per evolution family, and one from each either-or gift (such as
   Hitmonlee or Hitmonchan).
-- A member can use each move the game file marks as needed outside battle all
-  the time, such as Fly, from when it works there. Moves needed only now and
-  then, such as Cut, are left to a Pokémon carried just for them.
+- Someone on the team can use the moves needed outside battle all the time,
+  such as Fly and Surf, from when each works there. Moves needed only now and
+  then, such as Cut, are left to a Pokémon carried for them.
 - By default, no two members share a type, legendaries are left out,
   evolutions that need a trade with another player are off, and those
   outside-battle moves are kept on the team. Each can be changed, and any
   Pokémon can be pinned or excluded.
-- Battles after the Champion, such as FireRed's second Elite Four round or
-  Emerald's first Gym Leader rematches, can be scored too. They count Pokémon
+- Battles after the Champion, such as FireRed's second Elite Four round,
+  Emerald's first Gym Leader rematches or Crystal's Kanto Gym Leaders, can be
+  scored too. They count Pokémon
   caught on the way to them, but not post-game story areas.
 
 **How a team is scored**
@@ -63,7 +64,7 @@ pnpm test:e2e     # build, serve, and run browser tests
 whole. A server for it answers addresses without a file with `404/index.html`
 and status 404, and can cache `assets/` for good, since those file names carry
 a hash of their content. The first build or test run downloads PokeAPI's data
-tables into `.cache/`.
+tables and the starters' sprites into `.cache/`.
 
 The code is split in three:
 

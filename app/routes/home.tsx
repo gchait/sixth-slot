@@ -18,14 +18,13 @@ export async function loader() {
   };
 }
 
+const summary =
+  "The best team for a Pokémon playthrough. Pick your starter, and get five teammates the game actually lets you catch, balanced for every battle on the way to the Champion.";
+
 export function meta() {
   return [
     { title: "sixth-slot · Pokémon playthrough team planner" },
-    {
-      name: "description",
-      content:
-        "Pick your starter and get the best team of six for a Pokémon playthrough, built from what the game lets you catch and scored against every major battle.",
-    },
+    { name: "description", content: summary },
   ];
 }
 
@@ -49,11 +48,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     <main className="mx-auto max-w-4xl space-y-12 px-4 py-12">
       <header className="space-y-3">
         <h1 className="text-4xl font-bold tracking-tight">sixth-slot</h1>
-        <p className="text-muted-foreground max-w-2xl text-lg">
-          The best team for a Pokémon playthrough. Pick your starter, and get
-          five teammates the game actually lets you catch, balanced for every
-          battle on the way to the Champion.
-        </p>
+        <p className="text-muted-foreground max-w-2xl text-lg">{summary}</p>
       </header>
 
       <section className="space-y-3">

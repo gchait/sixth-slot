@@ -45,36 +45,66 @@ function exhaustive(o: Options, pool: Candidate[], starter: Candidate) {
     .sort((a, b) => b.score - a.score);
 }
 
+// Pools small enough to enumerate. Charmander's mixes early and late joiners,
+// an exclusive pair and few Surf users, so keeping one changes the top teams;
+// Bulbasaur's has many close teams, which tests pruning at every depth.
+const pools: Record<string, string[]> = {
+  charmander: [
+    "primeape",
+    "raticate",
+    "graveler",
+    "snorlax",
+    "jolteon",
+    "mr-mime",
+    "hitmonlee",
+    "hitmonchan",
+    "golbat",
+    "beedrill",
+    "lapras",
+    "dragonite",
+    "nidoking",
+  ],
+  bulbasaur: [
+    "hitmonchan",
+    "fearow",
+    "beedrill",
+    "hitmonlee",
+    "venomoth",
+    "marowak",
+    "wigglytuff",
+    "seaking",
+    "tangela",
+    "mr-mime",
+    "kangaskhan",
+    "chansey",
+    "raichu",
+    "haunter",
+  ],
+};
+
 describe("search", () => {
-  test.each([
-    [true, true],
-    [true, false],
-    [false, true],
-    [false, false],
-  ])(
-    "finds the same best teams as checking every team (unique types: %s, field moves: %s)",
-    (uniqueTypes, carryFieldMoves) => {
-      const all = buildCandidates(game, options({ uniqueTypes }));
-      const starter = all.find((c) => c.family === "charmander")!;
-      // A pool small enough to enumerate, mixing early and late joiners, an
-      // exclusive pair, and few Surf users, so that keeping one changes the top teams.
-      const keep = new Set([
-        "primeape",
-        "raticate",
-        "graveler",
-        "snorlax",
-        "jolteon",
-        "mr-mime",
-        "hitmonlee",
-        "hitmonchan",
-        "golbat",
-        "beedrill",
-        "lapras",
-        "dragonite",
-        "nidoking",
-      ]);
+  test.each(
+    Object.keys(pools).flatMap((starter) =>
+      [true, false].flatMap((uniqueTypes) =>
+        [true, false].map((carryFieldMoves) => ({
+          starter,
+          uniqueTypes,
+          carryFieldMoves,
+        })),
+      ),
+    ),
+  )(
+    "finds the same best teams as checking every team ($starter, unique types: $uniqueTypes, field moves: $carryFieldMoves)",
+    ({ starter: family, uniqueTypes, carryFieldMoves }) => {
+      const all = buildCandidates(
+        game,
+        options({ starter: family, uniqueTypes }),
+      );
+      const starter = all.find((c) => c.family === family)!;
+      const keep = new Set(pools[family]);
       const pool = all.filter((c) => keep.has(c.id));
       const o = options({
+        starter: family,
         uniqueTypes,
         carryFieldMoves,
         banned: all
@@ -83,7 +113,7 @@ describe("search", () => {
       });
 
       const expected = exhaustive(o, pool, starter).slice(0, 10);
-      if (carryFieldMoves) {
+      if (carryFieldMoves && family === "charmander") {
         const free = exhaustive(
           { ...o, carryFieldMoves: false },
           pool,
@@ -130,6 +160,15 @@ describe("search", () => {
     expect(
       search(game, options({ pinned, carryFieldMoves: false })).teams,
     ).toHaveLength(1);
+  });
+
+  test("blames field moves only when they are what rules out every team", () => {
+    const all = buildCandidates(game, options());
+    const banned = all
+      .filter((c) => c.family !== "charmander")
+      .slice(4)
+      .map((c) => c.id);
+    expect(search(game, options({ banned })).teams).toEqual([]);
   });
 
   test("never pairs members of an exclusive group or family", () => {

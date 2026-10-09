@@ -1,6 +1,7 @@
-// Reads PokeAPI's CSV data at a pinned commit, downloading each table once
-// into .cache/pokeapi/<commit>/.
+// Reads PokeAPI's CSV data and sprites at pinned commits, downloading each file
+// once into .cache/.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { parseCsv } from "./csv.ts";
@@ -12,11 +13,22 @@ export function spriteUrl(folder: string, national: string): string {
   return `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/versions/${folder}/${national}.png`;
 }
 
-/** Fetches a URL, failing on any HTTP error. */
-export async function download(url: string): Promise<Response> {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
-  return response;
+const cacheDir = fileURLToPath(new URL("../.cache/", import.meta.url));
+
+/**
+ * The file at a URL that pins a commit, so its content never changes: fetched
+ * once into .cache/<host>/<path>, and read from there afterwards.
+ */
+export async function pinnedFile(url: string): Promise<Buffer> {
+  const { host, pathname } = new URL(url);
+  const path = `${cacheDir}${host}${decodeURIComponent(pathname)}`;
+  if (!existsSync(path)) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, Buffer.from(await response.arrayBuffer()));
+  }
+  return readFileSync(path);
 }
 
 /** Each row's identifier by its id, for PokeAPI's lookup tables. */
@@ -36,21 +48,13 @@ export function englishNames(table: Table, idKey: string): Map<string, string> {
 /** The commit of PokeAPI's sprite repository the site loads images from. */
 export const SPRITES_COMMIT = "35fdbe9bdec8f519f882c3edc3c0185f08af4d86";
 
-const cacheDir = fileURLToPath(
-  new URL(`../.cache/pokeapi/${POKEAPI_COMMIT}/`, import.meta.url),
-);
-
 export type Table = Record<string, string>[];
 
 export async function loadTable(name: string): Promise<Table> {
-  const path = `${cacheDir}${name}.csv`;
-  if (!existsSync(path)) {
-    const url = `https://raw.githubusercontent.com/PokeAPI/pokeapi/${POKEAPI_COMMIT}/data/v2/csv/${name}.csv`;
-    const response = await download(url);
-    mkdirSync(cacheDir, { recursive: true });
-    writeFileSync(path, await response.text());
-  }
-  return parseCsv(readFileSync(path, "utf8"));
+  const csv = await pinnedFile(
+    `https://raw.githubusercontent.com/PokeAPI/pokeapi/${POKEAPI_COMMIT}/data/v2/csv/${name}.csv`,
+  );
+  return parseCsv(csv.toString("utf8"));
 }
 
 export const tableNames = [

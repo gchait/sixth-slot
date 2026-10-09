@@ -24,14 +24,13 @@ export async function loader({ pattern: id }: Route.LoaderArgs) {
   return { game: JSON.parse(text) as GameData };
 }
 
+const summary =
+  "Six Pokémon you can actually get, scored against every gym leader, the Elite Four and the Champion, counting each member only from when you can catch it.";
+
 export function meta({ loaderData }: Route.MetaArgs) {
-  const name = loaderData?.game.name ?? "Game";
   return [
-    { title: `${name} team planner · sixth-slot` },
-    {
-      name: "description",
-      content: `The best team for a ${name} playthrough: pick your starter and get six Pokémon you can actually catch, scored against every gym leader, the Elite Four and the Champion.`,
-    },
+    { title: `${loaderData.game.name} team planner · sixth-slot` },
+    { name: "description", content: summary },
   ];
 }
 
@@ -254,11 +253,7 @@ export default function Game({ loaderData }: Route.ComponentProps) {
           ← sixth-slot
         </Link>
         <h1 className="text-3xl font-bold tracking-tight">{game.name}</h1>
-        <p className="text-muted-foreground max-w-2xl">
-          Six Pokémon you can actually get, scored against every gym leader, the
-          Elite Four and the Champion, counting each member only from when you
-          can catch it.
-        </p>
+        <p className="text-muted-foreground max-w-2xl">{summary}</p>
       </header>
       {mounted ? (
         <Builder game={game} />

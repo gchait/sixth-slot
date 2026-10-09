@@ -155,7 +155,7 @@ fieldMoves:
   fly: 5 # Storm Badge
 
 encounterConditions:
-  time-*: 0 # Every time of day comes around
+  time-*: 0 # Any time of day
   swarm-no: 0
   swarm-yes: excluded # Only after a random phone call
   coins-*: 2 # Coin Case, Goldenrod Underground

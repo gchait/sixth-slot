@@ -10,7 +10,7 @@ import { plannedSchema } from "../data/schema.ts";
 import { spriteOf } from "../engine/data.ts";
 import { buildGame } from "./build-game.ts";
 import { gameIds, gameTables, readGameFile } from "./games.ts";
-import { download, englishNames, spriteUrl } from "./pokeapi.ts";
+import { englishNames, pinnedFile, spriteUrl } from "./pokeapi.ts";
 
 const outDir = fileURLToPath(new URL("../generated/", import.meta.url));
 const plannedFile = fileURLToPath(
@@ -63,7 +63,7 @@ export function cornerIsTransparent(png: Buffer): boolean {
 
 /** Reads a sprite's size, rejecting one drawn on a solid background. */
 export async function sprite(name: string, url: string): Promise<Sprite> {
-  const png = Buffer.from(await (await download(url)).arrayBuffer());
+  const png = await pinnedFile(url);
   if (!cornerIsTransparent(png)) {
     throw new Error(
       `${url} has a solid background; use a transparent sprite set`,
