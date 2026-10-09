@@ -1,5 +1,5 @@
 import type { Candidate } from "../../engine/candidates.ts";
-import type { EvolutionMethod, GameData, Source } from "../../engine/data.ts";
+import type { GameData, Source } from "../../engine/data.ts";
 
 /** "Before Brock", or "Before the Elite Four" for the first Elite Four battle. */
 export function stageName(game: GameData, stage: number): string {
@@ -26,31 +26,14 @@ export function describeSource(
   return `${name} · ${source.location} · ${source.method.toLowerCase()} · ${levels}`;
 }
 
-function evolutionLabel(game: GameData, method: EvolutionMethod): string {
-  switch (method.kind) {
-    case "level":
-      return method.random
-        ? `Lv ${method.level}, at random`
-        : `Lv ${method.level}`;
-    case "item":
-      return game.items[method.item];
-    case "trade":
-      return method.item ? `trade holding ${game.items[method.item]}` : "trade";
-    case "friendship":
-      return "friendship";
-    case "beauty":
-      return "beauty";
-  }
-}
-
 /** "Charmander → Charmeleon (Lv 16) → Charizard (Lv 36)". */
 export function describeLine(game: GameData, candidate: Candidate): string {
   return candidate.line
     .map((species, i) => {
       const name = game.species[species].name;
       if (i === 0) return name;
-      const { method } = game.evolutions.find((e) => e.to === species)!;
-      return `${name} (${evolutionLabel(game, method)})`;
+      const { label } = game.evolutions.find((e) => e.to === species)!;
+      return `${name} (${label})`;
     })
     .join(" → ");
 }

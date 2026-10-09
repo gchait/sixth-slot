@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from "vitest";
 
 import { loadGame } from "../scripts/games.ts";
 import { buildCandidates, defaultOptions, type Options } from "./candidates.ts";
-import type { GameData } from "./data.ts";
+import type { Evolution, GameData } from "./data.ts";
 
 let game: GameData;
 let emerald: GameData;
@@ -81,5 +81,36 @@ describe("buildCandidates", () => {
     expect(golbat).toBeGreaterThanOrEqual(0);
     expect(crobat.forms[golbat]).toBe(1);
     expect(crobat.forms.indexOf(2)).toBe(golbat + 1);
+  });
+});
+
+describe("evolution requirements", () => {
+  const withRequirement = (
+    to: string,
+    requires: Evolution["requires"],
+  ): GameData => ({
+    ...game,
+    evolutions: game.evolutions.map((e) =>
+      e.to === to ? { ...e, requires } : e,
+    ),
+  });
+  const raichuJoins = (g: GameData) =>
+    buildCandidates(g, options())
+      .find((c) => c.id === "raichu")!
+      .forms.indexOf(1);
+
+  test("wait for another species to be held", () => {
+    // Lapras is a gift before Sabrina, the sixth battle.
+    expect(raichuJoins(withRequirement("raichu", { species: "lapras" }))).toBe(
+      5,
+    );
+  });
+
+  test("wait for a party member of a type", () => {
+    // Ghosts can first be caught before Koga, the fifth battle.
+    const ghost = game.types.indexOf("ghost");
+    expect(raichuJoins(withRequirement("raichu", { partyType: ghost }))).toBe(
+      4,
+    );
   });
 });

@@ -5,6 +5,7 @@ import type { GameFile } from "../data/schema.ts";
 import type {
   Battle,
   Evolution,
+  EvolutionRequirements,
   GameData,
   Move,
   Opponent,
@@ -82,6 +83,15 @@ function englishNames(table: Table, idKey: string): Map<string, string> {
       .filter((row) => row.local_language_id === ENGLISH)
       .map((row) => [row[idKey], row.name]),
   );
+}
+
+/** Until generation IV, a move's type decides whether it is physical. */
+export function isPhysical(
+  generation: number,
+  type: Record<string, string>,
+  move: Record<string, string>,
+): boolean {
+  return (generation <= 3 ? type : move).damage_class_id === "2";
 }
 
 /**
@@ -193,11 +203,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       );
       return undefined;
     }
-    // Until generation IV, a move's type decides whether it is physical.
-    const physical =
-      generation <= 3
-        ? typeRows[type].damage_class_id === "2"
-        : row.damage_class_id === "2";
+    const physical = isPhysical(generation, typeRows[type], row);
     moves[row.identifier] ??= {
       name: moveNames.get(moveId) ?? row.identifier,
       type,
@@ -216,7 +222,8 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   for (const [move, stage] of Object.entries(file.hms)) {
     const moveId = moveIdsByIdentifier.get(move);
     if (!moveId) errors.push(`hms: unknown move ${move}`);
-    else if (damagingMove(moveId, "hms")) hms[move] = stage;
+    else if (damagingMove(moveId, "hms") && typeof stage === "number")
+      hms[move] = stage;
   }
   const hmUsers = groupBy(
     t.pokemon_moves.filter(
@@ -237,15 +244,19 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   );
 
   // Species in the regional Pokédex, plus anything a battle uses.
-  const pokedex = t.pokedexes.find((row) => row.identifier === file.pokedex);
-  if (!pokedex) throw new Error(`unknown pokedex ${file.pokedex}`);
+  // A species' regional number comes from the first Pokédex that lists it.
+  const pokedexNames = [file.pokedex].flat();
+  const regional = new Map<string, number>();
+  for (const name of pokedexNames) {
+    const pokedex = t.pokedexes.find((row) => row.identifier === name);
+    if (!pokedex) throw new Error(`unknown pokedex ${name}`);
+    for (const row of t.pokemon_dex_numbers) {
+      if (row.pokedex_id === pokedex.id && !regional.has(row.species_id))
+        regional.set(row.species_id, Number(row.pokedex_number));
+    }
+  }
   const speciesByIdentifier = indexBy(t.pokemon_species, "identifier");
   const speciesById = indexBy(t.pokemon_species, "id");
-  const regional = new Map(
-    t.pokemon_dex_numbers
-      .filter((row) => row.pokedex_id === pokedex.id)
-      .map((row) => [row.species_id, Number(row.pokedex_number)]),
-  );
   const defaultPokemon = new Map(
     t.pokemon
       .filter((row) => row.is_default === "1")
@@ -364,7 +375,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     if (!row) errors.push(`${context}: unknown species ${identifier}`);
     else if (!regional.has(row.id))
       errors.push(
-        `${context}: ${identifier} is not in the ${file.pokedex} Pokédex`,
+        `${context}: ${identifier} is not in the ${pokedexNames.join(" or ")} Pokédex`,
       );
     else return identifier;
     return undefined;
@@ -380,6 +391,9 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     if (!row) errors.push(`items: unknown item ${item}`);
     else items[item] = itemNames.get(row.id) ?? item;
   }
+
+  const locationsById = indexBy(t.locations, "id");
+  const locationNames = englishNames(t.location_names, "location_id");
 
   // Evolutions between regional species, using methods that existed by this game.
   const triggers = new Map(
@@ -398,29 +412,43 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   );
   const evolutions: Evolution[] = [];
   const shed: { from: string; to: string }[] = [];
-  // Conditions on top of the trigger that the engine does not model.
-  const unmodeled = [
-    "gender_id",
-    "location_id",
-    "held_item_id",
-    "time_of_day",
-    "known_move_id",
-    "known_move_type_id",
-    "minimum_affection",
-    "relative_physical_stats",
-    "party_species_id",
-    "party_type_id",
-    "trade_species_id",
-    "needs_overworld_rain",
-    "turn_upside_down",
-  ];
-  const flags = new Set(["needs_overworld_rain", "turn_upside_down"]);
-  const itemStage = (item: string, context: string) => {
-    const stage = file.items[item];
-    if (stage === undefined)
-      errors.push(`${context} needs ${item}, which items does not list`);
-    return stage;
+  const genders: Record<string, string> = { "1": "female", "2": "male" };
+  const stats: Record<string, string> = {
+    "-1": "Attack below Defense",
+    "0": "Attack equal to Defense",
+    "1": "Attack above Defense",
   };
+  const itemName = (item: string) => items[item] ?? item;
+  /** The stage of something an evolution needs; "postgame" leaves it out. */
+  const needStage = (
+    stage: number | string | undefined,
+    context: string,
+    what: string,
+  ): number | "postgame" | undefined => {
+    if (typeof stage === "number") return stage;
+    if (stage === "postgame" || stage === "excluded") return "postgame";
+    errors.push(`${context} needs ${what}, which has no story stage`);
+    return undefined;
+  };
+  const itemStage = (itemId: string, context: string) => {
+    const item = itemsById.get(itemId)!.identifier;
+    if (!(item in items)) items[item] = itemNames.get(itemId) ?? item;
+    return needStage(file.items[item], context, `items.${item}`);
+  };
+  /** The lowest level at which `species` or an earlier form learns a move matching `wanted`. */
+  const learnLevel = (species: string, wanted: (moveId: string) => boolean) => {
+    let level: number | undefined;
+    for (let s: string | undefined = species; s;) {
+      const row: Record<string, string> = speciesByIdentifier.get(s)!;
+      for (const move of learnsets.get(defaultPokemon.get(row.id)!) ?? []) {
+        if (wanted(move.move_id))
+          level = Math.min(level ?? Infinity, Number(move.level));
+      }
+      s = speciesById.get(row.evolves_from_species_id)?.identifier;
+    }
+    return level;
+  };
+
   for (const [evolvedId, rows] of evolutionRows) {
     const to = speciesById.get(evolvedId)!.identifier;
     const from = speciesById.get(
@@ -435,73 +463,158 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     }
     const row = rows[0];
     const trigger = triggers.get(row.evolution_trigger_id);
-    const extra = unmodeled.filter(
-      (key) =>
-        (flags.has(key) ? row[key] === "1" : row[key] !== "") &&
-        !(trigger === "trade" && key === "held_item_id"),
-    );
-    if (extra.length > 0) {
-      errors.push(`${context}: unsupported condition ${extra.join(", ")}`);
-      continue;
-    }
-    if (trigger === "level-up" && row.minimum_happiness) {
-      evolutions.push({ from, to, method: { kind: "friendship" } });
-    } else if (trigger === "level-up" && row.minimum_beauty) {
-      const stage = file.conditions.beauty;
-      if (stage === undefined)
-        errors.push(`${context} needs beauty, which conditions does not list`);
-      else evolutions.push({ from, to, method: { kind: "beauty", stage } });
-    } else if (trigger === "level-up" && row.minimum_level) {
-      evolutions.push({
-        from,
-        to,
-        method: { kind: "level", level: Number(row.minimum_level) },
-      });
-    } else if (trigger === "use-item") {
-      const item = itemsById.get(row.trigger_item_id)!.identifier;
-      const stage = itemStage(item, context);
-      if (stage !== undefined)
-        evolutions.push({ from, to, method: { kind: "item", item, stage } });
-    } else if (trigger === "trade") {
-      const item = row.held_item_id
-        ? itemsById.get(row.held_item_id)!.identifier
-        : undefined;
-      const stage = item ? itemStage(item, context) : 0;
-      if (stage !== undefined)
-        evolutions.push({
-          from,
-          to,
-          method: { kind: "trade", ...(item ? { item } : {}), stage },
-        });
-    } else if (trigger === "shed") {
+    if (trigger === "shed") {
       // Shedinja appears when Nincada evolves by level with a free party slot.
       shed.push({ from, to });
-    } else {
-      errors.push(`${context}: unsupported evolution method ${trigger}`);
+      continue;
     }
+    if (
+      trigger !== "level-up" &&
+      trigger !== "use-item" &&
+      trigger !== "trade"
+    ) {
+      errors.push(`${context}: unsupported evolution method ${trigger}`);
+      continue;
+    }
+
+    const requires: EvolutionRequirements = {};
+    const label: string[] = [];
+    let afterStory = false;
+    const atStage = (stage: number | "postgame" | undefined) => {
+      if (stage === "postgame") afterStory = true;
+      else if (stage !== undefined)
+        requires.stage = Math.max(requires.stage ?? 0, stage);
+    };
+    if (row.minimum_level) {
+      requires.level = Number(row.minimum_level);
+      label.push(`Lv ${row.minimum_level}`);
+    }
+    if (trigger === "use-item") {
+      atStage(itemStage(row.trigger_item_id, context));
+      label.push(itemName(itemsById.get(row.trigger_item_id)!.identifier));
+    }
+    if (trigger === "trade") {
+      requires.trade = true;
+      label.push("trade");
+    }
+    if (row.held_item_id) {
+      atStage(itemStage(row.held_item_id, context));
+      label.push(
+        `holding ${itemName(itemsById.get(row.held_item_id)!.identifier)}`,
+      );
+    }
+    if (row.trade_species_id) {
+      const partner = speciesById.get(row.trade_species_id)!.identifier;
+      requires.species = partner;
+      label.push(`for ${speciesNames.get(row.trade_species_id) ?? partner}`);
+    }
+    if (row.known_move_id) {
+      const move = moveRowsById.get(row.known_move_id)!.identifier;
+      const level = learnLevel(from, (id) => id === row.known_move_id);
+      if (level !== undefined)
+        requires.level = Math.max(requires.level ?? 0, level);
+      else atStage(needStage(file.moves[move], context, `moves.${move}`));
+      label.push(`knowing ${moveNames.get(row.known_move_id) ?? move}`);
+    }
+    if (row.known_move_type_id) {
+      const typeName = t.types.find(
+        (ty) => ty.id === row.known_move_type_id,
+      )!.identifier;
+      const level = learnLevel(
+        from,
+        (id) => moveRowsById.get(id)!.type_id === row.known_move_type_id,
+      );
+      if (level === undefined)
+        errors.push(
+          `${context} needs a ${typeName} move, which it does not learn by level`,
+        );
+      else requires.level = Math.max(requires.level ?? 0, level);
+      label.push(`knowing a ${typeName} move`);
+    }
+    if (row.minimum_happiness || row.minimum_affection) {
+      requires.friendship = true;
+      label.push(row.minimum_happiness ? "friendship" : "affection");
+    }
+    if (row.minimum_beauty) {
+      atStage(needStage(file.conditions.beauty, context, "conditions.beauty"));
+      label.push("beauty");
+    }
+    if (row.location_id) {
+      const place = locationsById.get(row.location_id)!;
+      atStage(
+        needStage(
+          file.locations[place.identifier],
+          context,
+          `locations.${place.identifier}`,
+        ),
+      );
+      label.push(
+        `at ${locationNames.get(row.location_id) ?? place.identifier}`,
+      );
+    }
+    if (row.party_species_id) {
+      requires.species = speciesById.get(row.party_species_id)!.identifier;
+      label.push(
+        `with ${speciesNames.get(row.party_species_id) ?? requires.species} in the party`,
+      );
+    }
+    if (row.party_type_id) {
+      const type = typeIndex.get(row.party_type_id);
+      if (type === undefined)
+        errors.push(`${context}: party type ${row.party_type_id} is missing`);
+      else requires.partyType = type;
+      label.push(`with a ${types[type ?? 0]} Pokémon in the party`);
+    }
+    if (row.relative_physical_stats) {
+      // Which one depends on the Pokémon's stats, so it is hard to plan for.
+      requires.random = true;
+      label.push(stats[row.relative_physical_stats]);
+    }
+    // Conditions the player can always meet: the time of day, the Pokémon's
+    // gender, rain and holding the system upside down.
+    if (row.time_of_day)
+      label.push(
+        row.time_of_day === "night"
+          ? "at night"
+          : `during the ${row.time_of_day}`,
+      );
+    if (row.gender_id) label.push(`(${genders[row.gender_id]})`);
+    if (row.needs_overworld_rain === "1") label.push("in the rain");
+    if (row.turn_upside_down === "1") label.push("upside down");
+
+    if (trigger === "level-up" && label.length === 0) {
+      errors.push(`${context}: level-up evolution without a condition`);
+      continue;
+    }
+    if (!afterStory)
+      evolutions.push({ from, to, label: label.join(", "), requires });
   }
-  // A Pokémon with several evolutions at the same level, and nothing else to
-  // tell them apart, evolves into one of them at random (Wurmple).
-  const byLevel = new Map<string, Evolution[]>();
-  for (const e of evolutions) {
-    if (e.method.kind !== "level") continue;
-    const key = `${e.from}@${e.method.level}`;
-    byLevel.set(key, [...(byLevel.get(key) ?? []), e]);
-  }
-  for (const group of byLevel.values()) {
-    if (group.length > 1) {
-      for (const e of group) {
-        if (e.method.kind === "level") e.method = { ...e.method, random: true };
-      }
+
+  // A Pokémon with several evolutions that read the same evolves into one of
+  // them at random (Wurmple).
+  const alike = groupBy(
+    evolutions.map((e, i) => ({ key: `${e.from}:${e.label}`, i: String(i) })),
+    "key",
+  );
+  for (const group of alike.values()) {
+    if (group.length < 2) continue;
+    for (const { i } of group) {
+      const e = evolutions[Number(i)];
+      e.requires = { ...e.requires, random: true };
+      e.label += ", at random";
     }
   }
   for (const { from, to } of shed) {
-    const sibling = evolutions.find(
-      (e) => e.from === from && e.method.kind === "level",
-    );
+    const sibling = evolutions.find((e) => e.from === from && e.requires.level);
     if (!sibling)
       errors.push(`${from} -> ${to}: no level evolution to shed alongside`);
-    else evolutions.push({ from, to, method: sibling.method });
+    else
+      evolutions.push({
+        from,
+        to,
+        label: `${sibling.label}, alongside ${species[sibling.to].name}`,
+        requires: sibling.requires,
+      });
   }
 
   // Battles.
@@ -555,15 +668,37 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       id: battle.id,
       name: battle.name,
       title: battle.title,
-      rematch: battle.rematch,
+      postgame: battle.postgame,
       aceLevel,
       parties,
     };
   });
 
-  const firstRematch = battles.findIndex((b) => b.rematch);
-  if (firstRematch >= 0 && battles.slice(firstRematch).some((b) => !b.rematch))
-    errors.push("battles: rematches must come after every story battle");
+  const firstPostgame = battles.findIndex((b) => b.postgame);
+  if (
+    firstPostgame >= 0 &&
+    battles.slice(firstPostgame).some((b) => !b.postgame)
+  )
+    errors.push(
+      "battles: post-game battles must come after every story battle",
+    );
+
+  // A stage names the number of battles beaten, so it must leave one to fight.
+  const checkStage = (where: string, stage: number | string | undefined) => {
+    if (typeof stage === "number" && stage >= battles.length)
+      errors.push(`${where}: stage ${stage} is after the last battle`);
+  };
+  for (const [key, stage] of Object.entries(file.locations))
+    checkStage(`locations.${key}`, stage);
+  for (const [key, stage] of Object.entries(file.methods))
+    checkStage(`methods.${key}`, stage);
+  for (const [key, stage] of Object.entries(file.items))
+    checkStage(`items.${key}`, stage);
+  for (const [key, stage] of Object.entries(file.hms))
+    checkStage(`hms.${key}`, stage);
+  for (const [key, trade] of Object.entries(file.trades))
+    checkStage(`trades.${key}`, trade.stage);
+  checkStage("conditions.beauty", file.conditions.beauty);
 
   // Every location key must exist in PokeAPI.
   const locationsByIdentifier = indexBy(t.locations, "identifier");
@@ -598,11 +733,24 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     "encounter_method_id",
   );
   const areas = indexBy(t.location_areas, "id");
-  const locationsById = indexBy(t.locations, "id");
-  const locationNames = englishNames(t.location_names, "location_id");
   const areaNames = englishNames(t.location_area_prose, "location_area_id");
   const unmapped = new Set<string>();
   const usedTrades = new Set<string>();
+  const conditionValues = new Map(
+    t.encounter_condition_values.map((row) => [row.id, row.identifier]),
+  );
+  const conditionsByEncounter = groupBy(
+    t.encounter_condition_value_map,
+    "encounter_id",
+  );
+  // Condition keys may use * to stand for any text, as in coins-*.
+  const conditionRules = Object.entries(file.encounterConditions).map(
+    ([pattern, placement]) => ({
+      matches: new RegExp(`^${pattern.replaceAll("*", ".*")}$`),
+      placement,
+    }),
+  );
+  const unmappedConditions = new Set<string>();
   const sources: Record<string, Record<string, Source[]>> = {};
   for (const version of t.versions.filter(
     (v) => v.version_group_id === versionGroup.id,
@@ -637,27 +785,37 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       let stage = Math.max(placement, file.methods[method.identifier] ?? 0);
       let gives: string | undefined;
       let place: string | undefined;
+      const conditions = (conditionsByEncounter.get(encounter.id) ?? []).map(
+        (row) => conditionValues.get(row.encounter_condition_value_id)!,
+      );
       if (method.identifier === "npc-trade") {
-        const trade = file.trades[speciesIdentifier];
-        if (!trade) {
+        // The trade's condition names the species the trader wants.
+        const wanted = conditions.filter((c) => c.startsWith("trade-"));
+        if (wanted.length !== 1) {
           errors.push(
-            `trades: ${speciesIdentifier} is traded in ${version.identifier} but not listed`,
+            `${speciesIdentifier} is traded at ${location.identifier} without exactly one trade condition`,
           );
           continue;
         }
-        usedTrades.add(speciesIdentifier);
-        gives =
-          typeof trade.gives === "string"
-            ? trade.gives
-            : trade.gives[version.identifier];
-        if (!gives)
-          errors.push(
-            `trades: ${speciesIdentifier} gives nothing in ${version.identifier}`,
-          );
-        else regionalSpecies(gives, `trades.${speciesIdentifier}`);
-        stage = Math.max(stage, trade.stage ?? 0);
-        place = trade.place;
+        const species = wanted[0].slice("trade-".length);
+        if (species !== "any-pokemon")
+          gives = regionalSpecies(species, `trade for ${speciesIdentifier}`);
+        const trade = file.trades[speciesIdentifier];
+        if (trade) {
+          usedTrades.add(speciesIdentifier);
+          stage = Math.max(stage, trade.stage ?? 0);
+          place = trade.place;
+        }
       }
+      let available = true;
+      for (const condition of conditions) {
+        if (condition.startsWith("trade-")) continue;
+        const rule = conditionRules.find((r) => r.matches.test(condition));
+        if (!rule) unmappedConditions.add(condition);
+        if (!rule || typeof rule.placement !== "number") available = false;
+        else stage = Math.max(stage, rule.placement);
+      }
+      if (!available) continue;
       const locationName =
         locationNames.get(location.id) ?? location.identifier;
       // Floors and sections matter little for wild Pokémon, but a gift, trade or
@@ -711,9 +869,13 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   }
   for (const location of unmapped)
     errors.push(`locations: ${location} has encounters but no stage`);
+  for (const condition of unmappedConditions)
+    errors.push(
+      `encounterConditions: ${condition} applies to an encounter but has no stage`,
+    );
   for (const traded of Object.keys(file.trades)) {
     if (!usedTrades.has(traded))
-      errors.push(`trades: ${traded} is not traded in this game`);
+      errors.push(`trades: ${traded} is not traded during the story`);
   }
 
   const exclusiveGroups = file.exclusiveGroups.map((group) =>

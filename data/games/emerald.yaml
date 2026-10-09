@@ -31,7 +31,6 @@ locations:
   hoenn-route-104: 0
   petalburg-woods: 0
   rustboro-city: 0
-  rustboro-city@gift: 4 # Fossils from Mirage Tower, revived at the Devon Corporation
   # Before Brawly (parts 2–3)
   hoenn-route-116: 1
   rusturf-tunnel: 1
@@ -164,11 +163,10 @@ hms:
   dive: 7 # Mossdeep City, after Tate & Liza
   waterfall: 7 # Sootopolis City, before Juan
 
-# In-game trades: the Pokémon each trader wants.
-trades:
-  seedot: { gives: ralts } # Rustboro City
-  plusle: { gives: volbeat } # Fortree City
-  horsea: { gives: bagon } # Pacifidlog Town
+# PokeAPI's conditions on story encounters, by when they can be met.
+encounterConditions:
+  item-root-fossil: 4 # Mirage Tower, revived at the Devon Corporation
+  item-claw-fossil: 4
 
 battles:
   - id: roxanne
@@ -284,7 +282,7 @@ battles:
   - id: roxanne-rematch
     name: Roxanne
     title: Gym Leader rematch
-    rematch: true
+    postgame: true
     party:
       - { species: golem, level: 32, moves: [protect, rollout, magnitude, explosion] }
       - { species: kabuto, level: 35, moves: [swords-dance, ice-beam, surf, rock-slide] }
@@ -293,7 +291,7 @@ battles:
   - id: brawly-rematch
     name: Brawly
     title: Gym Leader rematch
-    rematch: true
+    postgame: true
     party:
       - { species: machamp, level: 33, moves: [karate-chop, rock-slide, focus-punch, bulk-up] }
       - { species: meditite, level: 33, moves: [psychic, light-screen, reflect, focus-punch] }
@@ -302,7 +300,7 @@ battles:
   - id: wattson-rematch
     name: Wattson
     title: Gym Leader rematch
-    rematch: true
+    postgame: true
     party:
       - { species: mareep, level: 36, moves: [thunder, protect, thunder-wave, light-screen] }
       - { species: electrode, level: 36, moves: [rollout, thunder, explosion, rain-dance] }
@@ -311,7 +309,7 @@ battles:
   - id: flannery-rematch
     name: Flannery
     title: Gym Leader rematch
-    rematch: true
+    postgame: true
     party:
       - { species: magcargo, level: 38, moves: [overheat, attract, light-screen, rock-slide] }
       - { species: ponyta, level: 36, moves: [flamethrower, attract, solar-beam, bounce] }
@@ -320,7 +318,7 @@ battles:
   - id: norman-rematch
     name: Norman
     title: Gym Leader rematch
-    rematch: true
+    postgame: true
     party:
       - { species: chansey, level: 42, moves: [light-screen, sing, skill-swap, focus-punch] }
       - { species: slaking, level: 42, moves: [blizzard, shadow-ball, double-edge, fire-blast] }
@@ -329,7 +327,7 @@ battles:
   - id: winona-rematch
     name: Winona
     title: Gym Leader rematch
-    rematch: true
+    postgame: true
     party:
       - { species: dratini, level: 40, moves: [thunder-wave, thunderbolt, protect, ice-beam] }
       - { species: tropius, level: 38, moves: [sunny-day, aerial-ace, solar-beam, earthquake] }
@@ -339,7 +337,7 @@ battles:
   - id: tate-and-liza-rematch
     name: Tate & Liza
     title: Gym Leader rematch
-    rematch: true
+    postgame: true
     party:
       - { species: slowpoke, level: 48, moves: [yawn, psychic, calm-mind, protect] }
       - { species: claydol, level: 49, moves: [earthquake, ancient-power, psychic, light-screen] }
@@ -349,7 +347,7 @@ battles:
   - id: juan-rematch
     name: Juan
     title: Gym Leader rematch
-    rematch: true
+    postgame: true
     party:
       - { species: poliwag, level: 46, moves: [hypnosis, rain-dance, protect, hydro-pump] }
       - { species: whiscash, level: 46, moves: [rain-dance, water-pulse, double-team, fissure] }

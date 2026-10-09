@@ -14,8 +14,20 @@
       "pattern": "^[a-z0-9-]+$"
     },
     "pokedex": {
-      "type": "string",
-      "pattern": "^[a-z0-9-]+$"
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          }
+        }
+      ]
     },
     "sprites": {
       "type": "string",
@@ -88,25 +100,6 @@
       "additionalProperties": {
         "type": "object",
         "properties": {
-          "gives": {
-            "anyOf": [
-              {
-                "type": "string",
-                "pattern": "^[a-z0-9-]+$"
-              },
-              {
-                "type": "object",
-                "propertyNames": {
-                  "type": "string",
-                  "pattern": "^[a-z0-9-]+$"
-                },
-                "additionalProperties": {
-                  "type": "string",
-                  "pattern": "^[a-z0-9-]+$"
-                }
-              }
-            ]
-          },
           "stage": {
             "type": "integer",
             "minimum": 0,
@@ -116,10 +109,32 @@
             "type": "string"
           }
         },
-        "required": [
-          "gives"
-        ],
         "additionalProperties": false
+      }
+    },
+    "encounterConditions": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9*-]+$"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          {
+            "type": "string",
+            "const": "postgame"
+          },
+          {
+            "type": "string",
+            "const": "excluded"
+          }
+        ]
       }
     },
     "items": {
@@ -130,9 +145,17 @@
         "pattern": "^[a-z0-9-]+$"
       },
       "additionalProperties": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          {
+            "type": "string",
+            "const": "postgame"
+          }
+        ]
       }
     },
     "hms": {
@@ -143,9 +166,38 @@
         "pattern": "^[a-z0-9-]+$"
       },
       "additionalProperties": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          {
+            "type": "string",
+            "const": "postgame"
+          }
+        ]
+      }
+    },
+    "moves": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          {
+            "type": "string",
+            "const": "postgame"
+          }
+        ]
       }
     },
     "conditions": {
@@ -153,9 +205,17 @@
       "type": "object",
       "properties": {
         "beauty": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 9007199254740991
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "string",
+              "const": "postgame"
+            }
+          ]
         }
       },
       "additionalProperties": false
@@ -176,7 +236,7 @@
           "title": {
             "type": "string"
           },
-          "rematch": {
+          "postgame": {
             "default": false,
             "type": "boolean"
           },

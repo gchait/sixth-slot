@@ -10,8 +10,8 @@ export interface Options {
   uniqueTypes: boolean;
   allowLegendaries: boolean;
   allowTradeEvolutions: boolean;
-  /** Also score the post-game rematches. */
-  includeRematches: boolean;
+  /** Also score the battles after the Champion. */
+  includePostgame: boolean;
   /** Candidate ids every team must include. */
   pinned: string[];
   /** Candidate ids no team may include. */
@@ -22,7 +22,7 @@ export const defaultOptions = {
   uniqueTypes: true,
   allowLegendaries: false,
   allowTradeEvolutions: false,
-  includeRematches: false,
+  includePostgame: false,
   pinned: [],
   banned: [],
 } satisfies Partial<Options>;
@@ -46,31 +46,6 @@ export interface Candidate {
    * includes waiting for the species it asks for.
    */
   sources: (Source & { species: string })[];
-}
-
-/**
- * Whether a Pokémon held since battle `heldSince` can evolve by `battle`.
- * Friendship takes time to build, so it counts from the battle after.
- */
-function canEvolve(
-  evolution: Evolution,
-  battle: number,
-  heldSince: number,
-  game: GameData,
-  options: Options,
-): boolean {
-  const { method } = evolution;
-  switch (method.kind) {
-    case "level":
-      return method.level <= game.battles[battle].aceLevel;
-    case "item":
-    case "beauty":
-      return method.stage <= battle;
-    case "trade":
-      return options.allowTradeEvolutions && method.stage <= battle;
-    case "friendship":
-      return heldSince < battle;
-  }
 }
 
 export function buildCandidates(game: GameData, options: Options): Candidate[] {
@@ -105,6 +80,28 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
       source.gives ? (heldFrom.get(source.gives) ?? Infinity) : 0,
     );
 
+  const heldBy = (species: string | undefined, battle: number) =>
+    species !== undefined && (heldFrom.get(species) ?? Infinity) <= battle;
+
+  /**
+   * Whether a Pokémon held since battle `heldSince` can evolve by `battle`.
+   * Friendship takes time to build, so it counts from the battle after.
+   */
+  function canEvolve(evolution: Evolution, battle: number, heldSince: number) {
+    const r = evolution.requires;
+    return (
+      (r.level === undefined || r.level <= game.battles[battle].aceLevel) &&
+      (r.stage === undefined || r.stage <= battle) &&
+      (!r.trade || options.allowTradeEvolutions) &&
+      (!r.friendship || heldSince < battle) &&
+      (r.species === undefined || heldBy(r.species, battle)) &&
+      (r.partyType === undefined ||
+        Object.values(game.species).some(
+          (s) => s.types.includes(r.partyType!) && heldBy(s.id, battle),
+        ))
+    );
+  }
+
   function formsOf(line: string[], steps: Evolution[]): number[] {
     const heldSince = line.map(() => Infinity);
     return game.battles.map((_, battle) => {
@@ -116,7 +113,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
         const evolved =
           i > 0 &&
           form === i - 1 &&
-          canEvolve(steps[i - 1], battle, heldSince[i - 1], game, options);
+          canEvolve(steps[i - 1], battle, heldSince[i - 1]);
         if (obtainable || evolved) form = i;
         if (form === i) heldSince[i] = Math.min(heldSince[i], battle);
       });
@@ -153,6 +150,8 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
     const forms = formsOf(line, steps);
     const last = line.length - 1;
     if (!forms.includes(last)) continue;
+    const joins = forms.findIndex((f) => f >= 0);
+    if (game.battles[joins].postgame && !options.includePostgame) continue;
 
     // A line that can still evolve is covered by the candidate for its evolution.
     const evolvesFurther = (evolvesInto.get(species) ?? []).some((e) => {
@@ -166,7 +165,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
       line,
       family,
       forms,
-      joins: forms.findIndex((f) => f >= 0),
+      joins,
       sources: line
         .flatMap((s) =>
           (sources[s] ?? [])

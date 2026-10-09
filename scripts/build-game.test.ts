@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from "vitest";
 
 import type { GameData } from "../engine/data.ts";
-import { buildGame } from "./build-game.ts";
+import { buildGame, isPhysical } from "./build-game.ts";
 import { loadGame, readGameFile } from "./games.ts";
 import { loadTables, type Tables } from "./pokeapi.ts";
 
@@ -69,7 +69,7 @@ describe("FireRed & LeafGreen", () => {
     expect(stages("firered", "mewtwo")).toHaveLength(0);
   });
 
-  test("records what in-game trades cost", () => {
+  test("reads what in-game trades cost from PokeAPI", () => {
     expect(game.sources.firered["mr-mime"]).toEqual([
       expect.objectContaining({ stage: 3, gives: "abra" }),
     ]);
@@ -78,20 +78,32 @@ describe("FireRed & LeafGreen", () => {
   });
 
   test("evolves by level, stone and trade", () => {
-    const method = (to: string) =>
-      game.evolutions.find((e) => e.to === to)?.method;
-    expect(method("charmeleon")).toEqual({ kind: "level", level: 16 });
-    expect(method("raichu")).toEqual({
-      kind: "item",
-      item: "thunder-stone",
-      stage: 3,
+    const evolution = (to: string) => game.evolutions.find((e) => e.to === to);
+    expect(evolution("charmeleon")).toMatchObject({
+      label: "Lv 16",
+      requires: { level: 16 },
     });
-    expect(method("alakazam")).toEqual({ kind: "trade", stage: 0 });
-    expect(method("crobat")).toBeUndefined();
+    expect(evolution("raichu")).toMatchObject({
+      label: "Thunder Stone",
+      requires: { stage: 3 },
+    });
+    expect(evolution("alakazam")).toMatchObject({
+      label: "trade",
+      requires: { trade: true },
+    });
+    expect(evolution("crobat")).toBeUndefined();
+  });
+
+  test("does not mistake evolutions by different items for random ones", () => {
+    for (const to of ["vaporeon", "jolteon", "flareon"]) {
+      expect(
+        game.evolutions.find((e) => e.to === to)!.requires.random,
+      ).toBeUndefined();
+    }
   });
 
   test("gives each battle its party, by starter where the rival's changes", () => {
-    expect(game.battles.filter((b) => !b.rematch).map((b) => b.id)).toEqual([
+    expect(game.battles.filter((b) => !b.postgame).map((b) => b.id)).toEqual([
       "brock",
       "misty",
       "lt-surge",
@@ -134,19 +146,23 @@ describe("game file checks", () => {
     );
   });
 
-  test("rejects an in-game trade that is not listed", () => {
+  test("rejects an encounter condition without a stage", () => {
     const file = readGameFile("firered-leafgreen");
-    delete file.trades.jynx;
+    delete file.encounterConditions["coins-*"];
     expect(() => buildGame(file, tables)).toThrow(
-      "jynx is traded in firered but not listed",
+      "coins-180 applies to an encounter but has no stage",
     );
   });
 
-  test("rejects a story battle after a rematch", () => {
+  test("rejects a story battle after a post-game battle", () => {
     const file = readGameFile("firered-leafgreen");
-    file.battles.push({ ...file.battles[0], id: "late-brock", rematch: false });
+    file.battles.push({
+      ...file.battles[0],
+      id: "late-brock",
+      postgame: false,
+    });
     expect(() => buildGame(file, tables)).toThrow(
-      "rematches must come after every story battle",
+      "post-game battles must come after every story battle",
     );
   });
 
@@ -154,7 +170,7 @@ describe("game file checks", () => {
     const file = readGameFile("firered-leafgreen");
     delete file.items["moon-stone"];
     expect(() => buildGame(file, tables)).toThrow(
-      "needs moon-stone, which items does not list",
+      "needs items.moon-stone, which has no story stage",
     );
   });
 });
@@ -166,32 +182,37 @@ describe("Emerald", () => {
   });
   const firstStage = (species: string) =>
     Math.min(...(emerald.sources.emerald[species] ?? []).map((s) => s.stage));
-  const method = (to: string) =>
-    emerald.evolutions.find((e) => e.to === to)?.method;
+  const evolution = (to: string) => emerald.evolutions.find((e) => e.to === to);
 
   test("evolves by friendship, beauty, shedding and trading with an item", () => {
-    expect(method("crobat")).toEqual({ kind: "friendship" });
-    expect(method("milotic")).toEqual({ kind: "beauty", stage: 6 });
-    expect(method("shedinja")).toEqual({ kind: "level", level: 20 });
-    expect(method("huntail")).toEqual({
-      kind: "trade",
-      item: "deep-sea-tooth",
-      stage: 7,
+    expect(evolution("crobat")).toEqual({
+      from: "golbat",
+      to: "crobat",
+      label: "friendship",
+      requires: { friendship: true },
+    });
+    expect(evolution("milotic")).toMatchObject({
+      label: "beauty",
+      requires: { stage: 6 },
+    });
+    expect(evolution("shedinja")).toMatchObject({
+      label: "Lv 20, alongside Ninjask",
+      requires: { level: 20 },
+    });
+    expect(evolution("huntail")).toMatchObject({
+      label: "trade, holding Deep Sea Tooth",
+      requires: { trade: true, stage: 7 },
     });
   });
 
   test("marks evolutions that happen at random", () => {
-    expect(method("silcoon")).toEqual({
-      kind: "level",
-      level: 7,
-      random: true,
-    });
-    expect(method("cascoon")).toEqual({
-      kind: "level",
-      level: 7,
-      random: true,
-    });
-    expect(method("ninjask")).toEqual({ kind: "level", level: 20 });
+    for (const to of ["silcoon", "cascoon"]) {
+      expect(evolution(to)).toMatchObject({
+        label: "Lv 7, at random",
+        requires: { level: 7, random: true },
+      });
+    }
+    expect(evolution("ninjask")!.requires.random).toBeUndefined();
   });
 
   test("narrows a location's stage to one encounter method", () => {
@@ -214,5 +235,39 @@ describe("Emerald", () => {
     expect(emerald.species.slaking.abilities).toEqual(["truant"]);
     expect(game.species.gengar.abilities).toEqual(["levitate"]);
     expect(game.species.koffing.abilities).toEqual(["levitate"]);
+  });
+});
+
+describe("game files with several Pokédexes", () => {
+  test("cover every listed Pokédex, numbering species by the first", () => {
+    const file = readGameFile("firered-leafgreen");
+    file.pokedex = ["kanto", "original-johto"];
+    for (const item of [
+      "sun-stone",
+      "kings-rock",
+      "metal-coat",
+      "dragon-scale",
+      "up-grade",
+    ])
+      file.items[item] = "postgame";
+    const game = buildGame(file, tables);
+    expect(Object.keys(game.species).length).toBeGreaterThan(151);
+    expect(game.species.pikachu.dex).toBe(25);
+    expect(game.evolutions.find((e) => e.to === "steelix")).toBeUndefined();
+    expect(game.evolutions.find((e) => e.to === "crobat")).toMatchObject({
+      label: "friendship",
+      requires: { friendship: true },
+    });
+  });
+});
+
+describe("isPhysical", () => {
+  test("follows the type until generation IV and the move after", () => {
+    const shadowBall = tables.moves.find(
+      (m) => m.identifier === "shadow-ball",
+    )!;
+    const ghost = tables.types.find((t) => t.identifier === "ghost")!;
+    expect(isPhysical(3, ghost, shadowBall)).toBe(true);
+    expect(isPhysical(4, ghost, shadowBall)).toBe(false);
   });
 });

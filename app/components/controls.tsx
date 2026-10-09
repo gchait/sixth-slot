@@ -149,13 +149,13 @@ export function Controls({
           checked={options.allowTradeEvolutions}
           onChange={(allowTradeEvolutions) => set({ allowTradeEvolutions })}
         />
-        {game.battles.some((b) => b.rematch) && (
+        {game.battles.some((b) => b.postgame) && (
           <Setting
-            id="rematches"
-            label="Rematches"
-            hint="Also score the post-game rematches, with the same Pokémon."
-            checked={options.includeRematches}
-            onChange={(includeRematches) => set({ includeRematches })}
+            id="postgame"
+            label="Post-game battles"
+            hint="Also score rematches and battles after the Champion."
+            checked={options.includePostgame}
+            onChange={(includePostgame) => set({ includePostgame })}
           />
         )}
       </div>

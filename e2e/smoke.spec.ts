@@ -67,13 +67,13 @@ test("lists planned games as coming soon, without a link", async ({ page }) => {
   await expect(page.getByText("Coming soon").first()).toBeVisible();
 });
 
-test("scores rematches when asked to", async ({ page }) => {
+test("scores post-game battles when asked to", async ({ page }) => {
   await page.goto("./firered-leafgreen/");
   await expect(
     page.getByRole("heading", { name: "Lorelei", level: 3 }),
   ).toHaveCount(1);
-  await page.getByRole("switch", { name: "Rematches" }).click();
-  await expect(page).toHaveURL(/rematches=1/);
+  await page.getByRole("switch", { name: "Post-game battles" }).click();
+  await expect(page).toHaveURL(/postgame=1/);
   await expect(
     page.getByRole("heading", { name: "Lorelei", level: 3 }),
   ).toHaveCount(2);

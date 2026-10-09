@@ -30,6 +30,8 @@ export async function loadTable(name: string): Promise<Table> {
 
 export const tableNames = [
   "abilities",
+  "encounter_condition_value_map",
+  "encounter_condition_values",
   "encounter_method_prose",
   "encounter_methods",
   "encounter_slots",

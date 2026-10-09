@@ -34,21 +34,30 @@ export interface Move {
   physical: boolean;
 }
 
-export type EvolutionMethod =
-  /** Leveling up; `random` when the Pokémon becomes one of several evolutions by chance. */
-  | { kind: "level"; level: number; random?: boolean }
-  | { kind: "item"; item: string; stage: number }
-  /** A trade with another player, holding `item` if given. */
-  | { kind: "trade"; item?: string; stage: number }
-  /** Leveling up with high friendship. */
-  | { kind: "friendship" }
-  /** Leveling up with high beauty, which takes Pokéblocks. */
-  | { kind: "beauty"; stage: number };
+/** What an evolution needs; all of it must hold. */
+export interface EvolutionRequirements {
+  /** The level to reach, compared with each battle's strongest opponent. */
+  level?: number;
+  /** The stage by which an item, place or other means is available. */
+  stage?: number;
+  /** A trade with another player. */
+  trade?: boolean;
+  /** Friendship or affection, built up over at least one battle. */
+  friendship?: boolean;
+  /** Another species the player must hold, as a party member or trade partner. */
+  species?: string;
+  /** A type some party member must have, as an index into GameData.types. */
+  partyType?: number;
+  /** The Pokémon becomes one of several evolutions, which it cannot choose. */
+  random?: boolean;
+}
 
 export interface Evolution {
   from: string;
   to: string;
-  method: EvolutionMethod;
+  /** How the evolution reads to a player, such as "Lv 16" or "Thunder Stone". */
+  label: string;
+  requires: EvolutionRequirements;
 }
 
 export interface Source {
@@ -72,8 +81,8 @@ export interface Battle {
   id: string;
   name: string;
   title: string;
-  /** A post-game rematch, listed after every story battle. */
-  rematch: boolean;
+  /** A battle after the Champion, such as a rematch, listed after every story battle. */
+  postgame: boolean;
   /** The highest level in any of the battle's parties. */
   aceLevel: number;
   /** Keyed by the player's starter, or "*" when the party never changes. */

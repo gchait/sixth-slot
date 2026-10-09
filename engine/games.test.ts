@@ -7,8 +7,8 @@ import { search } from "./search.ts";
 
 describe.each(gameIds())("%s", (id) => {
   test.each([false, true])(
-    "finds ten teams for every version and starter, each with that starter (rematches: %s)",
-    async (includeRematches) => {
+    "finds ten teams for every version and starter, each with that starter (post-game battles: %s)",
+    async (includePostgame) => {
       const game = await loadGame(id);
       for (const version of game.versions) {
         for (const starter of game.starters) {
@@ -16,7 +16,7 @@ describe.each(gameIds())("%s", (id) => {
             ...defaultOptions,
             version: version.id,
             starter,
-            includeRematches,
+            includePostgame,
           });
           expect(teams, `${version.id} ${starter}`).toHaveLength(10);
           for (const team of teams) {

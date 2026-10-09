@@ -37,7 +37,7 @@ interface Slot {
 /** The battles a team is scored on, by index into GameData.battles. */
 export function scoredBattles(game: GameData, options: Options): number[] {
   return game.battles.flatMap((battle, b) =>
-    !battle.rematch || options.includeRematches ? [b] : [],
+    !battle.postgame || options.includePostgame ? [b] : [],
   );
 }
 

@@ -139,7 +139,7 @@ describe("search", () => {
     }
   });
 
-  test("scores rematches only when asked to", () => {
+  test("scores post-game battles only when asked to", () => {
     const { candidates, teams } = search(game, options());
     const team = teams[0].members.map((id) =>
       candidates.find((c) => c.id === id)!,
@@ -148,7 +148,7 @@ describe("search", () => {
       explain(game, o, team).map((r) => game.battles[r.battle].id);
     const story = scored(options());
     expect(story).not.toContain("champion-rematch");
-    expect(scored(options({ includeRematches: true }))).toEqual([
+    expect(scored(options({ includePostgame: true }))).toEqual([
       ...story,
       "lorelei-rematch",
       "bruno-rematch",

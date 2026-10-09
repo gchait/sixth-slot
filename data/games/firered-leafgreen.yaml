@@ -138,21 +138,17 @@ hms:
   fly: 5 # Route 16
   rock-smash: 7 # Kindle Road
 
-# In-game trades: the Pokémon each trader wants, the stage when the trader is
-# reached later than the location's stage, and where the trader is when
-# PokeAPI's location name is misleading.
+# In-game trades that need more than their location's stage, or a clearer place
+# name. What each trader wants comes from PokeAPI.
 trades:
-  jynx: { gives: poliwhirl } # Cerulean City
-  nidoran-f: { gives: nidoran-m } # Route 5
-  nidoran-m: { gives: nidoran-f }
-  farfetchd: { gives: spearow } # Vermilion City
-  nidorina: { gives: nidorino } # Route 11
-  nidorino: { gives: nidorina }
-  mr-mime: { gives: abra, stage: 3, place: "Route 2 (east side)" } # Behind a Cut tree
-  lickitung: { gives: { firered: golduck, leafgreen: slowbro } } # Route 18
-  electrode: { gives: raichu } # Cinnabar Lab
-  tangela: { gives: venonat }
-  seel: { gives: ponyta }
+  mr-mime: { stage: 3, place: "Route 2 (east side)" } # Behind a Cut tree
+
+# PokeAPI's conditions on story encounters, by when they can be met.
+encounterConditions:
+  item-helix-fossil: 1 # Found in Mt. Moon, revived at Cinnabar Lab
+  item-dome-fossil: 1
+  item-old-amber: 3 # Pewter Museum, with Cut
+  coins-*: 0 # Game Corner prizes, bought with coins
 
 # Evolution items, by where they can first be bought or picked up.
 items:
@@ -286,7 +282,7 @@ battles:
   - id: lorelei-rematch
     name: Lorelei
     title: Elite Four rematch
-    rematch: true
+    postgame: true
     party:
       - { species: dewgong, level: 64, moves: [surf, ice-beam, signal-beam, double-team] }
       - { species: cloyster, level: 63, moves: [rain-dance, surf, ice-beam, supersonic] }
@@ -296,7 +292,7 @@ battles:
   - id: bruno-rematch
     name: Bruno
     title: Elite Four rematch
-    rematch: true
+    postgame: true
     party:
       - { species: steelix, level: 65, moves: [earthquake, rock-tomb, iron-tail, crunch] }
       - { species: hitmonchan, level: 65, moves: [sky-uppercut, mach-punch, rock-slide, counter] }
@@ -306,7 +302,7 @@ battles:
   - id: agatha-rematch
     name: Agatha
     title: Elite Four rematch
-    rematch: true
+    postgame: true
     party:
       - { species: gengar, level: 66, moves: [confuse-ray, shadow-ball, hypnosis, psychic] }
       - { species: crobat, level: 66, moves: [confuse-ray, shadow-ball, air-cutter, sludge-bomb] }
@@ -316,7 +312,7 @@ battles:
   - id: lance-rematch
     name: Lance
     title: Elite Four rematch
-    rematch: true
+    postgame: true
     party:
       - { species: gyarados, level: 68, moves: [dragon-dance, earthquake, thunder-wave, hyper-beam] }
       - { species: dragonite, level: 66, moves: [flamethrower, dragon-claw, earthquake, hyper-beam] }
@@ -326,7 +322,7 @@ battles:
   - id: champion-rematch
     name: Blue
     title: Champion rematch
-    rematch: true
+    postgame: true
     partyByStarter:
       bulbasaur:
         - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
