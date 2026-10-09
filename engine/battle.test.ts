@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, test } from "vitest";
 
 import { loadGame } from "../scripts/games.ts";
 import {
+  bestMove,
   damageFraction,
   effectiveness,
   knownMoves,
@@ -33,6 +34,23 @@ describe("battle math", () => {
     expect(
       effectiveness(game, game.types.indexOf("electric"), game.species.geodude),
     ).toBe(0);
+  });
+
+  test("prefers a sure hit to a stronger move that often misses", () => {
+    const { raichu, pidgeot } = game.species;
+    expect(
+      bestMove(game, ["thunder", "thunderbolt"], raichu, 50, pidgeot, 50).move,
+    ).toBe("thunderbolt");
+  });
+
+  test("deals fixed damage regardless of stats, but not to immune types", () => {
+    const { machamp, rattata, gastly } = game.species;
+    expect(
+      damageFraction(game, "seismic-toss", machamp, 30, rattata, 30),
+    ).toBeCloseTo(30 / stat(rattata, "hp", 30));
+    expect(damageFraction(game, "seismic-toss", machamp, 30, gastly, 30)).toBe(
+      0,
+    );
   });
 
   test("scales damage with effectiveness and same-type bonus", () => {

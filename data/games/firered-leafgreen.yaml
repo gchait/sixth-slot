@@ -137,7 +137,19 @@ encounterConditions:
   item-helix-fossil: 1 # Found in Mt. Moon, revived at Cinnabar Lab
   item-dome-fossil: 1
   item-old-amber: 3 # Pewter Museum, with Cut
-  coins-*: 0 # Game Corner prizes, bought with coins
+  # Game Corner prizes, with coins bought at ₽20 each: from the stage by which
+  # the walkthrough's trainers have paid twice the price, or never if the story
+  # pays less.
+  coins-120: 1
+  coins-180: 1
+  coins-500: 2
+  coins-750: 2
+  coins-2500: 4
+  coins-2800: 4
+  coins-4600: 8
+  coins-5500: 11
+  coins-6500: excluded
+  coins-9999: excluded
 
 items:
   moon-stone: 1 # Mt. Moon

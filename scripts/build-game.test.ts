@@ -52,7 +52,21 @@ describe("FireRed & LeafGreen", () => {
 
   test("discounts moves with drawbacks", () => {
     expect(game.moves.explosion).toBeUndefined();
-    expect(game.moves["hyper-beam"].power).toBe(75);
+    expect(game.moves["hyper-beam"]).toMatchObject({
+      power: 150,
+      factor: 0.45,
+    });
+  });
+
+  test("counts moves by their accuracy and strikes", () => {
+    expect(game.moves.thunder.factor).toBeCloseTo(0.7);
+    expect(game.moves["double-kick"].factor).toBe(2);
+    expect(game.moves["fury-attack"].factor).toBeCloseTo(3 * 0.85);
+  });
+
+  test("gives fixed-damage moves their damage", () => {
+    expect(game.moves["seismic-toss"]).toMatchObject({ fixed: "level" });
+    expect(game.moves["sonic-boom"]).toMatchObject({ fixed: 20, factor: 0.9 });
   });
 
   test("keeps version exclusives apart", () => {
@@ -152,7 +166,7 @@ describe("game file checks", () => {
 
   test("rejects an encounter condition without a stage", () => {
     const file = readGameFile("firered-leafgreen");
-    delete file.encounterConditions["coins-*"];
+    delete file.encounterConditions["coins-180"];
     expect(() => buildGame(file, tables)).toThrow(
       "coins-180 applies to an encounter but has no stage",
     );

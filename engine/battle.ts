@@ -1,5 +1,6 @@
 // One-on-one matchups using the main-series stat and damage formulas, with
 // average IVs, no EVs, neutral natures and no random factor or critical hits.
+// Moves count by their average damage per turn.
 import type { GameData, Species, StatKey } from "./data.ts";
 
 const IV = 15;
@@ -69,17 +70,22 @@ export function damageFraction(
   defender: Species,
   defenderLevel: number,
 ): number {
-  const { type, power, physical } = game.moves[move];
-  const attack = stat(attacker, physical ? "atk" : "spa", attackerLevel);
-  const defense = stat(defender, physical ? "def" : "spd", defenderLevel);
-  const base =
-    (((2 * attackerLevel) / 5 + 2) * power * attack) / defense / 50 + 2;
-  const stab = attacker.types.includes(type) ? 1.5 : 1;
+  const { type, power, physical, fixed, factor } = game.moves[move];
   const multiplier = effectiveness(game, type, defender);
-  const ability = offenseFactor(attacker, physical);
-  return (
-    (base * stab * multiplier * ability) / stat(defender, "hp", defenderLevel)
-  );
+  let damage: number;
+  if (fixed !== undefined) {
+    // Fixed damage only fails against an immune type.
+    damage = multiplier === 0 ? 0 : fixed === "level" ? attackerLevel : fixed;
+    damage *= offenseFactor(attacker, false);
+  } else {
+    const attack = stat(attacker, physical ? "atk" : "spa", attackerLevel);
+    const defense = stat(defender, physical ? "def" : "spd", defenderLevel);
+    const base =
+      (((2 * attackerLevel) / 5 + 2) * power * attack) / defense / 50 + 2;
+    const stab = attacker.types.includes(type) ? 1.5 : 1;
+    damage = base * stab * multiplier * offenseFactor(attacker, physical);
+  }
+  return (damage * factor) / stat(defender, "hp", defenderLevel);
 }
 
 export function bestMove(

@@ -31,10 +31,17 @@ export interface Move {
   name: string;
   /** Index into GameData.types. */
   type: number;
-  /** Base power, reduced for moves with a drawback that limits their use. */
+  /** Base power of one strike; 0 for a move with fixed damage. */
   power: number;
   /** Whether the move uses Attack and Defense rather than their special counterparts. */
   physical: boolean;
+  /** Damage that ignores stats: the user's level, or a number of HP. */
+  fixed?: "level" | number;
+  /**
+   * The share of one strike's damage the move deals per turn on average: its
+   * chance to hit, times its strikes, times the share of turns it can attack.
+   */
+  factor: number;
 }
 
 /** What an evolution needs; all of it must hold. */

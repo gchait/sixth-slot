@@ -73,6 +73,7 @@ export const tableNames = [
   "location_names",
   "locations",
   "move_changelog",
+  "move_meta",
   "move_names",
   "moves",
   "pokedexes",

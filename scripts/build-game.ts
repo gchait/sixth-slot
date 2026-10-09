@@ -24,12 +24,12 @@ import {
 } from "./pokeapi.ts";
 
 /**
- * How much of a move's power counts toward a typical attack, by move effect:
+ * How much of a move's damage counts toward a typical attack, by move effect:
  * moves that knock out the user or need a sleeping user or target count for
  * nothing, and moves that spend a turn charging, recharging or waiting count
  * for half.
  */
-const powerFactorByEffect: Record<string, number> = {
+const drawbackByEffect: Record<string, number> = {
   "8": 0, // User faints
   "9": 0, // Dream Eater: target must be asleep
   "93": 0, // Snore: user must be asleep
@@ -44,6 +44,29 @@ const powerFactorByEffect: Record<string, number> = {
   "149": 0.5, // Hits two turns later
   "171": 0.5, // Focus Punch: fails if hit first
 };
+
+/** Damage that ignores stats, by move effect: the user's level, or HP. */
+const fixedDamageByEffect: Record<string, "level" | number> = {
+  "88": "level", // Seismic Toss, Night Shade
+  "42": 40, // Dragon Rage
+  "131": 20, // Sonic Boom
+};
+
+/**
+ * Triple Kick's effect: each of three strikes has one more share of the
+ * move's power than the last, and needs every strike before it to hit.
+ */
+const RISING_STRIKES = "105";
+
+/**
+ * The average strikes of a move that hits `min` to `max` times. Moves that hit
+ * 2 to 5 times average 3 strikes until generation V, and 3.1 from then on.
+ */
+function averageStrikes(min: number, max: number, generation: number) {
+  if (min === max) return min;
+  if (min === 2 && max === 5) return generation <= 4 ? 3 : 3.1;
+  return undefined;
+}
 
 const statIdentifiers: Record<string, StatKey> = {
   hp: "hp",
@@ -169,6 +192,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   const moveIdsByIdentifier = new Map(
     t.moves.map((row) => [row.identifier, row.id]),
   );
+  const metaByMove = indexBy(t.move_meta, "move_id");
   const moves: Record<string, Move> = {};
   /** Records the move as it was in this game; undefined if it does no direct damage. */
   function damagingMove(moveId: string, context: string): string | undefined {
@@ -185,10 +209,22 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       );
     const typeId = later.find((c) => c.type_id)?.type_id ?? row.type_id;
     const effectId = later.find((c) => c.effect_id)?.effect_id ?? row.effect_id;
-    const power =
-      Number(later.find((c) => c.power)?.power ?? row.power) *
-      (powerFactorByEffect[effectId] ?? 1);
-    if (!power) return undefined;
+    const power = Number(later.find((c) => c.power)?.power ?? row.power);
+    const fixed = fixedDamageByEffect[effectId];
+    const drawback = drawbackByEffect[effectId] ?? 1;
+    if ((!power && fixed === undefined) || drawback === 0) return undefined;
+    // An empty accuracy means the move never misses.
+    const accuracy =
+      Number(later.find((c) => c.accuracy)?.accuracy ?? row.accuracy) / 100 ||
+      1;
+    const meta = metaByMove.get(moveId);
+    const strikes = meta?.min_hits
+      ? averageStrikes(Number(meta.min_hits), Number(meta.max_hits), generation)
+      : 1;
+    if (strikes === undefined) {
+      errors.push(`${context}: ${row.identifier} has an unknown hit count`);
+      return undefined;
+    }
     const type = typeIndex.get(typeId);
     if (type === undefined) {
       errors.push(
@@ -200,8 +236,14 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     moves[row.identifier] ??= {
       name: moveNames.get(moveId) ?? row.identifier,
       type,
-      power,
+      power: fixed === undefined ? power : 0,
       physical,
+      ...(fixed !== undefined && { fixed }),
+      factor:
+        drawback *
+        (effectId === RISING_STRIKES
+          ? accuracy + 2 * accuracy ** 2 + 3 * accuracy ** 3
+          : strikes * accuracy),
     };
     return row.identifier;
   }

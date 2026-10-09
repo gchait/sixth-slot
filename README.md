@@ -13,7 +13,8 @@ Supported games: **Crystal**, **FireRed & LeafGreen** and **Emerald**.
 - Your starter is always on the team.
 - Only Pokémon your version can get: wild encounters, gifts, static encounters
   and in-game trades, each from the point in the story where it becomes
-  reachable.
+  reachable. Game Corner prizes count once the story's prize money could pay
+  for them twice over, so neither gambling nor grinding is needed.
 - One Pokémon per evolution family, and one from each either-or gift (such as
   Hitmonlee or Hitmonchan).
 - Someone on the team can use the moves needed outside battle all the time,
@@ -24,29 +25,30 @@ Supported games: **Crystal**, **FireRed & LeafGreen** and **Emerald**.
   outside-battle moves are kept on the team. Each can be changed, and any
   Pokémon can be pinned or excluded.
 - Battles after the Champion, such as FireRed's second Elite Four round,
-  Emerald's first Gym Leader rematches or Crystal's Kanto Gym Leaders and Red, can be
-  scored too. They count Pokémon
-  caught on the way to them, but not post-game story areas.
+  Emerald's first Gym Leader rematches or Crystal's Kanto Gym Leaders and Red,
+  can be scored too. They count Pokémon caught on the way to them, but not
+  post-game story areas.
 
 **How a team is scored**
 
 The team faces every Gym Leader, the Elite Four and the Champion, with their
 real teams and moves. For each opponent, the team's best one-on-one matchup
-counts: how many more hits your Pokémon survives than it needs, using the
-game's own stat and damage formulas. A member counts only from the battle by
-which you can have it, in the form and with the moves it would have by then:
-level-up moves and the HMs obtained so far. Abilities count where a species is
-sure to have them and they change damage: immunities such as Levitate, and
-Thick Fat, Huge Power and Truant. Teams where many members share a weakness lose a
-little. The search checks every valid team, skipping only those that provably
-cannot make the top ten.
+counts: how many more hits your Pokémon survives than it needs, using the game's
+own stat and damage formulas, with each move counted by its average damage per
+turn after accuracy, number of strikes and turns spent charging. A member counts
+only from the battle by which you can have it, in the form and with the moves it
+would have by then: level-up moves and the HMs obtained so far. Abilities count
+where a species is sure to have them and they change damage: immunities such as
+Levitate, and Thick Fat, Huge Power and Truant. Teams where many members share a
+weakness lose a little. The search checks every valid team, skipping only those
+that provably cannot make the top ten.
 
 **What it leaves out**
 
-TMs, other abilities, held items, natures, IVs and
-EVs, status moves, random damage and critical hits, and opponents' switching.
-Your level is taken to be that of the strongest opponent faced so far, and
-double battles are treated as one-on-one.
+TMs, other abilities, held items, natures, IVs and EVs, status moves, move
+priority, damage that depends on the target's HP, random damage and critical
+hits, and opponents' switching. Your level is taken to be that of the strongest
+opponent faced so far, and double battles are treated as one-on-one.
 
 ## Development
 
