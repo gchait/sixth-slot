@@ -43,7 +43,7 @@ cannot make the top ten.
 
 **What it leaves out**
 
-TMs (single-use in these games), other abilities, held items, natures, IVs and
+TMs, other abilities, held items, natures, IVs and
 EVs, status moves, random damage and critical hits, and opponents' switching.
 Your level is taken to be that of the strongest opponent faced so far, and
 double battles are treated as one-on-one.
