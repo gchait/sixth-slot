@@ -91,7 +91,7 @@ describe("FireRed & LeafGreen", () => {
   });
 
   test("gives each battle its party, by starter where the rival's changes", () => {
-    expect(game.battles.map((b) => b.id)).toEqual([
+    expect(game.battles.filter((b) => !b.rematch).map((b) => b.id)).toEqual([
       "brock",
       "misty",
       "lt-surge",
@@ -106,7 +106,7 @@ describe("FireRed & LeafGreen", () => {
       "lance",
       "champion",
     ]);
-    const champion = game.battles.at(-1)!;
+    const champion = game.battles.find((b) => b.id === "champion")!;
     expect(Object.keys(champion.parties).sort()).toEqual([
       "bulbasaur",
       "charmander",
@@ -139,6 +139,14 @@ describe("game file checks", () => {
     delete file.trades.jynx;
     expect(() => buildGame(file, tables)).toThrow(
       "jynx is traded in firered but not listed",
+    );
+  });
+
+  test("rejects a story battle after a rematch", () => {
+    const file = readGameFile("firered-leafgreen");
+    file.battles.push({ ...file.battles[0], id: "late-brock", rematch: false });
+    expect(() => buildGame(file, tables)).toThrow(
+      "rematches must come after every story battle",
     );
   });
 

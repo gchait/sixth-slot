@@ -10,6 +10,8 @@ export interface Options {
   uniqueTypes: boolean;
   allowLegendaries: boolean;
   allowTradeEvolutions: boolean;
+  /** Also score the post-game rematches. */
+  includeRematches: boolean;
   /** Candidate ids every team must include. */
   pinned: string[];
   /** Candidate ids no team may include. */
@@ -20,6 +22,7 @@ export const defaultOptions = {
   uniqueTypes: true,
   allowLegendaries: false,
   allowTradeEvolutions: false,
+  includeRematches: false,
   pinned: [],
   banned: [],
 } satisfies Partial<Options>;

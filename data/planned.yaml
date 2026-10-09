@@ -1,0 +1,37 @@
+# Games shown on the home page as coming soon. Remove a game from here when
+# its file in data/games/ lands.
+
+- {
+    versionGroup: crystal,
+    name: Crystal,
+    sprites: generation-ii/crystal,
+    starters: [chikorita, cyndaquil, totodile],
+  }
+- {
+    versionGroup: platinum,
+    name: Platinum,
+    sprites: generation-iv/platinum,
+    starters: [turtwig, chimchar, piplup],
+  }
+- versionGroup: heartgold-soulsilver
+  name: HeartGold & SoulSilver
+  sprites: generation-iv/heartgold-soulsilver
+  starters: [chikorita, cyndaquil, totodile]
+- {
+    versionGroup: black-white,
+    name: Black & White,
+    sprites: generation-v/black-white,
+    starters: [snivy, tepig, oshawott],
+  }
+- {
+    versionGroup: black-2-white-2,
+    name: Black 2 & White 2,
+    sprites: generation-v/black-white,
+    starters: [snivy, tepig, oshawott],
+  }
+- {
+    versionGroup: x-y,
+    name: X & Y,
+    sprites: generation-vi/x-y,
+    starters: [chespin, fennekin, froakie],
+  }

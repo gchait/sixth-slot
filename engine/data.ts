@@ -72,6 +72,8 @@ export interface Battle {
   id: string;
   name: string;
   title: string;
+  /** A post-game rematch, listed after every story battle. */
+  rematch: boolean;
   /** The highest level in any of the battle's parties. */
   aceLevel: number;
   /** Keyed by the player's starter, or "*" when the party never changes. */

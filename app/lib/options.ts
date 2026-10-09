@@ -17,6 +17,7 @@ export function readOptions(params: URLSearchParams, game: GameData): Options {
     uniqueTypes: params.get("unique") !== "0",
     allowLegendaries: params.get("legendaries") === "1",
     allowTradeEvolutions: params.get("trades") === "1",
+    includeRematches: params.get("rematches") === "1",
     pinned: list(params.get("pin")).filter((id) => id in game.species),
     banned: list(params.get("ban")).filter((id) => id in game.species),
   };
@@ -36,6 +37,7 @@ export function writeOptions(
     params.set("unique", "0");
   if (options.allowLegendaries) params.set("legendaries", "1");
   if (options.allowTradeEvolutions) params.set("trades", "1");
+  if (options.includeRematches) params.set("rematches", "1");
   if (options.pinned.length > 0) params.set("pin", options.pinned.join(","));
   if (options.banned.length > 0) params.set("ban", options.banned.join(","));
   return params;

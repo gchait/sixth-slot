@@ -6,23 +6,27 @@ import { defaultOptions } from "./candidates.ts";
 import { search } from "./search.ts";
 
 describe.each(gameIds())("%s", (id) => {
-  test("finds ten teams for every version and starter, each with that starter", async () => {
-    const game = await loadGame(id);
-    for (const version of game.versions) {
-      for (const starter of game.starters) {
-        const { candidates, teams } = search(game, {
-          ...defaultOptions,
-          version: version.id,
-          starter,
-        });
-        expect(teams, `${version.id} ${starter}`).toHaveLength(10);
-        for (const team of teams) {
-          const families = team.members.map(
-            (m) => candidates.find((c) => c.id === m)!.family,
-          );
-          expect(families).toContain(starter);
+  test.each([false, true])(
+    "finds ten teams for every version and starter, each with that starter (rematches: %s)",
+    async (includeRematches) => {
+      const game = await loadGame(id);
+      for (const version of game.versions) {
+        for (const starter of game.starters) {
+          const { candidates, teams } = search(game, {
+            ...defaultOptions,
+            version: version.id,
+            starter,
+            includeRematches,
+          });
+          expect(teams, `${version.id} ${starter}`).toHaveLength(10);
+          for (const team of teams) {
+            const families = team.members.map(
+              (m) => candidates.find((c) => c.id === m)!.family,
+            );
+            expect(families).toContain(starter);
+          }
         }
       }
-    }
-  });
+    },
+  );
 });

@@ -281,3 +281,78 @@ battles:
       - { species: whiscash, level: 56, moves: [earthquake, surf, amnesia, hyper-beam] }
       - { species: gyarados, level: 56, moves: [dragon-dance, earthquake, hyper-beam, surf] }
       - { species: milotic, level: 58, moves: [recover, surf, ice-beam, toxic] }
+  - id: roxanne-rematch
+    name: Roxanne
+    title: Gym Leader rematch
+    rematch: true
+    party:
+      - { species: golem, level: 32, moves: [protect, rollout, magnitude, explosion] }
+      - { species: kabuto, level: 35, moves: [swords-dance, ice-beam, surf, rock-slide] }
+      - { species: onix, level: 35, moves: [iron-tail, explosion, roar, rock-slide] }
+      - { species: nosepass, level: 37, moves: [double-team, explosion, protect, rock-slide] }
+  - id: brawly-rematch
+    name: Brawly
+    title: Gym Leader rematch
+    rematch: true
+    party:
+      - { species: machamp, level: 33, moves: [karate-chop, rock-slide, focus-punch, bulk-up] }
+      - { species: meditite, level: 33, moves: [psychic, light-screen, reflect, focus-punch] }
+      - { species: hitmontop, level: 35, moves: [pursuit, counter, protect, triple-kick] }
+      - { species: hariyama, level: 37, moves: [fake-out, focus-punch, belly-drum, earthquake] }
+  - id: wattson-rematch
+    name: Wattson
+    title: Gym Leader rematch
+    rematch: true
+    party:
+      - { species: mareep, level: 36, moves: [thunder, protect, thunder-wave, light-screen] }
+      - { species: electrode, level: 36, moves: [rollout, thunder, explosion, rain-dance] }
+      - { species: magneton, level: 38, moves: [supersonic, protect, thunder, rain-dance] }
+      - { species: manectric, level: 40, moves: [bite, thunder-wave, thunder, protect] }
+  - id: flannery-rematch
+    name: Flannery
+    title: Gym Leader rematch
+    rematch: true
+    party:
+      - { species: magcargo, level: 38, moves: [overheat, attract, light-screen, rock-slide] }
+      - { species: ponyta, level: 36, moves: [flamethrower, attract, solar-beam, bounce] }
+      - { species: camerupt, level: 38, moves: [overheat, sunny-day, earthquake, attract] }
+      - { species: torkoal, level: 40, moves: [overheat, sunny-day, explosion, attract] }
+  - id: norman-rematch
+    name: Norman
+    title: Gym Leader rematch
+    rematch: true
+    party:
+      - { species: chansey, level: 42, moves: [light-screen, sing, skill-swap, focus-punch] }
+      - { species: slaking, level: 42, moves: [blizzard, shadow-ball, double-edge, fire-blast] }
+      - { species: spinda, level: 43, moves: [teeter-dance, skill-swap, facade, hypnosis] }
+      - { species: slaking, level: 45, moves: [hyper-beam, flamethrower, thunderbolt, shadow-ball] }
+  - id: winona-rematch
+    name: Winona
+    title: Gym Leader rematch
+    rematch: true
+    party:
+      - { species: dratini, level: 40, moves: [thunder-wave, thunderbolt, protect, ice-beam] }
+      - { species: tropius, level: 38, moves: [sunny-day, aerial-ace, solar-beam, earthquake] }
+      - { species: pelipper, level: 41, moves: [surf, supersonic, protect, aerial-ace] }
+      - { species: skarmory, level: 43, moves: [whirlwind, spikes, steel-wing, aerial-ace] }
+      - { species: altaria, level: 45, moves: [aerial-ace, rest, dragon-dance, earthquake] }
+  - id: tate-and-liza-rematch
+    name: Tate & Liza
+    title: Gym Leader rematch
+    rematch: true
+    party:
+      - { species: slowpoke, level: 48, moves: [yawn, psychic, calm-mind, protect] }
+      - { species: claydol, level: 49, moves: [earthquake, ancient-power, psychic, light-screen] }
+      - { species: xatu, level: 49, moves: [psychic, rest, confuse-ray, calm-mind] }
+      - { species: lunatone, level: 50, moves: [earthquake, psychic, rest, calm-mind] }
+      - { species: solrock, level: 50, moves: [sunny-day, solar-beam, psychic, flamethrower] }
+  - id: juan-rematch
+    name: Juan
+    title: Gym Leader rematch
+    rematch: true
+    party:
+      - { species: poliwag, level: 46, moves: [hypnosis, rain-dance, protect, hydro-pump] }
+      - { species: whiscash, level: 46, moves: [rain-dance, water-pulse, double-team, fissure] }
+      - { species: walrein, level: 48, moves: [water-pulse, body-slam, protect, ice-beam] }
+      - { species: crawdaunt, level: 48, moves: [rest, crabhammer, taunt, double-team] }
+      - { species: kingdra, level: 51, moves: [water-pulse, double-team, ice-beam, rest] }

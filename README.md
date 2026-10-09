@@ -19,6 +19,9 @@ Supported games: **FireRed & LeafGreen** and **Emerald**.
 - By default, no two members share a type, legendaries are left out, and
   evolutions that need a trade with another player are off. Each can be
   changed, and any Pokémon can be pinned or excluded.
+- Post-game rematches, such as FireRed's second Elite Four round or Emerald's
+  first Gym Leader rematches, can be scored too, still with Pokémon from the
+  story only.
 
 **How a team is scored**
 
@@ -66,7 +69,9 @@ The code is split in three:
 
 ## Adding a game
 
-Copy a file in `data/games/` and fill it in for the new game. Your editor can
+Games on the way are listed in `data/planned.yaml`, which the home page shows
+as coming soon; remove a game from there when it lands. Copy a file in
+`data/games/` and fill it in for the new game. Your editor can
 check it as you type using `data/game.schema.json`, and `pnpm data` reports
 every location, item, species or evolution it cannot resolve. Take stages and
 battles from a source such as the game's

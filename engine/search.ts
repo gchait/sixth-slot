@@ -34,13 +34,23 @@ interface Slot {
   weight: number;
 }
 
-export function opponentsFor(game: GameData, starter: string): Slot[] {
-  return game.battles.flatMap((battle, b) => {
-    const party = battle.parties[starter] ?? battle.parties["*"];
+/** The battles a team is scored on, by index into GameData.battles. */
+export function scoredBattles(game: GameData, options: Options): number[] {
+  return game.battles.flatMap((battle, b) =>
+    !battle.rematch || options.includeRematches ? [b] : [],
+  );
+}
+
+/** Every opponent the team faces, weighted so each battle counts equally. */
+export function opponentsFor(game: GameData, options: Options): Slot[] {
+  const battles = scoredBattles(game, options);
+  return battles.flatMap((b) => {
+    const { parties } = game.battles[b];
+    const party = parties[options.starter] ?? parties["*"];
     return party.map((opponent) => ({
       battle: b,
       opponent,
-      weight: 1 / (game.battles.length * party.length),
+      weight: 1 / (battles.length * party.length),
     }));
   });
 }
@@ -117,7 +127,7 @@ export function search(
     (c, i, list) => list.indexOf(c) === i,
   );
 
-  const slots = opponentsFor(game, options.starter);
+  const slots = opponentsFor(game, options);
   const width = slots.length;
   const weights = Float64Array.from(slots, (s) => s.weight);
   const values = new Map(
@@ -278,8 +288,8 @@ export function explain(
   options: Options,
   team: Candidate[],
 ): BattleReport[] {
-  const slots = opponentsFor(game, options.starter);
-  return game.battles.map((_, b) => {
+  const slots = opponentsFor(game, options);
+  return scoredBattles(game, options).map((b) => {
     const answers = slots
       .filter((slot) => slot.battle === b)
       .map((slot): Answer => {

@@ -60,6 +60,25 @@ test("plans a single-version game without a version choice", async ({
   await expect(page.getByText("Version", { exact: true })).toHaveCount(0);
 });
 
+test("lists planned games as coming soon, without a link", async ({ page }) => {
+  await page.goto("./");
+  await expect(page.getByText("Crystal")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Crystal/ })).toHaveCount(0);
+  await expect(page.getByText("Coming soon").first()).toBeVisible();
+});
+
+test("scores rematches when asked to", async ({ page }) => {
+  await page.goto("./firered-leafgreen/");
+  await expect(
+    page.getByRole("heading", { name: "Lorelei", level: 3 }),
+  ).toHaveCount(1);
+  await page.getByRole("switch", { name: "Rematches" }).click();
+  await expect(page).toHaveURL(/rematches=1/);
+  await expect(
+    page.getByRole("heading", { name: "Lorelei", level: 3 }),
+  ).toHaveCount(2);
+});
+
 const games = readdirSync("data/games")
   .filter((file) => file.endsWith(".yaml"))
   .map((file) => ({ id: file.slice(0, -".yaml".length) }));

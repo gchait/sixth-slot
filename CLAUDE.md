@@ -19,5 +19,5 @@ See README.md for what the project does and how it is laid out.
   that path requests; without the slash the two disagree.
 - `engine/` and `scripts/` import with explicit `.ts` extensions, because Node
   runs the scripts directly.
-- `pnpm dev` starts React Router's CLI with `--conditions=development` itself;
-  run plainly, the CLI relaunches Node to add that condition.
+- `pnpm dev` runs `scripts/dev.ts`, which starts React Router's CLI with
+  `--conditions=development`; run plainly, the CLI relaunches Node to add it.

@@ -283,3 +283,69 @@ battles:
         - { species: gyarados, level: 59, moves: [hydro-pump, dragon-rage, bite, thrash] }
         - { species: arcanine, level: 61, moves: [extreme-speed, flamethrower, roar, bite] }
         - { species: venusaur, level: 63, moves: [solar-beam, synthesis, sunny-day, growth] }
+  - id: lorelei-rematch
+    name: Lorelei
+    title: Elite Four rematch
+    rematch: true
+    party:
+      - { species: dewgong, level: 64, moves: [surf, ice-beam, signal-beam, double-team] }
+      - { species: cloyster, level: 63, moves: [rain-dance, surf, ice-beam, supersonic] }
+      - { species: piloswine, level: 63, moves: [earthquake, blizzard, double-edge, rock-slide] }
+      - { species: jynx, level: 66, moves: [psychic, ice-beam, lovely-kiss, attract] }
+      - { species: lapras, level: 66, moves: [psychic, thunder, surf, ice-beam] }
+  - id: bruno-rematch
+    name: Bruno
+    title: Elite Four rematch
+    rematch: true
+    party:
+      - { species: steelix, level: 65, moves: [earthquake, rock-tomb, iron-tail, crunch] }
+      - { species: hitmonchan, level: 65, moves: [sky-uppercut, mach-punch, rock-slide, counter] }
+      - { species: hitmonlee, level: 65, moves: [mega-kick, foresight, earthquake, rock-slide] }
+      - { species: steelix, level: 66, moves: [dragon-breath, iron-tail, earthquake, crunch] }
+      - { species: machamp, level: 68, moves: [brick-break, cross-chop, earthquake, rock-slide] }
+  - id: agatha-rematch
+    name: Agatha
+    title: Elite Four rematch
+    rematch: true
+    party:
+      - { species: gengar, level: 66, moves: [confuse-ray, shadow-ball, hypnosis, psychic] }
+      - { species: crobat, level: 66, moves: [confuse-ray, shadow-ball, air-cutter, sludge-bomb] }
+      - { species: misdreavus, level: 65, moves: [shadow-ball, thunderbolt, psychic, attract] }
+      - { species: arbok, level: 68, moves: [double-team, sludge-bomb, earthquake, giga-drain] }
+      - { species: gengar, level: 70, moves: [shadow-ball, sludge-bomb, psychic, thunderbolt] }
+  - id: lance-rematch
+    name: Lance
+    title: Elite Four rematch
+    rematch: true
+    party:
+      - { species: gyarados, level: 68, moves: [dragon-dance, earthquake, thunder-wave, hyper-beam] }
+      - { species: dragonite, level: 66, moves: [flamethrower, dragon-claw, earthquake, hyper-beam] }
+      - { species: kingdra, level: 66, moves: [dragon-dance, surf, ice-beam, hyper-beam] }
+      - { species: aerodactyl, level: 70, moves: [aerial-ace, ancient-power, earthquake, hyper-beam] }
+      - { species: dragonite, level: 72, moves: [thunderbolt, outrage, ice-beam, hyper-beam] }
+  - id: champion-rematch
+    name: Blue
+    title: Champion rematch
+    rematch: true
+    partyByStarter:
+      bulbasaur:
+        - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
+        - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
+        - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
+        - { species: exeggutor, level: 73, moves: [sleep-powder, light-screen, giga-drain, psychic] }
+        - { species: gyarados, level: 73, moves: [dragon-dance, hydro-pump, earthquake, hyper-beam] }
+        - { species: charizard, level: 75, moves: [fire-blast, aerial-ace, dragon-claw, earthquake] }
+      charmander:
+        - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
+        - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
+        - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
+        - { species: arcanine, level: 73, moves: [overheat, extreme-speed, iron-tail, aerial-ace] }
+        - { species: exeggutor, level: 73, moves: [sleep-powder, light-screen, giga-drain, psychic] }
+        - { species: blastoise, level: 75, moves: [rain-dance, hydro-pump, ice-beam, earthquake] }
+      squirtle:
+        - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
+        - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
+        - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
+        - { species: gyarados, level: 73, moves: [dragon-dance, hydro-pump, earthquake, hyper-beam] }
+        - { species: arcanine, level: 73, moves: [overheat, extreme-speed, iron-tail, aerial-ace] }
+        - { species: venusaur, level: 75, moves: [sunny-day, solar-beam, sludge-bomb, earthquake] }

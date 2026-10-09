@@ -7,7 +7,10 @@ export default {
   prerender() {
     const games = JSON.parse(
       readFileSync("public/data/games.json", "utf8"),
-    ) as { id: string }[];
-    return ["/", ...games.map((game) => `/${game.id}/`)];
+    ) as { id: string; planned: boolean }[];
+    return [
+      "/",
+      ...games.filter((game) => !game.planned).map((game) => `/${game.id}/`),
+    ];
   },
 } satisfies Config;

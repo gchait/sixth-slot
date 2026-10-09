@@ -1,7 +1,9 @@
 import { readFile } from "node:fs/promises";
 import { Link } from "react-router";
 
+import type { GameSummary } from "../../scripts/game-data.ts";
 import type { Route } from "./+types/home";
+import { Badge } from "~/components/ui/badge";
 import {
   Card,
   CardDescription,
@@ -12,12 +14,7 @@ import {
 export async function loader() {
   const text = await readFile("public/data/games.json", "utf8");
   return {
-    games: JSON.parse(text) as {
-      id: string;
-      name: string;
-      versions: string[];
-      starters: { name: string; sprite: string }[];
-    }[],
+    games: JSON.parse(text) as GameSummary[],
   };
 }
 
@@ -62,39 +59,63 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Choose a game</h2>
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {loaderData.games.map((game) => (
-            <li key={game.id}>
-              <Link
-                to={`/${game.id}/`}
-                className="block rounded-xl focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]"
+          {loaderData.games.map((game) => {
+            const card = (
+              <Card
+                className={
+                  game.planned
+                    ? "opacity-60"
+                    : "hover:bg-accent/50 transition-colors"
+                }
               >
-                <Card className="hover:bg-accent/50 transition-colors">
-                  <CardHeader className="flex items-center justify-between gap-4">
-                    <div className="space-y-1.5">
-                      <CardTitle>{game.name}</CardTitle>
-                      {game.versions.length > 1 && (
+                <CardHeader className="flex items-center justify-between gap-4">
+                  <div className="space-y-1.5">
+                    <CardTitle>{game.name}</CardTitle>
+                    {game.planned ? (
+                      <Badge variant="outline">Coming soon</Badge>
+                    ) : (
+                      game.versions.length > 1 && (
                         <CardDescription>
                           {game.versions.join(" · ")}
                         </CardDescription>
-                      )}
-                    </div>
-                    <div className="flex shrink-0">
-                      {game.starters.map((starter) => (
-                        <img
-                          key={starter.name}
-                          src={starter.sprite}
-                          alt={starter.name}
-                          width={48}
-                          height={48}
-                          className="[image-rendering:pixelated]"
-                        />
-                      ))}
-                    </div>
-                  </CardHeader>
-                </Card>
-              </Link>
-            </li>
-          ))}
+                      )
+                    )}
+                  </div>
+                  <div className="flex h-14 shrink-0 items-center">
+                    {game.starters.map((starter) => (
+                      <img
+                        key={starter.name}
+                        src={starter.url}
+                        alt={starter.name}
+                        width={starter.width}
+                        height={starter.height}
+                        style={{
+                          width: starter.width,
+                          height: starter.height,
+                          margin: `${(56 - starter.height) / 2}px ${(48 - starter.width) / 2}px`,
+                        }}
+                        className="max-w-none [image-rendering:pixelated]"
+                      />
+                    ))}
+                  </div>
+                </CardHeader>
+              </Card>
+            );
+            return (
+              <li key={game.id}>
+                {game.planned ? (
+                  card
+                ) : (
+                  <Link
+                    to={`/${game.id}/`}
+                    className="block rounded-xl focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]"
+                  >
+                    {card}
+                  </Link>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </section>
 

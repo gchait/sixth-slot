@@ -21,6 +21,8 @@ const battle = z
     id: identifier,
     name: z.string(),
     title: z.string(),
+    /** A post-game rematch, scored only when the player asks for rematches. */
+    rematch: z.boolean().default(false),
     party: party.optional(),
     partyByStarter: z.record(identifier, party).optional(),
   })
@@ -66,3 +68,12 @@ export const gameSchema = z.strictObject({
 });
 
 export type GameFile = z.infer<typeof gameSchema>;
+
+export const plannedSchema = z.array(
+  z.strictObject({
+    versionGroup: identifier,
+    name: z.string(),
+    sprites: z.string().regex(/^[a-z0-9-]+\/[a-z0-9-]+$/),
+    starters: z.array(identifier).min(1),
+  }),
+);

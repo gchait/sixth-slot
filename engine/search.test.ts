@@ -8,7 +8,7 @@ import {
   type Options,
 } from "./candidates.ts";
 import type { GameData } from "./data.ts";
-import { scoreTeam, search, TEAM_SIZE } from "./search.ts";
+import { explain, scoreTeam, search, TEAM_SIZE } from "./search.ts";
 
 let game: GameData;
 beforeAll(async () => {
@@ -137,5 +137,24 @@ describe("search", () => {
       );
       expect(team.score).toBeCloseTo(scoreTeam(game, o, members), 9);
     }
+  });
+
+  test("scores rematches only when asked to", () => {
+    const { candidates, teams } = search(game, options());
+    const team = teams[0].members.map((id) =>
+      candidates.find((c) => c.id === id)!,
+    );
+    const scored = (o: Options) =>
+      explain(game, o, team).map((r) => game.battles[r.battle].id);
+    const story = scored(options());
+    expect(story).not.toContain("champion-rematch");
+    expect(scored(options({ includeRematches: true }))).toEqual([
+      ...story,
+      "lorelei-rematch",
+      "bruno-rematch",
+      "agatha-rematch",
+      "lance-rematch",
+      "champion-rematch",
+    ]);
   });
 });

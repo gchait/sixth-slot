@@ -555,10 +555,15 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       id: battle.id,
       name: battle.name,
       title: battle.title,
+      rematch: battle.rematch,
       aceLevel,
       parties,
     };
   });
+
+  const firstRematch = battles.findIndex((b) => b.rematch);
+  if (firstRematch >= 0 && battles.slice(firstRematch).some((b) => !b.rematch))
+    errors.push("battles: rematches must come after every story battle");
 
   // Every location key must exist in PokeAPI.
   const locationsByIdentifier = indexBy(t.locations, "identifier");

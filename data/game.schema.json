@@ -176,6 +176,10 @@
           "title": {
             "type": "string"
           },
+          "rematch": {
+            "default": false,
+            "type": "boolean"
+          },
           "party": {
             "minItems": 1,
             "maxItems": 6,
