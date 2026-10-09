@@ -35,7 +35,7 @@ export function BattleTable({
         return (
           <section
             key={battle.id}
-            className="grid gap-2 p-3 sm:grid-cols-[10rem_1fr] sm:gap-4"
+            className="grid grid-cols-1 gap-2 p-3 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-4"
           >
             <header className="flex items-baseline justify-between gap-2 sm:block">
               <h3 className="font-semibold">{battle.name}</h3>
@@ -46,14 +46,14 @@ export function BattleTable({
                 </span>
               </p>
             </header>
-            <ul className="grid gap-1.5 sm:grid-cols-2">
+            <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
               {report.answers.map((answer, i) => {
                 const r = rating(answer.matchup?.score ?? null);
                 const opponent = game.species[answer.opponent.species];
                 return (
                   <li key={i} className="flex items-center gap-2 text-sm">
                     <Sprite game={game} species={opponent.id} size={32} />
-                    <span className="min-w-0 flex-1 truncate">
+                    <span className="min-w-0 flex-1">
                       {opponent.name}{" "}
                       <span className="text-muted-foreground">
                         Lv {answer.opponent.level}

@@ -79,24 +79,26 @@ export function Controls({
   const set = (patch: Partial<Options>) => onChange({ ...options, ...patch });
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <h3 className="text-sm font-medium">Version</h3>
-        <ToggleGroup
-          type="single"
-          variant="outline"
-          value={options.version}
-          onValueChange={(version) =>
-            version && set({ version, pinned: [], banned: [] })
-          }
-          className="w-full"
-        >
-          {game.versions.map((v) => (
-            <ToggleGroupItem key={v.id} value={v.id} className="flex-1">
-              {v.name}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
-      </div>
+      {game.versions.length > 1 && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-medium">Version</h3>
+          <ToggleGroup
+            type="single"
+            variant="outline"
+            value={options.version}
+            onValueChange={(version) =>
+              version && set({ version, pinned: [], banned: [] })
+            }
+            className="w-full"
+          >
+            {game.versions.map((v) => (
+              <ToggleGroupItem key={v.id} value={v.id} className="flex-1">
+                {v.name}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
+      )}
 
       <div className="space-y-2">
         <h3 className="text-sm font-medium">Starter</h3>

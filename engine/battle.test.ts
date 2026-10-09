@@ -68,3 +68,34 @@ describe("battle math", () => {
     );
   });
 });
+
+describe("abilities", () => {
+  test("make a Pokémon sure to have Levitate immune to Ground", () => {
+    expect(
+      damageFraction(
+        game,
+        "dig",
+        game.species.sandslash,
+        30,
+        game.species.gengar,
+        30,
+      ),
+    ).toBe(0);
+  });
+
+  test("leave out abilities a species only might have", () => {
+    // Snorlax has Immunity or Thick Fat, so Thick Fat is not counted.
+    const fire = damageFraction(
+      game,
+      "ember",
+      game.species.charmander,
+      30,
+      game.species.snorlax,
+      30,
+    );
+    const neutral = { ...game.species.snorlax, abilities: [] };
+    expect(fire).toBe(
+      damageFraction(game, "ember", game.species.charmander, 30, neutral, 30),
+    );
+  });
+});

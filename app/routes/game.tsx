@@ -4,6 +4,7 @@ import { data, Link, useSearchParams } from "react-router";
 
 import type { Options } from "../../engine/candidates.ts";
 import type { GameData } from "../../engine/data.ts";
+import { MATCHUP_LIMIT } from "../../engine/battle.ts";
 import { explain, type SearchResult } from "../../engine/search.ts";
 import type { Route } from "./+types/game";
 import { BattleTable } from "~/components/battle-table";
@@ -41,7 +42,8 @@ export function meta({ loaderData }: Route.MetaArgs) {
 const noSubscription = () => () => {};
 
 /** Team score out of 100: the average best matchup over every battle. */
-const percent = (score: number) => Math.round((Math.max(0, score) / 2) * 100);
+const percent = (score: number) =>
+  Math.round((Math.max(0, score) / MATCHUP_LIMIT) * 100);
 
 function Results({
   game,
@@ -107,7 +109,7 @@ function Results({
             {Math.round(milliseconds)} ms
           </p>
         </div>
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {members.map((c) => (
             <MemberCard
               key={c.id}
@@ -125,7 +127,7 @@ function Results({
       {result.teams.length > 1 && (
         <section className="space-y-3">
           <h2 className="text-lg font-semibold">Close alternatives</h2>
-          <ul className="grid gap-2">
+          <ul className="grid grid-cols-1 gap-2">
             {result.teams.map((t, i) => (
               <li key={t.members.join()}>
                 <button
@@ -187,7 +189,7 @@ function Builder({ game }: { game: GameData }) {
     });
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[18rem_1fr]">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[18rem_minmax(0,1fr)]">
       <aside>
         <Card className="lg:sticky lg:top-6">
           <CardContent>
@@ -203,7 +205,7 @@ function Builder({ game }: { game: GameData }) {
             aria-label="Searching for teams"
           >
             <Skeleton className="h-7 w-48" />
-            <div className="grid gap-3 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {Array.from({ length: 6 }, (_, i) => (
                 <Skeleton key={i} className="h-36 rounded-xl" />
               ))}

@@ -16,6 +16,8 @@ export interface Species {
   types: number[];
   stats: Stats;
   legendary: boolean;
+  /** Abilities a wild or gifted one can have; one of them, chosen at random. */
+  abilities: string[];
   /** Damaging moves learned by leveling up, as [level, move id], by level. */
   learnset: [number, string][];
   /** Damaging HMs the species can learn, as keys of GameData.hms. */
@@ -28,12 +30,20 @@ export interface Move {
   type: number;
   /** Base power, reduced for moves with a drawback that limits their use. */
   power: number;
+  /** Whether the move uses Attack and Defense rather than their special counterparts. */
+  physical: boolean;
 }
 
 export type EvolutionMethod =
-  | { kind: "level"; level: number }
+  /** Leveling up; `random` when the Pokémon becomes one of several evolutions by chance. */
+  | { kind: "level"; level: number; random?: boolean }
   | { kind: "item"; item: string; stage: number }
-  | { kind: "trade" };
+  /** A trade with another player, holding `item` if given. */
+  | { kind: "trade"; item?: string; stage: number }
+  /** Leveling up with high friendship. */
+  | { kind: "friendship" }
+  /** Leveling up with high beauty, which takes Pokéblocks. */
+  | { kind: "beauty"; stage: number };
 
 export interface Evolution {
   from: string;
@@ -78,8 +88,6 @@ export interface GameData {
   types: string[];
   /** typeChart[attacking][defending] damage multiplier. */
   typeChart: number[][];
-  /** Whether attacks of each type use Attack (true) or Special Attack. */
-  physicalTypes: boolean[];
   species: Record<string, Species>;
   /** Damaging moves that some learnset or opponent uses. */
   moves: Record<string, Move>;

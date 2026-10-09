@@ -1,3 +1,5 @@
+import { readdirSync } from "node:fs";
+
 import { expect, test } from "@playwright/test";
 
 const builder = "./firered-leafgreen/";
@@ -44,3 +46,36 @@ test("explains pinned Pokémon that cannot go together", async ({ page }) => {
   await page.getByRole("button", { name: "Clear pinned Pokémon" }).click();
   await expect(page.getByRole("heading", { name: /Best team/ })).toBeVisible();
 });
+
+test("plans a single-version game without a version choice", async ({
+  page,
+}) => {
+  await page.goto("./emerald/?starter=mudkip");
+  await expect(
+    page.getByRole("heading", { name: "Swampert", level: 3 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Roxanne", level: 3 }),
+  ).toBeVisible();
+  await expect(page.getByText("Version", { exact: true })).toHaveCount(0);
+});
+
+const games = readdirSync("data/games")
+  .filter((file) => file.endsWith(".yaml"))
+  .map((file) => ({ id: file.slice(0, -".yaml".length) }));
+
+for (const { id } of games) {
+  test(`${id} fits a narrow phone screen`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto(`./${id}/`);
+    await expect(
+      page.getByRole("heading", { name: /Best team/ }),
+    ).toBeVisible();
+    const overflow = await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth,
+    );
+    expect(overflow).toBe(0);
+  });
+}

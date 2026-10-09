@@ -45,9 +45,14 @@ export interface Candidate {
   sources: (Source & { species: string })[];
 }
 
+/**
+ * Whether a Pokémon held since battle `heldSince` can evolve by `battle`.
+ * Friendship takes time to build, so it counts from the battle after.
+ */
 function canEvolve(
   evolution: Evolution,
   battle: number,
+  heldSince: number,
   game: GameData,
   options: Options,
 ): boolean {
@@ -56,9 +61,12 @@ function canEvolve(
     case "level":
       return method.level <= game.battles[battle].aceLevel;
     case "item":
+    case "beauty":
       return method.stage <= battle;
     case "trade":
-      return options.allowTradeEvolutions;
+      return options.allowTradeEvolutions && method.stage <= battle;
+    case "friendship":
+      return heldSince < battle;
   }
 }
 
@@ -95,6 +103,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
     );
 
   function formsOf(line: string[], steps: Evolution[]): number[] {
+    const heldSince = line.map(() => Infinity);
     return game.battles.map((_, battle) => {
       let form = -1;
       line.forEach((species, i) => {
@@ -104,8 +113,9 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
         const evolved =
           i > 0 &&
           form === i - 1 &&
-          canEvolve(steps[i - 1], battle, game, options);
+          canEvolve(steps[i - 1], battle, heldSince[i - 1], game, options);
         if (obtainable || evolved) form = i;
+        if (form === i) heldSince[i] = Math.min(heldSince[i], battle);
       });
       return form;
     });

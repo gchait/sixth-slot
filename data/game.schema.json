@@ -45,7 +45,7 @@
       "type": "object",
       "propertyNames": {
         "type": "string",
-        "pattern": "^[a-z0-9-]+(\\/[a-z0-9-]+)?$"
+        "pattern": "^[a-z0-9-]+(\\/[a-z0-9-]+)?(@[a-z0-9-]+)?$"
       },
       "additionalProperties": {
         "anyOf": [
@@ -147,6 +147,18 @@
         "minimum": 0,
         "maximum": 9007199254740991
       }
+    },
+    "conditions": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "beauty": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "additionalProperties": false
     },
     "battles": {
       "minItems": 1,

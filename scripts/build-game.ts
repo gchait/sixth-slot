@@ -13,7 +13,7 @@ import type {
   StatKey,
   Stats,
 } from "../engine/data.ts";
-import type { Table, Tables } from "./pokeapi.ts";
+import { SPRITES_COMMIT, type Table, type Tables } from "./pokeapi.ts";
 
 const ENGLISH = "9";
 
@@ -109,9 +109,9 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     throw new Error(`unknown version group ${file.versionGroup}`);
   const generation = Number(versionGroup.generation_id);
   const groupOrder = Number(versionGroup.order);
-  if (generation > 3) {
+  if (generation === 1) {
     throw new Error(
-      `generation ${generation} decides physical or special per move, which is not supported yet`,
+      "generation 1 has a single Special stat, which is not supported yet",
     );
   }
   const groupOrderById = new Map(
@@ -135,7 +135,6 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     .sort((a, b) => Number(a.id) - Number(b.id));
   const typeIndex = new Map(typeRows.map((row, i) => [row.id, i]));
   const types = typeRows.map((row) => row.identifier);
-  const physicalTypes = typeRows.map((row) => row.damage_class_id === "2");
   const typeChart = types.map(() => types.map(() => 1));
   for (const row of t.type_efficacy) {
     const a = typeIndex.get(row.damage_type_id);
@@ -168,7 +167,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     t.moves.map((row) => [row.identifier, row.id]),
   );
   const moves: Record<string, Move> = {};
-  /** The move's type index and power in this game, or undefined if it does no direct damage. */
+  /** Records the move as it was in this game; undefined if it does no direct damage. */
   function damagingMove(moveId: string, context: string): string | undefined {
     const row = moveRowsById.get(moveId)!;
     const later = (changelog.get(moveId) ?? [])
@@ -194,10 +193,16 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       );
       return undefined;
     }
+    // Until generation IV, a move's type decides whether it is physical.
+    const physical =
+      generation <= 3
+        ? typeRows[type].damage_class_id === "2"
+        : row.damage_class_id === "2";
     moves[row.identifier] ??= {
       name: moveNames.get(moveId) ?? row.identifier,
       type,
       power,
+      physical,
     };
     return row.identifier;
   }
@@ -253,6 +258,14 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     t.pokemon_species_names,
     "pokemon_species_id",
   );
+  const abilityNames = new Map(
+    t.abilities.map((row) => [row.id, row.identifier]),
+  );
+  const abilitiesByPokemon = groupBy(t.pokemon_abilities, "pokemon_id");
+  const pastAbilitiesByPokemon = groupBy(
+    t.pokemon_abilities_past,
+    "pokemon_id",
+  );
   const typesByPokemon = groupBy(t.pokemon_types, "pokemon_id");
   const pastTypesByPokemon = groupBy(t.pokemon_types_past, "pokemon_id");
   const statsByPokemon = groupBy(t.pokemon_stats, "pokemon_id");
@@ -299,6 +312,25 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       stats[key] = Number((past[0] ?? statRow).base_stat);
     }
 
+    // Regular abilities as they were in this generation, slot by slot; a past
+    // row without an ability means the slot did not exist yet.
+    const abilities: string[] = [];
+    const pastAbilities = groupBy(
+      pastAbilitiesByPokemon.get(pokemonId) ?? [],
+      "slot",
+    );
+    for (const abilityRow of abilitiesByPokemon.get(pokemonId) ?? []) {
+      if (abilityRow.is_hidden === "1") continue;
+      const past = pastFor(
+        pastAbilities.get(abilityRow.slot) ?? [],
+        generation,
+      );
+      const abilityId =
+        past.length > 0 ? past[0].ability_id : abilityRow.ability_id;
+      if (generation >= 3 && abilityId)
+        abilities.push(abilityNames.get(abilityId)!);
+    }
+
     const learnset: [number, string][] = [];
     for (const moveRow of learnsets.get(pokemonId) ?? []) {
       const move = damagingMove(moveRow.move_id, row.identifier);
@@ -314,6 +346,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       types: speciesTypes,
       stats: stats as Stats,
       legendary: row.is_legendary === "1" || row.is_mythical === "1",
+      abilities: [...new Set(abilities)].sort(),
       learnset,
       hms: (hmUsers.get(pokemonId) ?? [])
         .map((m) => moveRowsById.get(m.move_id)!.identifier)
@@ -364,20 +397,61 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     "evolved_species_id",
   );
   const evolutions: Evolution[] = [];
+  const shed: { from: string; to: string }[] = [];
+  // Conditions on top of the trigger that the engine does not model.
+  const unmodeled = [
+    "gender_id",
+    "location_id",
+    "held_item_id",
+    "time_of_day",
+    "known_move_id",
+    "known_move_type_id",
+    "minimum_affection",
+    "relative_physical_stats",
+    "party_species_id",
+    "party_type_id",
+    "trade_species_id",
+    "needs_overworld_rain",
+    "turn_upside_down",
+  ];
+  const flags = new Set(["needs_overworld_rain", "turn_upside_down"]);
+  const itemStage = (item: string, context: string) => {
+    const stage = file.items[item];
+    if (stage === undefined)
+      errors.push(`${context} needs ${item}, which items does not list`);
+    return stage;
+  };
   for (const [evolvedId, rows] of evolutionRows) {
     const to = speciesById.get(evolvedId)!.identifier;
     const from = speciesById.get(
       speciesById.get(evolvedId)!.evolves_from_species_id,
     )!.identifier;
+    const context = `${from} -> ${to}`;
     if (rows.length !== 1) {
       errors.push(
-        `${from} -> ${to}: ${rows.length} evolution methods apply, expected 1`,
+        `${context}: ${rows.length} evolution methods apply, expected 1`,
       );
       continue;
     }
     const row = rows[0];
     const trigger = triggers.get(row.evolution_trigger_id);
-    if (trigger === "level-up" && row.minimum_level) {
+    const extra = unmodeled.filter(
+      (key) =>
+        (flags.has(key) ? row[key] === "1" : row[key] !== "") &&
+        !(trigger === "trade" && key === "held_item_id"),
+    );
+    if (extra.length > 0) {
+      errors.push(`${context}: unsupported condition ${extra.join(", ")}`);
+      continue;
+    }
+    if (trigger === "level-up" && row.minimum_happiness) {
+      evolutions.push({ from, to, method: { kind: "friendship" } });
+    } else if (trigger === "level-up" && row.minimum_beauty) {
+      const stage = file.conditions.beauty;
+      if (stage === undefined)
+        errors.push(`${context} needs beauty, which conditions does not list`);
+      else evolutions.push({ from, to, method: { kind: "beauty", stage } });
+    } else if (trigger === "level-up" && row.minimum_level) {
       evolutions.push({
         from,
         to,
@@ -385,17 +459,49 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       });
     } else if (trigger === "use-item") {
       const item = itemsById.get(row.trigger_item_id)!.identifier;
-      const stage = file.items[item];
-      if (stage === undefined)
-        errors.push(
-          `${from} -> ${to} needs ${item}, which items does not list`,
-        );
-      else evolutions.push({ from, to, method: { kind: "item", item, stage } });
-    } else if (trigger === "trade" && !row.held_item_id) {
-      evolutions.push({ from, to, method: { kind: "trade" } });
+      const stage = itemStage(item, context);
+      if (stage !== undefined)
+        evolutions.push({ from, to, method: { kind: "item", item, stage } });
+    } else if (trigger === "trade") {
+      const item = row.held_item_id
+        ? itemsById.get(row.held_item_id)!.identifier
+        : undefined;
+      const stage = item ? itemStage(item, context) : 0;
+      if (stage !== undefined)
+        evolutions.push({
+          from,
+          to,
+          method: { kind: "trade", ...(item ? { item } : {}), stage },
+        });
+    } else if (trigger === "shed") {
+      // Shedinja appears when Nincada evolves by level with a free party slot.
+      shed.push({ from, to });
     } else {
-      errors.push(`${from} -> ${to}: unsupported evolution method ${trigger}`);
+      errors.push(`${context}: unsupported evolution method ${trigger}`);
     }
+  }
+  // A Pokémon with several evolutions at the same level, and nothing else to
+  // tell them apart, evolves into one of them at random (Wurmple).
+  const byLevel = new Map<string, Evolution[]>();
+  for (const e of evolutions) {
+    if (e.method.kind !== "level") continue;
+    const key = `${e.from}@${e.method.level}`;
+    byLevel.set(key, [...(byLevel.get(key) ?? []), e]);
+  }
+  for (const group of byLevel.values()) {
+    if (group.length > 1) {
+      for (const e of group) {
+        if (e.method.kind === "level") e.method = { ...e.method, random: true };
+      }
+    }
+  }
+  for (const { from, to } of shed) {
+    const sibling = evolutions.find(
+      (e) => e.from === from && e.method.kind === "level",
+    );
+    if (!sibling)
+      errors.push(`${from} -> ${to}: no level evolution to shed alongside`);
+    else evolutions.push({ from, to, method: sibling.method });
   }
 
   // Battles.
@@ -457,8 +563,14 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   // Every location key must exist in PokeAPI.
   const locationsByIdentifier = indexBy(t.locations, "identifier");
   const areasByLocation = groupBy(t.location_areas, "location_id");
+  const methodIdentifiers = new Set(
+    t.encounter_methods.map((row) => row.identifier),
+  );
   for (const key of Object.keys(file.locations)) {
-    const [location, area] = key.split("/");
+    const [place, method] = key.split("@");
+    const [location, area] = place.split("/");
+    if (method && !methodIdentifiers.has(method))
+      errors.push(`locations: unknown encounter method ${method} in ${key}`);
     const row = locationsByIdentifier.get(location);
     if (!row) errors.push(`locations: unknown location ${location}`);
     else if (
@@ -468,9 +580,6 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       errors.push(`locations: ${location} has no area ${area}`);
     }
   }
-  const methodIdentifiers = new Set(
-    t.encounter_methods.map((row) => row.identifier),
-  );
   for (const method of Object.keys(file.methods)) {
     if (!methodIdentifiers.has(method))
       errors.push(`methods: unknown encounter method ${method}`);
@@ -499,8 +608,15 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     )) {
       const area = areas.get(encounter.location_area_id)!;
       const location = locationsById.get(area.location_id)!;
+      const method = methodsById.get(
+        slots.get(encounter.encounter_slot_id)!.encounter_method_id,
+      )!;
+      // The most specific key wins: area and method, method, area, location.
+      const inArea = `${location.identifier}/${area.identifier}`;
       const placement =
-        file.locations[`${location.identifier}/${area.identifier}`] ??
+        file.locations[`${inArea}@${method.identifier}`] ??
+        file.locations[`${location.identifier}@${method.identifier}`] ??
+        file.locations[inArea] ??
         file.locations[location.identifier];
       if (placement === undefined) {
         unmapped.add(
@@ -512,9 +628,6 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       const speciesId = pokemonSpecies.get(encounter.pokemon_id)!;
       if (!regional.has(speciesId)) continue;
 
-      const method = methodsById.get(
-        slots.get(encounter.encounter_slot_id)!.encounter_method_id,
-      )!;
       const speciesIdentifier = speciesById.get(speciesId)!.identifier;
       let stage = Math.max(placement, file.methods[method.identifier] ?? 0);
       let gives: string | undefined;
@@ -612,11 +725,10 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     id: file.id,
     name: file.name,
     generation,
-    sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/${file.sprites}/{national}.png`,
+    sprite: `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/versions/${file.sprites}/{national}.png`,
     versions,
     types,
     typeChart,
-    physicalTypes,
     species,
     moves,
     evolutions,

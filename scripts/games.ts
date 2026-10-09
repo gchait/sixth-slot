@@ -1,6 +1,6 @@
 // Loads and validates the curated game files in data/games/.
 import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { parse } from "yaml";
 
@@ -9,7 +9,7 @@ import type { GameData } from "../engine/data.ts";
 import { buildGame } from "./build-game.ts";
 import { loadTables, type Tables } from "./pokeapi.ts";
 
-const gamesDir = join(import.meta.dirname, "..", "data", "games");
+const gamesDir = fileURLToPath(new URL("../data/games/", import.meta.url));
 
 export function gameIds(): string[] {
   return readdirSync(gamesDir)
@@ -20,7 +20,7 @@ export function gameIds(): string[] {
 
 export function readGameFile(id: string): GameFile {
   const result = gameSchema.safeParse(
-    parse(readFileSync(join(gamesDir, `${id}.yaml`), "utf8")),
+    parse(readFileSync(`${gamesDir}${id}.yaml`, "utf8")),
   );
   if (!result.success) {
     const issues = result.error.issues.map(

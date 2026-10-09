@@ -1,0 +1,283 @@
+# yaml-language-server: $schema=../game.schema.json
+#
+# Story progression for Pokémon Emerald.
+#
+# Stage n means "after beating the first n battles listed under `battles`":
+# stage 0 is before Roxanne, stage 8 is before the Elite Four. Locations, items
+# and encounter methods take the stage at which the standard route first
+# reaches them, following the part order of Bulbapedia's walkthrough
+# (https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Emerald).
+# Locations reached only after the Champion are `postgame`; event-only
+# locations are `excluded`. A `location/area` key overrides its location for
+# that area, and an `@method` suffix narrows a key to one encounter method.
+
+id: emerald
+name: Emerald
+versionGroup: emerald
+pokedex: hoenn
+sprites: generation-iii/emerald
+starters: [treecko, torchic, mudkip]
+
+# Only one Pokémon from each group can be obtained in a single playthrough.
+exclusiveGroups:
+  - [lileep, anorith] # Root or Claw Fossil in Mirage Tower
+
+locations:
+  # Before Roxanne (parts 1–2)
+  hoenn-route-101: 0
+  hoenn-route-103: 0
+  hoenn-route-102: 0
+  petalburg-city: 0
+  hoenn-route-104: 0
+  petalburg-woods: 0
+  rustboro-city: 0
+  rustboro-city@gift: 4 # Fossils from Mirage Tower, revived at the Devon Corporation
+  # Before Brawly (parts 2–3)
+  hoenn-route-116: 1
+  rusturf-tunnel: 1
+  hoenn-route-105: 1
+  hoenn-route-106: 1
+  dewford-town: 1
+  # Before Wattson (parts 3–4)
+  granite-cave: 2
+  hoenn-route-107: 2
+  hoenn-route-108: 2
+  hoenn-route-109: 2
+  slateport-city: 2
+  hoenn-route-110: 2
+  # Before Flannery (parts 5–7)
+  hoenn-route-117: 3
+  hoenn-route-118: 3
+  hoenn-route-111: 3
+  hoenn-route-111@walk: 4 # The desert, which needs the Go-Goggles from Flannery
+  hoenn-route-112: 3
+  fiery-path: 3
+  hoenn-route-113: 3
+  hoenn-route-114: 3
+  meteor-falls: 3
+  meteor-falls/b1f: 8 # Behind the waterfalls
+  meteor-falls/back: 8
+  meteor-falls/backsmall-room: 8
+  hoenn-route-115: 3
+  jagged-pass: 3
+  lavaridge-town: 3
+  # Before Norman (part 8)
+  mirage-tower: 4
+  # Before Winona (parts 9–10)
+  abandoned-ship: 5
+  new-mauville: 5
+  hoenn-route-123: 5
+  hoenn-route-119: 5
+  fortree-city: 5
+  hoenn-route-120: 5
+  # Before Tate & Liza (parts 11–14)
+  hoenn-route-121: 6
+  hoenn-safari-zone: 6
+  hoenn-route-122: 6
+  mt-pyre: 6
+  magma-hideout: 6
+  team-magma-hideout: 6
+  lilycove-city: 6
+  team-aqua-hideout: 6
+  hoenn-route-124: 6
+  mossdeep-city: 6
+  # Before Juan (parts 14–17)
+  hoenn-route-125: 7
+  shoal-cave: 7
+  hoenn-route-127: 7
+  hoenn-route-128: 7
+  seafloor-cavern: 7
+  hoenn-route-126: 7
+  sootopolis-city: 7
+  cave-of-origin: 7
+  hoenn-route-129: 7
+  hoenn-route-130: 7
+  hoenn-route-131: 7
+  pacifidlog-town: 7
+  hoenn-route-132: 7
+  hoenn-route-133: 7
+  hoenn-route-134: 7
+  desert-ruins: 7
+  island-cave: 7
+  ancient-tomb: 7
+  sky-pillar: 7
+  # Before the Elite Four (part 18)
+  sky-pillar/apex: 8 # Rayquaza stays after it settles the clash in Sootopolis
+  ever-grande-city: 8
+  hoenn-victory-road: 8
+  # After the Champion
+  littleroot-town: postgame # Johto starters from Professor Birch
+  mossdeep-city/stevens-house: postgame # Beldum
+  hoenn-safari-zone/expansion-north: postgame
+  hoenn-safari-zone/expansion-south: postgame
+  hoenn-altering-cave: postgame
+  desert-underpass: postgame
+  artisan-cave: postgame
+  terra-cave: postgame
+  marine-cave: postgame
+  roaming-hoenn: postgame
+  hoenn-battle-frontier: postgame
+  # Event distributions, and Mirage Island, which appears only on rare days
+  southern-island: excluded
+  faraway-island: excluded
+  birth-island: excluded
+  navel-rock: excluded
+  hoenn-pokecenter: excluded
+  mirage-island: excluded
+  hoenn-route-130@walk: excluded # Mirage Island's grass
+
+# Encounter methods that need an item or Badge first. Methods not listed need nothing.
+methods:
+  old-rod: 1 # Dewford Town
+  feebas-tile-fishing: 1 # Any rod
+  rock-smash: 3 # Mauville City; used outside battle with the Dynamo Badge
+  surf: 5 # From Wally's father after Norman
+  good-rod: 5 # Route 118
+  devon-scope: 5 # From Steven on Route 120
+  super-rod: 6 # Mossdeep City
+  seaweed: 7 # Dive, from Steven after Tate & Liza
+
+# Evolution items, by where they can first be obtained.
+items:
+  moon-stone: 3 # Meteor Falls
+  fire-stone: 4 # Fiery Path, with Strength
+  thunder-stone: 5 # New Mauville
+  leaf-stone: 5 # Route 119
+  sun-stone: 6 # Mossdeep Space Center
+  water-stone: 7 # Abandoned Ship, with Dive
+  deep-sea-tooth: 7 # From Captain Stern for the Scanner, found with Dive
+  deep-sea-scale: 7
+  dragon-scale: 7 # Held by wild Horsea, Routes 132–134
+
+# Evolution conditions other than level, item or trade.
+conditions:
+  beauty: 6 # Pokéblocks, with the Pokéblock Case from Lilycove's Contest Hall
+
+# HMs that attack, by where they are obtained. Unlike TMs in this generation,
+# HMs can be taught to any number of Pokémon.
+hms:
+  cut: 0 # Rustboro City
+  rock-smash: 2 # Mauville City
+  strength: 3 # Rusturf Tunnel, after Wattson
+  surf: 5 # Petalburg City, after Norman
+  fly: 5 # Route 119
+  dive: 7 # Mossdeep City, after Tate & Liza
+  waterfall: 7 # Sootopolis City, before Juan
+
+# In-game trades: the Pokémon each trader wants.
+trades:
+  seedot: { gives: ralts } # Rustboro City
+  plusle: { gives: volbeat } # Fortree City
+  horsea: { gives: bagon } # Pacifidlog Town
+
+battles:
+  - id: roxanne
+    name: Roxanne
+    title: Gym Leader
+    party:
+      - { species: geodude, level: 12, moves: [tackle, defense-curl, rock-throw, rock-tomb] }
+      - { species: geodude, level: 12, moves: [tackle, defense-curl, rock-throw, rock-tomb] }
+      - { species: nosepass, level: 15, moves: [block, harden, tackle, rock-tomb] }
+  - id: brawly
+    name: Brawly
+    title: Gym Leader
+    party:
+      - { species: machop, level: 16, moves: [karate-chop, low-kick, seismic-toss, bulk-up] }
+      - { species: meditite, level: 16, moves: [focus-punch, light-screen, reflect, bulk-up] }
+      - { species: makuhita, level: 19, moves: [arm-thrust, vital-throw, reversal, bulk-up] }
+  - id: wattson
+    name: Wattson
+    title: Gym Leader
+    party:
+      - { species: voltorb, level: 20, moves: [rollout, spark, self-destruct, shock-wave] }
+      - { species: electrike, level: 20, moves: [shock-wave, leer, quick-attack, howl] }
+      - { species: magneton, level: 22, moves: [supersonic, shock-wave, thunder-wave, sonic-boom] }
+      - { species: manectric, level: 24, moves: [quick-attack, thunder-wave, shock-wave, howl] }
+  - id: flannery
+    name: Flannery
+    title: Gym Leader
+    party:
+      - { species: numel, level: 24, moves: [overheat, take-down, magnitude, sunny-day] }
+      - { species: slugma, level: 24, moves: [overheat, smog, light-screen, sunny-day] }
+      - { species: camerupt, level: 26, moves: [overheat, tackle, sunny-day, attract] }
+      - { species: torkoal, level: 29, moves: [overheat, sunny-day, body-slam, attract] }
+  - id: norman
+    name: Norman
+    title: Gym Leader
+    party:
+      - { species: spinda, level: 27, moves: [teeter-dance, psybeam, facade, encore] }
+      - { species: vigoroth, level: 27, moves: [slash, facade, encore, feint-attack] }
+      - { species: linoone, level: 29, moves: [slash, belly-drum, facade, headbutt] }
+      - { species: slaking, level: 31, moves: [counter, yawn, facade, feint-attack] }
+  - id: winona
+    name: Winona
+    title: Gym Leader
+    party:
+      - { species: swablu, level: 29, moves: [perish-song, mirror-move, safeguard, aerial-ace] }
+      - { species: tropius, level: 29, moves: [sunny-day, aerial-ace, solar-beam, synthesis] }
+      - { species: pelipper, level: 30, moves: [water-gun, supersonic, protect, aerial-ace] }
+      - { species: skarmory, level: 31, moves: [sand-attack, fury-attack, steel-wing, aerial-ace] }
+      - { species: altaria, level: 33, moves: [earthquake, dragon-breath, dragon-dance, aerial-ace] }
+  - id: tate-and-liza
+    name: Tate & Liza
+    title: Gym Leader
+    party:
+      - { species: claydol, level: 41, moves: [earthquake, ancient-power, psychic, light-screen] }
+      - { species: xatu, level: 41, moves: [psychic, sunny-day, confuse-ray, calm-mind] }
+      - { species: lunatone, level: 42, moves: [light-screen, psychic, hypnosis, calm-mind] }
+      - { species: solrock, level: 42, moves: [sunny-day, solar-beam, psychic, flamethrower] }
+  - id: juan
+    name: Juan
+    title: Gym Leader
+    party:
+      - { species: luvdisc, level: 41, moves: [water-pulse, attract, sweet-kiss, flail] }
+      - { species: whiscash, level: 41, moves: [rain-dance, water-pulse, amnesia, earthquake] }
+      - { species: sealeo, level: 43, moves: [encore, body-slam, aurora-beam, water-pulse] }
+      - { species: crawdaunt, level: 43, moves: [water-pulse, crabhammer, taunt, leer] }
+      - { species: kingdra, level: 46, moves: [water-pulse, double-team, ice-beam, rest] }
+  - id: sidney
+    name: Sidney
+    title: Elite Four
+    party:
+      - { species: mightyena, level: 46, moves: [roar, double-edge, sand-attack, crunch] }
+      - { species: shiftry, level: 48, moves: [torment, double-team, swagger, extrasensory] }
+      - { species: cacturne, level: 46, moves: [leech-seed, feint-attack, needle-arm, cotton-spore] }
+      - { species: crawdaunt, level: 48, moves: [surf, swords-dance, strength, facade] }
+      - { species: absol, level: 49, moves: [aerial-ace, rock-slide, swords-dance, slash] }
+  - id: phoebe
+    name: Phoebe
+    title: Elite Four
+    party:
+      - { species: dusclops, level: 48, moves: [shadow-punch, confuse-ray, curse, protect] }
+      - { species: banette, level: 49, moves: [shadow-ball, grudge, will-o-wisp, feint-attack] }
+      - { species: sableye, level: 50, moves: [shadow-ball, double-team, night-shade, feint-attack] }
+      - { species: banette, level: 49, moves: [shadow-ball, psychic, thunderbolt, facade] }
+      - { species: dusclops, level: 51, moves: [shadow-ball, ice-beam, rock-slide, earthquake] }
+  - id: glacia
+    name: Glacia
+    title: Elite Four
+    party:
+      - { species: sealeo, level: 50, moves: [encore, body-slam, hail, ice-ball] }
+      - { species: glalie, level: 50, moves: [light-screen, crunch, icy-wind, ice-beam] }
+      - { species: sealeo, level: 52, moves: [attract, double-edge, hail, blizzard] }
+      - { species: glalie, level: 52, moves: [shadow-ball, explosion, hail, ice-beam] }
+      - { species: walrein, level: 53, moves: [surf, body-slam, ice-beam, sheer-cold] }
+  - id: drake
+    name: Drake
+    title: Elite Four
+    party:
+      - { species: shelgon, level: 52, moves: [rock-tomb, dragon-claw, protect, double-edge] }
+      - { species: altaria, level: 54, moves: [double-edge, dragon-breath, dragon-dance, aerial-ace] }
+      - { species: kingdra, level: 53, moves: [smokescreen, dragon-dance, surf, body-slam] }
+      - { species: flygon, level: 53, moves: [flamethrower, crunch, dragon-breath, earthquake] }
+      - { species: salamence, level: 55, moves: [flamethrower, dragon-claw, rock-slide, crunch] }
+  - id: wallace
+    name: Wallace
+    title: Champion
+    party:
+      - { species: wailord, level: 57, moves: [rain-dance, water-spout, double-edge, blizzard] }
+      - { species: tentacruel, level: 55, moves: [toxic, hydro-pump, sludge-bomb, ice-beam] }
+      - { species: ludicolo, level: 56, moves: [giga-drain, surf, leech-seed, double-team] }
+      - { species: whiscash, level: 56, moves: [earthquake, surf, amnesia, hyper-beam] }
+      - { species: gyarados, level: 56, moves: [dragon-dance, earthquake, hyper-beam, surf] }
+      - { species: milotic, level: 58, moves: [recover, surf, ice-beam, toxic] }

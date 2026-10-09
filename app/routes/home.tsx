@@ -61,7 +61,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Choose a game</h2>
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {loaderData.games.map((game) => (
             <li key={game.id}>
               <Link
@@ -72,9 +72,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                   <CardHeader className="flex items-center justify-between gap-4">
                     <div className="space-y-1.5">
                       <CardTitle>{game.name}</CardTitle>
-                      <CardDescription>
-                        {game.versions.join(" · ")}
-                      </CardDescription>
+                      {game.versions.length > 1 && (
+                        <CardDescription>
+                          {game.versions.join(" · ")}
+                        </CardDescription>
+                      )}
                     </div>
                     <div className="flex shrink-0">
                       {game.starters.map((starter) => (
@@ -96,7 +98,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </ul>
       </section>
 
-      <section className="grid gap-6 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {steps.map((step) => (
           <div key={step.title} className="space-y-1">
             <h2 className="font-semibold">{step.title}</h2>

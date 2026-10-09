@@ -1,4 +1,4 @@
-// One-on-one matchups using the Generation III stat and damage formulas, with
+// One-on-one matchups using the main-series stat and damage formulas, with
 // average IVs, no EVs, neutral natures and no random factor or critical hits.
 import type { GameData, Species, StatKey } from "./data.ts";
 
@@ -9,12 +9,55 @@ export function stat(species: Species, key: StatKey, level: number): number {
   return key === "hp" ? base + level + 10 : base + 5;
 }
 
+/** Whether every ability the species can have is one of `abilities`. */
+function always(species: Species, ...abilities: string[]): boolean {
+  return (
+    species.abilities.length > 0 &&
+    species.abilities.every((a) => abilities.includes(a))
+  );
+}
+
+/** Types that an ability makes its holder immune to. */
+const immunities: Record<string, string> = {
+  levitate: "ground",
+  "flash-fire": "fire",
+  "volt-absorb": "electric",
+  "water-absorb": "water",
+};
+
+/**
+ * How much of a move's damage the defender takes: the type chart, then the
+ * abilities it is sure to have that block or soften the type. Wonder Guard is
+ * left out: it turns on status, weather and other indirect damage, which
+ * matchups do not model, so crediting it would overrate Shedinja.
+ */
 export function effectiveness(
   game: GameData,
   moveType: number,
   defender: Species,
 ): number {
-  return defender.types.reduce((m, t) => m * game.typeChart[moveType][t], 1);
+  const typeName = game.types[moveType];
+  for (const [ability, immuneTo] of Object.entries(immunities)) {
+    if (typeName === immuneTo && always(defender, ability)) return 0;
+  }
+  const softened =
+    (typeName === "fire" || typeName === "ice") &&
+    always(defender, "thick-fat");
+  return defender.types.reduce(
+    (m, t) => m * game.typeChart[moveType][t],
+    softened ? 0.5 : 1,
+  );
+}
+
+/**
+ * How the attacker's sure abilities change its damage: Huge Power and Pure
+ * Power double Attack, and Truant acts every other turn.
+ */
+function offenseFactor(attacker: Species, physical: boolean): number {
+  let factor = 1;
+  if (physical && always(attacker, "huge-power", "pure-power")) factor *= 2;
+  if (always(attacker, "truant")) factor *= 0.5;
+  return factor;
 }
 
 /** Damage as a fraction of the defender's maximum HP. */
@@ -26,16 +69,16 @@ export function damageFraction(
   defender: Species,
   defenderLevel: number,
 ): number {
-  const { type, power } = game.moves[move];
-  const physical = game.physicalTypes[type];
+  const { type, power, physical } = game.moves[move];
   const attack = stat(attacker, physical ? "atk" : "spa", attackerLevel);
   const defense = stat(defender, physical ? "def" : "spd", defenderLevel);
   const base =
     (((2 * attackerLevel) / 5 + 2) * power * attack) / defense / 50 + 2;
   const stab = attacker.types.includes(type) ? 1.5 : 1;
+  const multiplier = effectiveness(game, type, defender);
+  const ability = offenseFactor(attacker, physical);
   return (
-    (base * stab * effectiveness(game, type, defender)) /
-    stat(defender, "hp", defenderLevel)
+    (base * stab * multiplier * ability) / stat(defender, "hp", defenderLevel)
   );
 }
 

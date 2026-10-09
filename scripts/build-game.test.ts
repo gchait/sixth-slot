@@ -27,8 +27,8 @@ describe("FireRed & LeafGreen", () => {
   });
 
   test("splits physical and special by type", () => {
-    expect(game.physicalTypes[type("ghost")]).toBe(true);
-    expect(game.physicalTypes[type("dark")]).toBe(false);
+    expect(game.moves["shadow-ball"].physical).toBe(true);
+    expect(game.moves.bite.physical).toBe(false);
   });
 
   test("uses typings and base stats from before later changes", () => {
@@ -86,7 +86,7 @@ describe("FireRed & LeafGreen", () => {
       item: "thunder-stone",
       stage: 3,
     });
-    expect(method("alakazam")).toEqual({ kind: "trade" });
+    expect(method("alakazam")).toEqual({ kind: "trade", stage: 0 });
     expect(method("crobat")).toBeUndefined();
   });
 
@@ -148,5 +148,63 @@ describe("game file checks", () => {
     expect(() => buildGame(file, tables)).toThrow(
       "needs moon-stone, which items does not list",
     );
+  });
+});
+
+describe("Emerald", () => {
+  let emerald: GameData;
+  beforeAll(async () => {
+    emerald = await loadGame("emerald");
+  });
+  const firstStage = (species: string) =>
+    Math.min(...(emerald.sources.emerald[species] ?? []).map((s) => s.stage));
+  const method = (to: string) =>
+    emerald.evolutions.find((e) => e.to === to)?.method;
+
+  test("evolves by friendship, beauty, shedding and trading with an item", () => {
+    expect(method("crobat")).toEqual({ kind: "friendship" });
+    expect(method("milotic")).toEqual({ kind: "beauty", stage: 6 });
+    expect(method("shedinja")).toEqual({ kind: "level", level: 20 });
+    expect(method("huntail")).toEqual({
+      kind: "trade",
+      item: "deep-sea-tooth",
+      stage: 7,
+    });
+  });
+
+  test("marks evolutions that happen at random", () => {
+    expect(method("silcoon")).toEqual({
+      kind: "level",
+      level: 7,
+      random: true,
+    });
+    expect(method("cascoon")).toEqual({
+      kind: "level",
+      level: 7,
+      random: true,
+    });
+    expect(method("ninjask")).toEqual({ kind: "level", level: 20 });
+  });
+
+  test("narrows a location's stage to one encounter method", () => {
+    // Route 111's wild Pokémon live in the desert, which needs the Go-Goggles.
+    expect(firstStage("trapinch")).toBe(4);
+    expect(
+      emerald.sources.emerald.geodude.some(
+        (s) => s.location === "Route 111" && s.stage === 3,
+      ),
+    ).toBe(true);
+  });
+
+  test("leaves out Mirage Island, which appears only on rare days", () => {
+    expect(emerald.sources.emerald.wynaut.map((s) => s.method)).toEqual([
+      "Receive egg as a gift",
+    ]);
+  });
+
+  test("keeps only regular abilities as they were in generation III", () => {
+    expect(emerald.species.slaking.abilities).toEqual(["truant"]);
+    expect(game.species.gengar.abilities).toEqual(["levitate"]);
+    expect(game.species.koffing.abilities).toEqual(["levitate"]);
   });
 });

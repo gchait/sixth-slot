@@ -40,7 +40,10 @@ export const gameSchema = z.strictObject({
   locations: z.record(
     z
       .string()
-      .regex(/^[a-z0-9-]+(\/[a-z0-9-]+)?$/, "use location or location/area"),
+      .regex(
+        /^[a-z0-9-]+(\/[a-z0-9-]+)?(@[a-z0-9-]+)?$/,
+        "use location, location/area, optionally followed by @method",
+      ),
     z.union([stage, z.literal("postgame"), z.literal("excluded")]),
   ),
   methods: z.record(identifier, stage).default({}),
@@ -57,6 +60,8 @@ export const gameSchema = z.strictObject({
     .default({}),
   items: z.record(identifier, stage).default({}),
   hms: z.record(identifier, stage).default({}),
+  /** Evolution conditions other than level, item or trade, by when they can be met. */
+  conditions: z.strictObject({ beauty: stage.optional() }).default({}),
   battles: z.array(battle).min(1),
 });
 

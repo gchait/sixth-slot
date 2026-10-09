@@ -5,8 +5,10 @@ import { buildCandidates, defaultOptions, type Options } from "./candidates.ts";
 import type { GameData } from "./data.ts";
 
 let game: GameData;
+let emerald: GameData;
 beforeAll(async () => {
   game = await loadGame("firered-leafgreen");
+  emerald = await loadGame("emerald");
 });
 
 const options = (overrides: Partial<Options> = {}): Options => ({
@@ -70,5 +72,14 @@ describe("buildCandidates", () => {
   test("follows the version", () => {
     expect(find(options({ version: "firered" }), "arcanine")).toBeDefined();
     expect(find(options({ version: "leafgreen" }), "arcanine")).toBeUndefined();
+  });
+
+  test("evolves by friendship one battle after the Pokémon is held", () => {
+    const o = options({ version: "emerald", starter: "mudkip" });
+    const crobat = buildCandidates(emerald, o).find((c) => c.id === "crobat")!;
+    const golbat = crobat.forms.indexOf(1);
+    expect(golbat).toBeGreaterThanOrEqual(0);
+    expect(crobat.forms[golbat]).toBe(1);
+    expect(crobat.forms.indexOf(2)).toBe(golbat + 1);
   });
 });

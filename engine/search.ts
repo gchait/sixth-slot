@@ -2,7 +2,13 @@
 // over that battle's opponents of the team's best one-on-one matchup against it,
 // minus a penalty for weaknesses many members share. Only members obtainable by
 // a battle count for it, in the form they would have by then.
-import { knownMoves, matchup, MATCHUP_LIMIT, type Matchup } from "./battle.ts";
+import {
+  effectiveness,
+  knownMoves,
+  matchup,
+  MATCHUP_LIMIT,
+  type Matchup,
+} from "./battle.ts";
 import { buildCandidates, type Candidate, type Options } from "./candidates.ts";
 import type { GameData, Opponent } from "./data.ts";
 
@@ -64,9 +70,7 @@ export function candidateMatchup(
 function weaknesses(game: GameData, candidate: Candidate): number[] {
   const species = game.species[candidate.id];
   return game.types.flatMap((_, attacking) =>
-    species.types.reduce((m, t) => m * game.typeChart[attacking][t], 1) > 1
-      ? [attacking]
-      : [],
+    effectiveness(game, attacking, species) > 1 ? [attacking] : [],
   );
 }
 
@@ -100,10 +104,18 @@ export function search(
       `expected one line for starter ${options.starter}, found ${starters.length}`,
     );
   }
-  const required = [
-    starters[0],
-    ...candidates.filter((c) => options.pinned.includes(c.id)),
-  ].filter((c, i, list) => list.indexOf(c) === i);
+  const pinned = options.pinned.map((id) => {
+    const c = candidates.find((candidate) => candidate.id === id);
+    if (!c) {
+      throw new Error(
+        `${game.species[id]?.name ?? id} cannot join a team with these settings`,
+      );
+    }
+    return c;
+  });
+  const required = [starters[0], ...pinned].filter(
+    (c, i, list) => list.indexOf(c) === i,
+  );
 
   const slots = opponentsFor(game, options.starter);
   const width = slots.length;
