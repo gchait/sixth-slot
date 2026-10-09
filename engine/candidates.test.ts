@@ -1,8 +1,9 @@
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { loadGame } from "../scripts/games.ts";
-import { buildCandidates, defaultOptions, type Options } from "./candidates.ts";
+import { buildCandidates, type Options } from "./candidates.ts";
 import type { Evolution, GameData } from "./data.ts";
+import { fireRed as options } from "./test-options.ts";
 
 let game: GameData;
 let emerald: GameData;
@@ -11,12 +12,6 @@ beforeAll(async () => {
   emerald = await loadGame("emerald");
 });
 
-const options = (overrides: Partial<Options> = {}): Options => ({
-  ...defaultOptions,
-  version: "firered",
-  starter: "charmander",
-  ...overrides,
-});
 const find = (o: Options, id: string) =>
   buildCandidates(game, o).find((c) => c.id === id);
 const formsAt = (o: Options, id: string) => {

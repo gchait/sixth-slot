@@ -8,7 +8,7 @@ import { parse } from "yaml";
 
 import { plannedSchema } from "../data/schema.ts";
 import { gameIds, loadGame, readGameFile } from "./games.ts";
-import { loadTables, SPRITES_COMMIT } from "./pokeapi.ts";
+import { englishNames, loadTables, spriteUrl } from "./pokeapi.ts";
 
 const outDir = fileURLToPath(new URL("../public/data/", import.meta.url));
 const plannedFile = fileURLToPath(
@@ -93,10 +93,9 @@ export async function writeGameData(): Promise<void> {
     tables.version_groups.map((vg) => [vg.identifier, Number(vg.order)]),
   );
   const species = new Map(tables.pokemon_species.map((s) => [s.identifier, s]));
-  const names = new Map(
-    tables.pokemon_species_names
-      .filter((row) => row.local_language_id === "9")
-      .map((row) => [row.pokemon_species_id, row.name]),
+  const names = englishNames(
+    tables.pokemon_species_names,
+    "pokemon_species_id",
   );
   const summaries: GameSummary[] = [];
   const releaseOrder = new Map<string, number>();
@@ -144,7 +143,7 @@ export async function writeGameData(): Promise<void> {
           if (!row) throw new Error(`data/planned.yaml: unknown species ${s}`);
           return sprite(
             names.get(row.id) ?? s,
-            `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/versions/${game.sprites}/${row.id}.png`,
+            spriteUrl(game.sprites, row.id),
           );
         }),
       ),

@@ -1,6 +1,23 @@
 import { defaultOptions, type Options } from "../../engine/candidates.ts";
 import type { GameData } from "../../engine/data.ts";
 
+const switchKeys = [
+  "uniqueTypes",
+  "allowLegendaries",
+  "allowTradeEvolutions",
+  "includePostgame",
+] as const;
+
+type Switch = (typeof switchKeys)[number];
+
+/** URL parameter names of the on-off options. */
+const switches: Record<Switch, string> = {
+  uniqueTypes: "unique",
+  allowLegendaries: "legendaries",
+  allowTradeEvolutions: "trades",
+  includePostgame: "postgame",
+};
+
 const list = (value: string | null) =>
   value ? value.split(",").filter(Boolean) : [];
 
@@ -8,16 +25,20 @@ const list = (value: string | null) =>
 export function readOptions(params: URLSearchParams, game: GameData): Options {
   const version = params.get("version");
   const starter = params.get("starter");
+  const on = (key: Switch) => {
+    const value = params.get(switches[key]);
+    return value === null ? defaultOptions[key] : value === "1";
+  };
   return {
     version: game.versions.some((v) => v.id === version)
       ? version!
       : game.versions[0].id,
     starter:
       starter && game.starters.includes(starter) ? starter : game.starters[0],
-    uniqueTypes: params.get("unique") !== "0",
-    allowLegendaries: params.get("legendaries") === "1",
-    allowTradeEvolutions: params.get("trades") === "1",
-    includePostgame: params.get("postgame") === "1",
+    uniqueTypes: on("uniqueTypes"),
+    allowLegendaries: on("allowLegendaries"),
+    allowTradeEvolutions: on("allowTradeEvolutions"),
+    includePostgame: on("includePostgame"),
     pinned: list(params.get("pin")).filter((id) => id in game.species),
     banned: list(params.get("ban")).filter((id) => id in game.species),
   };
@@ -33,11 +54,10 @@ export function writeOptions(
     params.set("version", options.version);
   if (options.starter !== game.starters[0])
     params.set("starter", options.starter);
-  if (options.uniqueTypes !== defaultOptions.uniqueTypes)
-    params.set("unique", "0");
-  if (options.allowLegendaries) params.set("legendaries", "1");
-  if (options.allowTradeEvolutions) params.set("trades", "1");
-  if (options.includePostgame) params.set("postgame", "1");
+  for (const key of switchKeys) {
+    if (options[key] !== defaultOptions[key])
+      params.set(switches[key], options[key] ? "1" : "0");
+  }
   if (options.pinned.length > 0) params.set("pin", options.pinned.join(","));
   if (options.banned.length > 0) params.set("ban", options.banned.join(","));
   return params;

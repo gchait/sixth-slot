@@ -27,11 +27,13 @@
             "pattern": "^[a-z0-9-]+$"
           }
         }
-      ]
+      ],
+      "description": "The regional Pokédex, or several when the game splits it; numbers come from the first that lists a species."
     },
     "sprites": {
       "type": "string",
-      "pattern": "^[a-z0-9-]+(\\/[a-z0-9-]+)+$"
+      "pattern": "^[a-z0-9-]+(\\/[a-z0-9-]+)+$",
+      "description": "Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository, with transparent backgrounds."
     },
     "starters": {
       "minItems": 1,
@@ -43,6 +45,7 @@
     },
     "exclusiveGroups": {
       "default": [],
+      "description": "Families of which a playthrough can get only one, such as fossil choices.",
       "type": "array",
       "items": {
         "minItems": 2,
@@ -64,7 +67,8 @@
           {
             "type": "integer",
             "minimum": 0,
-            "maximum": 9007199254740991
+            "maximum": 9007199254740991,
+            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
           },
           {
             "type": "string",
@@ -74,11 +78,14 @@
             "type": "string",
             "const": "excluded"
           }
-        ]
-      }
+        ],
+        "description": "A stage; postgame for post-game story areas; excluded for events and rare-day places."
+      },
+      "description": "When each PokeAPI location is first reached on the standard route. location/area narrows a key to an area and @method to an encounter method; the most specific key wins. Every location with encounters needs a key."
     },
     "methods": {
       "default": {},
+      "description": "Encounter methods that need an item or Badge first; unlisted methods need nothing.",
       "type": "object",
       "propertyNames": {
         "type": "string",
@@ -87,11 +94,13 @@
       "additionalProperties": {
         "type": "integer",
         "minimum": 0,
-        "maximum": 9007199254740991
+        "maximum": 9007199254740991,
+        "description": "The number of battles under `battles` beaten by then: 0 is before the first."
       }
     },
     "trades": {
       "default": {},
+      "description": "In-game trades needing a later stage than their location, or a clearer place name. What each trader wants comes from PokeAPI.",
       "type": "object",
       "propertyNames": {
         "type": "string",
@@ -103,9 +112,11 @@
           "stage": {
             "type": "integer",
             "minimum": 0,
-            "maximum": 9007199254740991
+            "maximum": 9007199254740991,
+            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
           },
           "place": {
+            "description": "Where the trader is, when PokeAPI's location name is misleading.",
             "type": "string"
           }
         },
@@ -114,6 +125,7 @@
     },
     "encounterConditions": {
       "default": {},
+      "description": "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text.",
       "type": "object",
       "propertyNames": {
         "type": "string",
@@ -124,7 +136,8 @@
           {
             "type": "integer",
             "minimum": 0,
-            "maximum": 9007199254740991
+            "maximum": 9007199254740991,
+            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
           },
           {
             "type": "string",
@@ -134,11 +147,13 @@
             "type": "string",
             "const": "excluded"
           }
-        ]
+        ],
+        "description": "A stage; postgame for post-game story areas; excluded for events and rare-day places."
       }
     },
     "items": {
       "default": {},
+      "description": "Evolution items and held items, by when they can first be obtained.",
       "type": "object",
       "propertyNames": {
         "type": "string",
@@ -149,17 +164,20 @@
           {
             "type": "integer",
             "minimum": 0,
-            "maximum": 9007199254740991
+            "maximum": 9007199254740991,
+            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
           },
           {
             "type": "string",
             "const": "postgame"
           }
-        ]
+        ],
+        "description": "A stage, or postgame when only obtainable in the post-game story."
       }
     },
     "hms": {
       "default": {},
+      "description": "HMs that attack, by when they are obtained; HMs can be taught to any number of Pokémon.",
       "type": "object",
       "propertyNames": {
         "type": "string",
@@ -170,17 +188,20 @@
           {
             "type": "integer",
             "minimum": 0,
-            "maximum": 9007199254740991
+            "maximum": 9007199254740991,
+            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
           },
           {
             "type": "string",
             "const": "postgame"
           }
-        ]
+        ],
+        "description": "A stage, or postgame when only obtainable in the post-game story."
       }
     },
     "moves": {
       "default": {},
+      "description": "Moves an evolution needs that only a tutor or TM teaches, by when it can.",
       "type": "object",
       "propertyNames": {
         "type": "string",
@@ -191,17 +212,20 @@
           {
             "type": "integer",
             "minimum": 0,
-            "maximum": 9007199254740991
+            "maximum": 9007199254740991,
+            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
           },
           {
             "type": "string",
             "const": "postgame"
           }
-        ]
+        ],
+        "description": "A stage, or postgame when only obtainable in the post-game story."
       }
     },
     "conditions": {
       "default": {},
+      "description": "Evolution conditions other than level, items or trades, by when they can be met.",
       "type": "object",
       "properties": {
         "beauty": {
@@ -209,13 +233,15 @@
             {
               "type": "integer",
               "minimum": 0,
-              "maximum": 9007199254740991
+              "maximum": 9007199254740991,
+              "description": "The number of battles under `battles` beaten by then: 0 is before the first."
             },
             {
               "type": "string",
               "const": "postgame"
             }
-          ]
+          ],
+          "description": "A stage, or postgame when only obtainable in the post-game story."
         }
       },
       "additionalProperties": false
@@ -238,6 +264,7 @@
           },
           "postgame": {
             "default": false,
+            "description": "A battle after the Champion, such as a rematch; scored only when the player asks. These come after every story battle.",
             "type": "boolean"
           },
           "party": {
@@ -275,6 +302,7 @@
             }
           },
           "partyByStarter": {
+            "description": "Parties keyed by the player's starter, for rivals.",
             "type": "object",
             "propertyNames": {
               "type": "string",
@@ -322,7 +350,8 @@
           "title"
         ],
         "additionalProperties": false
-      }
+      },
+      "description": "The story's major battles in order, then post-game battles."
     }
   },
   "required": [

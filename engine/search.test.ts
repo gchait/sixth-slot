@@ -1,25 +1,14 @@
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { loadGame } from "../scripts/games.ts";
-import {
-  buildCandidates,
-  defaultOptions,
-  type Candidate,
-  type Options,
-} from "./candidates.ts";
+import { buildCandidates, type Candidate, type Options } from "./candidates.ts";
 import type { GameData } from "./data.ts";
 import { explain, scoreTeam, search, TEAM_SIZE } from "./search.ts";
+import { fireRed as options } from "./test-options.ts";
 
 let game: GameData;
 beforeAll(async () => {
   game = await loadGame("firered-leafgreen");
-});
-
-const options = (overrides: Partial<Options> = {}): Options => ({
-  ...defaultOptions,
-  version: "firered",
-  starter: "charmander",
-  ...overrides,
 });
 
 function combinations<T>(items: T[], k: number): T[][] {

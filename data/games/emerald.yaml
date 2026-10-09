@@ -1,15 +1,7 @@
 # yaml-language-server: $schema=../game.schema.json
 #
-# Story progression for Pokémon Emerald.
-#
-# Stage n means "after beating the first n battles listed under `battles`":
-# stage 0 is before Roxanne, stage 8 is before the Elite Four. Locations, items
-# and encounter methods take the stage at which the standard route first
-# reaches them, following the part order of Bulbapedia's walkthrough
-# (https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Emerald).
-# Locations reached only after the Champion are `postgame`; event-only
-# locations are `excluded`. A `location/area` key overrides its location for
-# that area, and an `@method` suffix narrows a key to one encounter method.
+# Pokémon Emerald, staged by the order of play in Bulbapedia's walkthrough:
+# https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Emerald
 
 id: emerald
 name: Emerald
@@ -18,7 +10,6 @@ pokedex: hoenn
 sprites: generation-iii/emerald
 starters: [treecko, torchic, mudkip]
 
-# Only one Pokémon from each group can be obtained in a single playthrough.
 exclusiveGroups:
   - [lileep, anorith] # Root or Claw Fossil in Mirage Tower
 
@@ -125,7 +116,6 @@ locations:
   mirage-island: excluded
   hoenn-route-130@walk: excluded # Mirage Island's grass
 
-# Encounter methods that need an item or Badge first. Methods not listed need nothing.
 methods:
   old-rod: 1 # Dewford Town
   feebas-tile-fishing: 1 # Any rod
@@ -136,7 +126,6 @@ methods:
   super-rod: 6 # Mossdeep City
   seaweed: 7 # Dive, from Steven after Tate & Liza
 
-# Evolution items, by where they can first be obtained.
 items:
   moon-stone: 3 # Meteor Falls
   fire-stone: 4 # Fiery Path, with Strength
@@ -148,12 +137,9 @@ items:
   deep-sea-scale: 7
   dragon-scale: 7 # Held by wild Horsea, Routes 132–134
 
-# Evolution conditions other than level, item or trade.
 conditions:
   beauty: 6 # Pokéblocks, with the Pokéblock Case from Lilycove's Contest Hall
 
-# HMs that attack, by where they are obtained. Unlike TMs in this generation,
-# HMs can be taught to any number of Pokémon.
 hms:
   cut: 0 # Rustboro City
   rock-smash: 2 # Mauville City
@@ -163,7 +149,6 @@ hms:
   dive: 7 # Mossdeep City, after Tate & Liza
   waterfall: 7 # Sootopolis City, before Juan
 
-# PokeAPI's conditions on story encounters, by when they can be met.
 encounterConditions:
   item-root-fossil: 4 # Mirage Tower, revived at the Devon Corporation
   item-claw-fossil: 4
@@ -279,6 +264,7 @@ battles:
       - { species: whiscash, level: 56, moves: [earthquake, surf, amnesia, hyper-beam] }
       - { species: gyarados, level: 56, moves: [dragon-dance, earthquake, hyper-beam, surf] }
       - { species: milotic, level: 58, moves: [recover, surf, ice-beam, toxic] }
+  # Each Gym Leader's first rematch, from their Bulbapedia pages.
   - id: roxanne-rematch
     name: Roxanne
     title: Gym Leader rematch

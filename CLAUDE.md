@@ -6,9 +6,9 @@ See README.md for what the project does and how it is laid out.
   The project pins its Node.js version in `devEngines`, and the system Node may
   be too old for React Router, Vitest and the `.ts` scripts.
 - A change is done when `pnpm check` and `pnpm test:e2e` both pass.
-- Every fact in `data/games/` comes from a source: PokeAPI, or the game's
-  Bulbapedia walkthrough for stages, trades and battles. Never fill one in from
-  memory; when the source is not obvious, say where it is in a comment.
+- Every fact in `data/games/` comes from a source: PokeAPI, or Bulbapedia for
+  stages and battles. Never fill one in from memory; when the source is not
+  obvious, say where it is in a comment.
 - `public/data/` is generated, not committed: the Vite plugin in
   `scripts/vite-game-data.ts` writes it when the dev server or a build starts,
   and `pnpm data` writes it on its own.

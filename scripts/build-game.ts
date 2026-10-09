@@ -14,9 +14,7 @@ import type {
   StatKey,
   Stats,
 } from "../engine/data.ts";
-import { SPRITES_COMMIT, type Table, type Tables } from "./pokeapi.ts";
-
-const ENGLISH = "9";
+import { englishNames, spriteUrl, type Table, type Tables } from "./pokeapi.ts";
 
 /**
  * How much of a move's power counts toward a typical attack, by move effect:
@@ -75,14 +73,6 @@ function groupBy(
     else groups.set(row[key], [row]);
   }
   return groups;
-}
-
-function englishNames(table: Table, idKey: string): Map<string, string> {
-  return new Map(
-    table
-      .filter((row) => row.local_language_id === ENGLISH)
-      .map((row) => [row[idKey], row.name]),
-  );
 }
 
 /** Until generation IV, a move's type decides whether it is physical. */
@@ -683,7 +673,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       "battles: post-game battles must come after every story battle",
     );
 
-  // A stage names the number of battles beaten, so it must leave one to fight.
+  // Every stage must leave a battle to fight.
   const checkStage = (where: string, stage: number | string | undefined) => {
     if (typeof stage === "number" && stage >= battles.length)
       errors.push(`${where}: stage ${stage} is after the last battle`);
@@ -743,7 +733,6 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     t.encounter_condition_value_map,
     "encounter_id",
   );
-  // Condition keys may use * to stand for any text, as in coins-*.
   const conditionRules = Object.entries(file.encounterConditions).map(
     ([pattern, placement]) => ({
       matches: new RegExp(`^${pattern.replaceAll("*", ".*")}$`),
@@ -764,7 +753,6 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       const method = methodsById.get(
         slots.get(encounter.encounter_slot_id)!.encounter_method_id,
       )!;
-      // The most specific key wins: area and method, method, area, location.
       const inArea = `${location.identifier}/${area.identifier}`;
       const placement =
         file.locations[`${inArea}@${method.identifier}`] ??
@@ -892,7 +880,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     id: file.id,
     name: file.name,
     generation,
-    sprite: `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/versions/${file.sprites}/{national}.png`,
+    sprite: spriteUrl(file.sprites, "{national}"),
     versions,
     types,
     typeChart,

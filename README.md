@@ -11,9 +11,9 @@ Supported games: **FireRed & LeafGreen** and **Emerald**.
 **Rules every team follows**
 
 - Your starter is always on the team.
-- Only Pokémon your version can get before the Champion: wild encounters,
-  gifts, static encounters and in-game trades, each from the point in the
-  story where it becomes reachable.
+- Only Pokémon your version can get: wild encounters, gifts, static encounters
+  and in-game trades, each from the point in the story where it becomes
+  reachable.
 - One Pokémon per evolution family, and one from each either-or gift (such as
   Hitmonlee or Hitmonchan).
 - By default, no two members share a type, legendaries are left out, and
@@ -31,8 +31,8 @@ counts: how many more hits your Pokémon survives than it needs, using the
 game's own stat and damage formulas. A member counts only from the battle by
 which you can have it, in the form and with the moves it would have by then:
 level-up moves and the HMs obtained so far. Abilities count where a species is
-sure to have them and they change damage: immunities such as Levitate, Thick
-Fat, Huge Power and Truant. Teams where many members share a weakness lose a
+sure to have them and they change damage: immunities such as Levitate, and
+Thick Fat, Huge Power and Truant. Teams where many members share a weakness lose a
 little. The search checks every valid team, skipping only those that provably
 cannot make the top ten.
 
@@ -61,8 +61,8 @@ run downloads PokeAPI's data tables into `.cache/`.
 The code is split in three:
 
 - `data/games/` holds one hand-curated file per game: when each location,
-  encounter method, item and HM becomes available, in-game trades, and the
-  major battles.
+  encounter method and condition, item and HM becomes available, and the major
+  battles.
 - `scripts/` combines those files with [PokeAPI](https://pokeapi.co)'s data
   into `public/data/<game>.json`, checking every reference.
 - `engine/` builds the candidates and searches for teams; `app/` is the site.
@@ -71,22 +71,12 @@ The code is split in three:
 
 Games on the way are listed in `data/planned.yaml`, which the home page shows
 as coming soon; remove a game from there when it lands. Copy a file in
-`data/games/` and fill it in for the new game. Your editor can check it as you
-type using `data/game.schema.json`, and `pnpm data` reports every location,
-encounter condition, item or evolution it cannot place. Take stages and battles
-from a source such as the game's
-[Bulbapedia walkthrough](https://bulbapedia.bulbagarden.net/wiki/Category:Walkthroughs),
-following its order of play.
-
-- Stages count the battles beaten. Locations reached between battles after the
-  Champion take those later stages; post-game story areas are `postgame`.
-- Every PokeAPI encounter condition met during the story needs a stage, such as
-  the time of day or a fossil; `*` matches any text.
-- In-game trades come from PokeAPI; list one under `trades` only to change its
-  stage or place name.
-- Items, moves and HMs only obtainable after the story are `postgame`, which
-  leaves out the evolutions that need them.
-- A game with several regional Pokédexes lists them all under `pokedex`.
+`data/games/` and fill it in for the new game, following the order of play in
+a source such as the game's
+[Bulbapedia walkthrough](https://bulbapedia.bulbagarden.net/wiki/Category:Walkthroughs).
+`data/schema.ts` describes every field, and editors show those descriptions
+through `data/game.schema.json`. `pnpm data` reports every location, encounter
+condition, item or evolution the file does not place.
 
 Generation I is not supported yet, since it has a single Special stat.
 
@@ -97,4 +87,5 @@ its sprite repository. Story order and trainer teams follow
 [Bulbapedia](https://bulbapedia.bulbagarden.net)'s walkthroughs.
 
 Pokémon is © Nintendo, Creatures Inc. and GAME FREAK inc. This is an
-unofficial fan project, not affiliated with or endorsed by them. It distributes no game files or artwork of its own.
+unofficial fan project, not affiliated with or endorsed by them. It distributes
+no game files or artwork of its own.

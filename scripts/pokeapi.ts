@@ -7,6 +7,20 @@ import { parseCsv } from "./csv.ts";
 
 export const POKEAPI_COMMIT = "2fe95532d27a9bf340575253aff50868319d8182";
 
+/** A sprite's URL, from the pinned commit of PokeAPI's sprite repository. */
+export function spriteUrl(folder: string, national: string): string {
+  return `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/versions/${folder}/${national}.png`;
+}
+
+/** English names from one of PokeAPI's name tables, by the id in `idKey`. */
+export function englishNames(table: Table, idKey: string): Map<string, string> {
+  return new Map(
+    table
+      .filter((row) => row.local_language_id === "9")
+      .map((row) => [row[idKey], row.name]),
+  );
+}
+
 /** The commit of PokeAPI's sprite repository the site loads images from. */
 export const SPRITES_COMMIT = "35fdbe9bdec8f519f882c3edc3c0185f08af4d86";
 

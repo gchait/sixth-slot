@@ -1,5 +1,5 @@
-// The per-game data file the build writes to public/data/<game>.json.
-// Stage n means "after beating the first n battles"; stage 0 is the start.
+// The per-game data file the build writes to public/data/<game>.json. Stages
+// are those of the game files, described in data/schema.ts.
 
 export type StatKey = "hp" | "atk" | "def" | "spa" | "spd" | "spe";
 
@@ -103,7 +103,7 @@ export interface GameData {
   /** Damaging moves that some learnset or opponent uses. */
   moves: Record<string, Move>;
   evolutions: Evolution[];
-  /** Where each species can be obtained during the main story, per version. */
+  /** Where each species can be obtained outside the post-game story, per version. */
   sources: Record<string, Record<string, Source[]>>;
   items: Record<string, string>;
   /** The stage at which each damaging HM is obtained. */

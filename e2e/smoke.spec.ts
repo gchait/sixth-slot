@@ -1,6 +1,6 @@
-import { readdirSync } from "node:fs";
-
 import { expect, test } from "@playwright/test";
+
+import { gameIds } from "../scripts/games.ts";
 
 const builder = "./firered-leafgreen/";
 
@@ -79,11 +79,7 @@ test("scores post-game battles when asked to", async ({ page }) => {
   ).toHaveCount(2);
 });
 
-const games = readdirSync("data/games")
-  .filter((file) => file.endsWith(".yaml"))
-  .map((file) => ({ id: file.slice(0, -".yaml".length) }));
-
-for (const { id } of games) {
+for (const id of gameIds()) {
   test(`${id} fits a narrow phone screen`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });
     await page.goto(`./${id}/`);

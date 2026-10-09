@@ -1,15 +1,7 @@
 # yaml-language-server: $schema=../game.schema.json
 #
-# Story progression for Pokémon FireRed and LeafGreen.
-#
-# Stage n means "after beating the first n battles listed under `battles`":
-# stage 0 is before Brock, stage 8 is before the Elite Four. Locations, items
-# and encounter methods take the stage at which the standard route first
-# reaches them, following the part order of Bulbapedia's walkthrough
-# (https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_FireRed_and_LeafGreen).
-# Locations reached only after the Champion are `postgame`; event-only
-# locations are `excluded`. A `location/area` key overrides its location for
-# that area.
+# Pokémon FireRed and LeafGreen, staged by the order of play in Bulbapedia's walkthrough:
+# https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_FireRed_and_LeafGreen
 
 id: firered-leafgreen
 name: FireRed & LeafGreen
@@ -18,7 +10,6 @@ pokedex: kanto
 sprites: generation-iii/firered-leafgreen
 starters: [bulbasaur, charmander, squirtle]
 
-# Only one Pokémon from each group can be obtained in a single playthrough.
 exclusiveGroups:
   - [hitmonlee, hitmonchan] # Fighting Dojo prize
   - [omanyte, kabuto] # Helix or Dome Fossil in Mt. Moon
@@ -120,7 +111,6 @@ locations:
   birth-island: excluded
   kanto-pokecenter: excluded
 
-# Encounter methods that need an item first. Methods not listed need nothing.
 methods:
   old-rod: 2 # Vermilion City
   good-rod: 4 # Fuchsia City
@@ -129,8 +119,6 @@ methods:
   pokeflute: 4 # Lavender Town
   rock-smash: 7 # Kindle Road
 
-# HMs that attack, by where they are obtained. Unlike TMs in this generation,
-# HMs can be taught to any number of Pokémon.
 hms:
   cut: 2 # S.S. Anne
   surf: 5 # Safari Zone
@@ -138,19 +126,15 @@ hms:
   fly: 5 # Route 16
   rock-smash: 7 # Kindle Road
 
-# In-game trades that need more than their location's stage, or a clearer place
-# name. What each trader wants comes from PokeAPI.
 trades:
   mr-mime: { stage: 3, place: "Route 2 (east side)" } # Behind a Cut tree
 
-# PokeAPI's conditions on story encounters, by when they can be met.
 encounterConditions:
   item-helix-fossil: 1 # Found in Mt. Moon, revived at Cinnabar Lab
   item-dome-fossil: 1
   item-old-amber: 3 # Pewter Museum, with Cut
   coins-*: 0 # Game Corner prizes, bought with coins
 
-# Evolution items, by where they can first be bought or picked up.
 items:
   moon-stone: 1 # Mt. Moon
   fire-stone: 3 # Celadon Department Store

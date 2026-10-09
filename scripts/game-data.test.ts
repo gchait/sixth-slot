@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { expect, test } from "vitest";
 
 import { sprite, writeGameData, type GameSummary } from "./game-data.ts";
-import { SPRITES_COMMIT } from "./pokeapi.ts";
+import { spriteUrl } from "./pokeapi.ts";
 
 test("lists playable and planned games in release order, each once", async () => {
   await writeGameData();
@@ -28,14 +28,10 @@ test("lists playable and planned games in release order, each once", async () =>
 });
 
 test("rejects a sprite set with solid backgrounds", async () => {
-  const versions = `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/versions`;
   await expect(
-    sprite("Chikorita", `${versions}/generation-ii/crystal/152.png`),
+    sprite("Chikorita", spriteUrl("generation-ii/crystal", "152")),
   ).rejects.toThrow("solid background");
   await expect(
-    sprite(
-      "Chikorita",
-      `${versions}/generation-ii/crystal/transparent/152.png`,
-    ),
+    sprite("Chikorita", spriteUrl("generation-ii/crystal/transparent", "152")),
   ).resolves.toMatchObject({ width: 56, height: 56 });
 });
