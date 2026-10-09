@@ -4,7 +4,7 @@
 - {
     versionGroup: crystal,
     name: Crystal,
-    sprites: generation-ii/crystal,
+    sprites: generation-ii/crystal/transparent,
     starters: [chikorita, cyndaquil, totodile],
   }
 - {

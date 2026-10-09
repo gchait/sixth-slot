@@ -36,7 +36,7 @@ export const gameSchema = z.strictObject({
   versionGroup: identifier,
   pokedex: identifier,
   /** Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository. */
-  sprites: z.string().regex(/^[a-z0-9-]+\/[a-z0-9-]+$/),
+  sprites: z.string().regex(/^[a-z0-9-]+(\/[a-z0-9-]+)+$/),
   starters: z.array(identifier).min(1),
   exclusiveGroups: z.array(z.array(identifier).min(2)).default([]),
   locations: z.record(
@@ -73,7 +73,7 @@ export const plannedSchema = z.array(
   z.strictObject({
     versionGroup: identifier,
     name: z.string(),
-    sprites: z.string().regex(/^[a-z0-9-]+\/[a-z0-9-]+$/),
+    sprites: z.string().regex(/^[a-z0-9-]+(\/[a-z0-9-]+)+$/),
     starters: z.array(identifier).min(1),
   }),
 );
