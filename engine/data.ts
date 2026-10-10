@@ -75,6 +75,8 @@ export type Source = {
   stage: number;
   location: string;
   method: string;
+  /** A one-time encounter, such as a gift or trade, which cannot be repeated. */
+  once?: true;
 } & (
   | {
       /** The species an in-game trade asks for. */

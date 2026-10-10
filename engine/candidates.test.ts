@@ -91,6 +91,17 @@ describe("field moves", () => {
   });
 });
 
+describe("random evolutions", () => {
+  test("count only when the base can be caught again until it goes the wanted way", async () => {
+    const crystal = await loadGame("crystal");
+    const ids = (g: GameData, version: string, starter: string) =>
+      buildCandidates(g, options({ version, starter })).map((c) => c.id);
+    // Crystal's one Tyrogue, a gift, evolves by its stats.
+    expect(ids(crystal, "crystal", "totodile")).not.toContain("hitmonlee");
+    expect(ids(emerald, "emerald", "mudkip")).toContain("dustox");
+  });
+});
+
 describe("evolution requirements", () => {
   const withRequirement = (
     to: string,

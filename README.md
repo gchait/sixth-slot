@@ -14,8 +14,11 @@ Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald** and
 - Your starter is always on the team.
 - Only Pokémon your version can get: wild encounters, gifts, static encounters
   and in-game trades, each from the point in the story where it becomes
-  reachable. Game Corner prizes count once the story's prize money could pay
-  for them twice over, so neither gambling nor grinding is needed.
+  reachable. Game Corner prizes count once the story's prize money could pay for
+  them twice over, so neither gambling nor grinding is needed.
+- Nothing rests on luck that cannot be retried: a random evolution counts only
+  when its base can be caught again, and what the game decides by Trainer ID is
+  left out.
 - One Pokémon per evolution family, and one from each either-or gift (such as
   Hitmonlee or Hitmonchan).
 - Someone on the team can use the moves needed outside battle all the time,
@@ -96,8 +99,8 @@ Generation I is not supported yet, since it has a single Special stat.
 ## Credits
 
 Game data comes from [PokeAPI](https://pokeapi.co), and sprites are loaded from
-its sprite repository. Story order and trainer teams follow
-[Bulbapedia](https://bulbapedia.bulbagarden.net)'s walkthroughs.
+its sprite repository. Story order, trainer teams and game mechanics come from
+[Bulbapedia](https://bulbapedia.bulbagarden.net).
 
 Pokémon is © Nintendo, Creatures Inc. and GAME FREAK inc. This is an
 unofficial fan project, not affiliated with or endorsed by them. It distributes

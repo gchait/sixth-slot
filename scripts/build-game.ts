@@ -52,6 +52,16 @@ const fixedDamageByEffect: Record<string, "level" | number> = {
   "131": 20, // Sonic Boom
 };
 
+/** Encounter methods that give one Pokémon, which cannot be found again. */
+const oneTimeMethods = new Set([
+  "gift",
+  "gift-egg",
+  "npc-trade",
+  "static",
+  "pokeflute",
+  "squirt-bottle",
+]);
+
 /**
  * Triple Kick's effect: each of three strikes has one more share of the
  * move's power than the last, and needs every strike before it to hit.
@@ -911,18 +921,12 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       if (!available) continue;
       const locationName =
         locationNames.get(location.id) ?? location.identifier;
-      // Floors and sections matter little for wild Pokémon, but a gift, trade or
-      // one-off encounter is worth pinpointing.
-      const wild = ![
-        "gift",
-        "gift-egg",
-        "npc-trade",
-        "static",
-        "pokeflute",
-      ].includes(method.identifier);
+      // Floors and sections matter little for wild Pokémon, but a one-time
+      // encounter is worth pinpointing.
+      const once = oneTimeMethods.has(method.identifier);
       // PokeAPI area names often end in a parenthesized floor or route number.
       const areaName =
-        area.identifier && !wild
+        area.identifier && once
           ? areaNames.get(area.id)?.replace(/ \([^()]*\)$/, "")
           : undefined;
       const levels: [number, number] = [
@@ -940,6 +944,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
               ? areaName
               : `${locationName} (${areaName})`,
         method: methodNames.get(method.id) ?? method.identifier,
+        ...(once && { once }),
         ...(gives ? { gives } : { levels }),
       };
       const key = `${source.species}|${source.location}|${source.method}`;

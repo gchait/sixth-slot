@@ -19,6 +19,13 @@ const colorScheme = `(() => {
   query.addEventListener("change", apply);
 })();`;
 
+export const links: Route.LinksFunction = () => [
+  { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+  { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+];
+
+const link = "hover:text-foreground underline underline-offset-2";
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -31,6 +38,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <TooltipProvider>{children}</TooltipProvider>
+        <footer className="text-muted-foreground mx-auto max-w-4xl px-4 pb-8 text-center text-xs">
+          An unofficial fan project, not affiliated with or endorsed by
+          Nintendo, Creatures Inc. or GAME FREAK inc., who own Pokémon. Data
+          from{" "}
+          <a className={link} href="https://pokeapi.co">
+            PokeAPI
+          </a>{" "}
+          and{" "}
+          <a className={link} href="https://bulbapedia.bulbagarden.net">
+            Bulbapedia
+          </a>
+          ; source on{" "}
+          <a className={link} href="https://github.com/gchait/sixth-slot">
+            GitHub
+          </a>
+          .
+        </footer>
         <ScrollRestoration />
         <Scripts />
       </body>

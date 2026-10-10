@@ -338,10 +338,11 @@ describe("Platinum", () => {
     expect(stagesOf("magikarp")).toContain(0);
   });
 
-  test("leaves out rare Honey Tree outcomes and other players", () => {
+  test("leaves out what depends on chance, Trainer ID or other players", () => {
     expect(stagesOf("heracross")).toEqual([]);
     expect(stagesOf("munchlax")).toEqual([]);
     expect(stagesOf("spiritomb")).toEqual([]);
+    expect(stagesOf("cranidos")).toEqual([]);
     expect(Math.min(...stagesOf("combee"))).toBe(1);
   });
 

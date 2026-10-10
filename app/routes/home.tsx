@@ -47,7 +47,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <main className="mx-auto max-w-4xl space-y-12 px-4 py-12">
       <header className="space-y-3">
-        <h1 className="text-4xl font-bold tracking-tight">sixth-slot</h1>
+        <h1 className="flex items-center gap-3 text-4xl font-bold tracking-tight">
+          <img src="/favicon.svg" alt="" width={40} height={40} />
+          sixth-slot
+        </h1>
         <p className="text-muted-foreground max-w-2xl text-lg">{summary}</p>
       </header>
 

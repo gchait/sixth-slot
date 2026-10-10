@@ -9,9 +9,6 @@ pokedex: [extended-sinnoh]
 sprites: generation-iv/platinum
 starters: [turtwig, chimchar, piplup]
 
-exclusiveGroups:
-  - [cranidos, shieldon] # Skull or Armor Fossil, by Trainer ID (part 4)
-
 locations:
   # Before Roark (parts 1–3)
   twinleaf-town: 0
@@ -179,9 +176,9 @@ encounterConditions:
   honey-tree-group-a: 0
   honey-tree-group-b: excluded # One slathering in five; adds only Heracross, at 1% a try
   honey-tree-group-c: excluded # Munchlax, at four trees chosen by Trainer ID
-  item-skull-fossil: 1 # Mined in the Underground, revived in Oreburgh City
-  item-armor-fossil: 1
-  item-*: postgame # Other Fossils and the orbs
+  # The Skull or the Armor Fossil, by Trainer ID (part 4), and the post-game
+  # Fossils and orbs
+  item-*: excluded
   story-progress-defeat-mars: 1 # Valley Windworks
   story-progress-defeat-jupiter: 2 # Galactic Eterna Building
   story-progress-beat-team-galactic-iron-island: 5

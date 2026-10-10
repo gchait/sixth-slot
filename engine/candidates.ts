@@ -94,6 +94,18 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
     species !== undefined && (heldFrom.get(species) ?? Infinity) <= battle;
 
   /**
+   * Whether the species, or an earlier form of it, can be caught again by
+   * `battle`, so an evolution it cannot choose can be tried until it goes the
+   * wanted way.
+   */
+  const retriable = (species: string, battle: number) =>
+    lineTo(species).line.some((s) =>
+      (sources[s] ?? []).some(
+        (source) => !source.once && opensAt(source) <= battle,
+      ),
+    );
+
+  /**
    * Whether a Pokémon held since battle `heldSince` can evolve by `battle`.
    * Friendship takes time to build, so it counts from the battle after.
    */
@@ -105,6 +117,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
       (!r.trade || options.allowTradeEvolutions) &&
       (!r.friendship || heldSince < battle) &&
       (r.species === undefined || heldBy(r.species, battle)) &&
+      (!r.random || retriable(evolution.from, battle)) &&
       (r.partyType === undefined ||
         Object.values(game.species).some(
           (s) => s.types.includes(r.partyType!) && heldBy(s.id, battle),
