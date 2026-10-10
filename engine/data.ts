@@ -85,6 +85,10 @@ export type Source = {
       gives: string;
     }
   | {
+      /** An in-game trade that takes any Pokémon. */
+      givesAny: true;
+    }
+  | {
       /** The lowest and highest level it is found at. */
       levels: [number, number];
     }

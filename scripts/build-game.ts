@@ -989,6 +989,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       const speciesIdentifier = speciesById.get(speciesId)!.identifier;
       let stage = Math.max(placement, methodStage);
       let gives: string | undefined;
+      let givesAny = false;
       let place: string | undefined;
       const conditions = conditionsOf(encounter);
       if (method.identifier === "npc-trade") {
@@ -1001,8 +1002,8 @@ export function buildGame(file: GameFile, t: Tables): GameData {
           continue;
         }
         const species = wanted[0].slice("trade-".length);
-        if (species !== "any-pokemon")
-          gives = regionalSpecies(species, `trade for ${speciesIdentifier}`);
+        if (species === "any-pokemon") givesAny = true;
+        else gives = regionalSpecies(species, `trade for ${speciesIdentifier}`);
         const trade = file.trades[speciesIdentifier];
         if (trade) {
           usedTrades.add(speciesIdentifier);
@@ -1052,7 +1053,11 @@ export function buildGame(file: GameFile, t: Tables): GameData {
               : `${locationName} (${areaName})`,
         method: methodNames.get(method.id) ?? method.identifier,
         ...(once && { once }),
-        ...(gives ? { gives } : { levels }),
+        ...(gives
+          ? { gives }
+          : givesAny
+            ? { givesAny: true as const }
+            : { levels }),
       };
       const key = `${source.species}|${source.location}|${source.method}|${stage}`;
       const existing = merged.get(key);

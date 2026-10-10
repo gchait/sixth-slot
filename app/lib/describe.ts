@@ -1,13 +1,21 @@
 import type { Candidate, Options } from "../../engine/candidates.ts";
 import { met, type GameData, type Source } from "../../engine/data.ts";
 
-/** "Before Brock": a stage, named by the battle it leads to. */
+/**
+ * "Before Brock": a stage, named by the battle it leads to, with the battle's
+ * title when the opponent was met before, as in a rematch.
+ */
 export function stageName(
   game: GameData,
   options: Options,
   stage: number,
 ): string {
-  return `Before ${met(game.battles[stage], options).name}`;
+  const battle = game.battles[stage];
+  const { name } = met(battle, options);
+  const again = game.battles
+    .slice(0, stage)
+    .some((earlier) => met(earlier, options).name === name);
+  return again ? `Before ${name} (${battle.title})` : `Before ${name}`;
 }
 
 type PlacedSource = Source & { species: string };
@@ -37,9 +45,13 @@ export function describeSource(game: GameData, source: PlacedSource): string {
   const name = game.species[source.species].name;
   if ("gives" in source)
     return `${name} · ${source.location} · trade your ${game.species[source.gives].name}`;
+  if ("givesAny" in source)
+    return `${name} · ${source.location} · trade any Pokémon`;
   const [min, max] = source.levels;
   const levels = min === max ? `Lv ${min}` : `Lv ${min}–${max}`;
-  return `${name} · ${source.location} · ${source.method.toLowerCase()} · ${levels}`;
+  const method =
+    source.method[0].toLowerCase() + source.method.slice(1).replace(/\.$/, "");
+  return `${name} · ${source.location} · ${method} · ${levels}`;
 }
 
 /** "Charmander → Charmeleon (Lv 16) → Charizard (Lv 36)". */
