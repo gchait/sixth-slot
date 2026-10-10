@@ -295,30 +295,6 @@
         }
       ]
     },
-    "moves": {
-      "default": {},
-      "description": "Moves an evolution needs that only a tutor or TM teaches, by when it can.",
-      "type": "object",
-      "propertyNames": {
-        "type": "string",
-        "pattern": "^[a-z0-9-]+$"
-      },
-      "additionalProperties": {
-        "anyOf": [
-          {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 9007199254740991,
-            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
-          },
-          {
-            "type": "string",
-            "const": "postgame"
-          }
-        ],
-        "description": "A stage, or postgame when only obtainable in the post-game story."
-      }
-    },
     "evolutionConditions": {
       "default": {},
       "description": "Evolution conditions other than level, items or trades, by when they can be met.",

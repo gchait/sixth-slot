@@ -185,12 +185,6 @@ export const gameSchema = z.strictObject({
     .describe(
       "When the Move Reminder can first reteach level-up moves, paid with items found without grinding; left out if the game has none or its price needs grinding.",
     ),
-  moves: z
-    .record(identifier, storyStage)
-    .default({})
-    .describe(
-      "Moves an evolution needs that only a tutor or TM teaches, by when it can.",
-    ),
   evolutionConditions: z
     .strictObject({ beauty: storyStage.optional() })
     .default({})

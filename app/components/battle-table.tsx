@@ -5,7 +5,7 @@ import { Sprite } from "~/components/sprite";
 import { cn } from "~/lib/utils";
 
 /** How a matchup score reads to a player. */
-export function rating(score: number | null): {
+function rating(score: number | null): {
   label: string;
   className: string;
 } {

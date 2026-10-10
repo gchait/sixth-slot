@@ -5,7 +5,7 @@ import type { GameFile } from "../data/schema.ts";
 import { englishNames, type Table, type Tables } from "./pokeapi.ts";
 
 type Row = Record<string, string>;
-export type Placement = GameFile["locations"][string];
+type Placement = GameFile["locations"][string];
 
 export function indexBy(table: Table, key: string): Map<string, Row> {
   return new Map(table.map((row) => [row[key], row]));

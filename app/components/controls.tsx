@@ -85,7 +85,6 @@ export function Controls({
           <h3 className="text-sm font-medium">Version</h3>
           <ToggleGroup
             type="single"
-            variant="outline"
             value={options.version}
             onValueChange={(version) =>
               version && set({ version, pinned: [], banned: [] })

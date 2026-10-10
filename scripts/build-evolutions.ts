@@ -185,9 +185,11 @@ export function buildEvolutions(
     if (row.known_move_id) {
       const move = moveRowsById.get(row.known_move_id)!.identifier;
       const level = learnLevel(from, (id) => id === row.known_move_id);
-      if (level !== undefined)
-        requires.level = Math.max(requires.level ?? 0, level);
-      else atStage(needStage(file.moves[move], context, `moves.${move}`));
+      if (level === undefined)
+        errors.push(
+          `${context} needs ${move}, which it does not learn by level`,
+        );
+      else requires.level = Math.max(requires.level ?? 0, level);
       label.push(`knowing ${moveNames.get(row.known_move_id) ?? move}`);
     }
     if (row.known_move_type_id) {
