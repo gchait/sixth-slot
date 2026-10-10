@@ -117,6 +117,11 @@ locations:
   kanto-route-28: 21
   mt-silver: 21
 
+# Not in the game's own encounter tables, data/wild/johto_grass.asm in
+# https://github.com/pret/pokecrystal, nor in Bulbapedia's Meowth availability.
+wrongEncounters:
+  johto-route-35@walk: [meowth]
+
 methods:
   old-rod: 1 # Route 32
   headbutt-low: 2 # TM02, Ilex Forest

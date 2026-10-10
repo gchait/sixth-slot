@@ -384,6 +384,16 @@ describe("HeartGold & SoulSilver", () => {
     // Route 47's tall grass waits for Waterfall, but Cliff Cave does not.
     expect(Math.min(...stagesOf("heartgold", "steelix"))).toBe(5);
   });
+
+  test("leaves out encounters PokeAPI lists wrongly, and entries it no longer lists", () => {
+    expect(stagesOf("heartgold", "golem")).toEqual([]);
+    const file = readGameFile("heartgold-soulsilver");
+    file.wrongEncounters["johto-safari-zone/peak@walk"] = ["geodude"];
+    file.wrongEncounters["johto-route-29"] = ["golem"];
+    expect(() => buildGame(file, tables)).toThrow(
+      "wrongEncounters: PokeAPI has no golem at johto-route-29",
+    );
+  });
 });
 
 describe("Black & White", () => {

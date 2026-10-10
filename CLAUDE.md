@@ -7,7 +7,8 @@ See README.md for what the project does and how it is laid out.
   be too old for React Router, Vitest and the `.ts` scripts.
 - A change is done when `pnpm check` and `pnpm test:e2e` both pass.
 - Every fact in `data/games/` comes from a source: PokeAPI, or Bulbapedia for
-  stages and battles. Never fill one in from memory; when the source is not
+  stages and battles. Where the game's decompilation or Bulbapedia shows
+  PokeAPI is wrong, they win. Never fill one in from memory; when the source is not
   obvious, say where it is in a comment.
 - `generated/` holds the built game data and is not committed: the Vite plugin
   in `scripts/vite-game-data.ts` writes it when the dev server or a build

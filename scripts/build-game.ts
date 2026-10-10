@@ -857,7 +857,10 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   const methodIdentifiers = new Set(
     t.encounter_methods.map((row) => row.identifier),
   );
-  for (const key of Object.keys(file.locations)) {
+  for (const key of [
+    ...Object.keys(file.locations),
+    ...Object.keys(file.wrongEncounters),
+  ]) {
     const [place, method] = key.split("@");
     const [location, area] = place.split("/");
     if (method && !methodIdentifiers.has(method))
@@ -932,6 +935,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     }
   }
   const unmappedConditions = new Set<string>();
+  const matchedWrong = new Set<string>();
   const sources: Record<string, Record<string, Source[]>> = {};
   for (const version of t.versions.filter(
     (v) => v.version_group_id === versionGroup.id,
@@ -946,11 +950,24 @@ export function buildGame(file: GameFile, t: Tables): GameData {
         slots.get(encounter.encounter_slot_id)!.encounter_method_id,
       )!;
       const inArea = `${location.identifier}/${area.identifier}`;
+      const keys = [
+        `${inArea}@${method.identifier}`,
+        `${location.identifier}@${method.identifier}`,
+        inArea,
+        location.identifier,
+      ];
+      const pokemon = speciesById.get(
+        pokemonSpecies.get(encounter.pokemon_id)!,
+      )!.identifier;
+      const wrong = keys.find((key) =>
+        file.wrongEncounters[key]?.includes(pokemon),
+      );
+      if (wrong) {
+        matchedWrong.add(`${wrong} ${pokemon}`);
+        continue;
+      }
       const placement = inVersion(
-        file.locations[`${inArea}@${method.identifier}`] ??
-          file.locations[`${location.identifier}@${method.identifier}`] ??
-          file.locations[inArea] ??
-          file.locations[location.identifier],
+        keys.map((key) => file.locations[key]).find((p) => p !== undefined),
         version.identifier,
       );
       if (placement === undefined) {
@@ -1067,6 +1084,12 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     errors.push(
       `encounterConditions: ${condition} applies to an encounter but has no stage`,
     );
+  for (const [key, species] of Object.entries(file.wrongEncounters)) {
+    for (const pokemon of species) {
+      if (!matchedWrong.has(`${key} ${pokemon}`))
+        errors.push(`wrongEncounters: PokeAPI has no ${pokemon} at ${key}`);
+    }
+  }
   for (const traded of Object.keys(file.trades)) {
     if (!usedTrades.has(traded))
       errors.push(`trades: ${traded} is not traded during the story`);

@@ -35,6 +35,13 @@ const locationPlacement = z.union([
     ),
 ]);
 
+const locationKey = z
+  .string()
+  .regex(
+    /^[a-z0-9-]+(\/[a-z0-9-]+)?(@[a-z0-9-]+)?$/,
+    "use location, location/area, optionally followed by @method",
+  );
+
 const spriteFolder = z
   .string()
   .regex(/^[a-z0-9-]+(\/[a-z0-9-]+)+$/)
@@ -113,17 +120,15 @@ export const gameSchema = z.strictObject({
       "Gifts that depend on the player's starter: the species each starter is given.",
     ),
   locations: z
-    .record(
-      z
-        .string()
-        .regex(
-          /^[a-z0-9-]+(\/[a-z0-9-]+)?(@[a-z0-9-]+)?$/,
-          "use location, location/area, optionally followed by @method",
-        ),
-      locationPlacement,
-    )
+    .record(locationKey, locationPlacement)
     .describe(
       "When each PokeAPI location is first reached on the standard route. location/area narrows a key to an area and @method to an encounter method; the most specific key wins. Every location with encounters needs a key.",
+    ),
+  wrongEncounters: z
+    .record(locationKey, z.array(identifier).min(1))
+    .default({})
+    .describe(
+      "Species PokeAPI lists under a location key that the game does not have there, left out. Each must match an encounter, so an entry fails the build once PokeAPI is corrected.",
     ),
   methods: z
     .record(identifier, storyStage)

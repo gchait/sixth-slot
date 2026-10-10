@@ -115,6 +115,23 @@
       },
       "description": "When each PokeAPI location is first reached on the standard route. location/area narrows a key to an area and @method to an encounter method; the most specific key wins. Every location with encounters needs a key."
     },
+    "wrongEncounters": {
+      "default": {},
+      "description": "Species PokeAPI lists under a location key that the game does not have there, left out. Each must match an encounter, so an entry fails the build once PokeAPI is corrected.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+(\\/[a-z0-9-]+)?(@[a-z0-9-]+)?$"
+      },
+      "additionalProperties": {
+        "minItems": 1,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        }
+      }
+    },
     "methods": {
       "default": {},
       "description": "Encounter methods that need an item or Badge first; unlisted methods need nothing.",

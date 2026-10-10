@@ -144,6 +144,13 @@ locations:
   unknown-all-poliwag: excluded
   unknown-all-rattata: excluded
 
+# Not in the game's own encounter tables, files/arc/safari_enc.json in
+# https://github.com/pret/pokeheartgold, nor in Bulbapedia's Johto Safari Zone.
+wrongEncounters:
+  johto-safari-zone/peak@walk: [golem]
+  johto-safari-zone/plains@walk: [pidgeotto]
+  johto-safari-zone/mountain@walk: [pidgeotto, krabby, sealeo]
+
 methods:
   old-rod: 1 # Route 32
   headbutt: 2 # Ilex Forest

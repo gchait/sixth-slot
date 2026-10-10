@@ -104,7 +104,9 @@ Generation I is not supported yet, since it has a single Special stat.
 
 Game data comes from [PokeAPI](https://pokeapi.co), and sprites are loaded from
 its sprite repository. Story order, trainer teams and game mechanics come from
-[Bulbapedia](https://bulbapedia.bulbagarden.net).
+[Bulbapedia](https://bulbapedia.bulbagarden.net), and corrections to PokeAPI's
+encounters from Bulbapedia and the [pret](https://github.com/pret)
+decompilations.
 
 Pokémon is © Nintendo, Creatures Inc. and GAME FREAK inc. This is an
 unofficial fan project, not affiliated with or endorsed by them. It distributes
