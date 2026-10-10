@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=../game.schema.json
 #
-# Pokémon HeartGold and SoulSilver, staged by the order of play in Bulbapedia's
-# walkthrough:
+# Pokémon HeartGold and SoulSilver, staged with Bulbapedia's walkthrough:
 # https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_HeartGold_and_SoulSilver
 
 name: HeartGold & SoulSilver
@@ -17,39 +16,46 @@ locations:
   # Before Falkner (parts 1–3)
   new-bark-town: 0
   johto-route-29: 0
+  johto-route-46: 0 # Its southern part, from Route 29
   cherrygrove-city: 0
   johto-route-30: 0
   johto-route-31: 0
   dark-cave/violet-city-entrance: 0 # The cave entrance on Route 31
   violet-city: 0
   sprout-tower: 0
-  # Before Bugsy (parts 4–5)
+  ruins-of-alph: 0 # The puzzle chambers, by Route 32's fork before Elm's aide
+  ruins-of-alph/outside: 4 # The grass and water west of the ruins, through Union Cave with Surf
+  # Before Bugsy (parts 4–5): Route 32 continues south once Elm's aide gives the Egg
   johto-route-32: 1
-  ruins-of-alph: 1
   union-cave: 1
   union-cave/b2f: 4 # Across water, with Surf
   johto-route-33: 1
   azalea-town: 1
   slowpoke-well: 1
-  slowpoke-well/b1f: 6 # The lower floor, with Surf and Strength
-  # Before Whitney (parts 5–6)
+  slowpoke-well/b1f: 4 # The lower floor, with Surf and Strength
+  # Before Whitney (parts 5–6): Ilex Forest's Farfetch'd, after the rival in Azalea Town
   ilex-forest: 2
   johto-route-34: 2
   goldenrod-city: 2
-  # Before Morty (parts 7–8)
-  johto-route-35: 3
-  goldenrod-city/north-gate: 3 # Webster, at the Route 35 gate
-  national-park: 3
-  johto-route-36: 3
+  johto-route-35: 2
+  national-park: 2
+  johto-route-36: 2 # The grass west of Sudowoodo, from Route 35
+  # Before Morty (parts 7–11): Sudowoodo leaves after Whitney's SquirtBottle
   johto-route-37: 3
   ecruteak-city: 3
   goldenrod-city/bills-house: 3 # After meeting Bill in Ecruteak City
   burned-tower: 3
   roaming-johto: 3 # Raikou and Entei flee the Burned Tower
-  # Before Chuck (parts 8–10)
-  johto-route-38: 4
-  johto-route-39: 4
-  olivine-city: 4
+  johto-route-38: 3
+  johto-route-39: 3
+  olivine-city: 3
+  johto-route-42: 3 # Its lakes are passed through Mt. Mortar
+  mt-mortar: 3
+  mt-mortar/upper-cave: 8 # With Waterfall
+  mt-mortar/b1f: 8
+  johto-route-43: 3
+  lake-of-rage: 3
+  # Before Chuck (parts 9–10): Surf works with the Fog Badge
   johto-sea-route-40: 4
   johto-sea-route-41: 4
   cianwood-city: 4
@@ -61,77 +67,74 @@ locations:
   johto-route-47/cave-gate: 21 # A pond in Cliff Edge Gate, with Rock Climb
   johto-route-48: 5
   safari-zone-gate: 5
-  johto-safari-zone: 5
-  # Before Pryce (parts 10–11)
-  johto-route-42: 6
-  mt-mortar: 6
-  mt-mortar/upper-cave: 8 # With Waterfall
-  mt-mortar/b1f: 8
-  johto-route-43: 6
-  lake-of-rage: 6
+  # The first visit opens one of ten layouts of six areas, each with the Peak at
+  # the entrance. The Area Customizer, for the other areas, comes with Baoba's
+  # call three hours of play later (part 31); this assumes the Elite Four.
+  johto-safari-zone/peak: 5
+  johto-safari-zone: 8
+  # Before Pryce (part 11)
   team-rocket-hq: 6
-  # Before Clair (parts 12–13)
+  # Before Clair (parts 12–13): the Mahogany salesman leaves after the Radio Tower
   johto-route-44: 7
   ice-path: 7
   whirl-islands: 7 # With Whirlpool
   blackthorn-city: 7
+  johto-route-45: 7
+  dark-cave/blackthorn-city-entrance: 7 # From Route 45; ledges block it from Route 31
   # Before the Elite Four (parts 13–15). The tower Pokémon come with the bell
   # from the Kimono Girls in one version, and with the wing from Pewter City in
   # the other (part 24).
   dragons-den: 8
-  johto-route-45: 8
-  dark-cave/blackthorn-city-entrance: 8
-  johto-route-46: 8
-  bell-tower: { heartgold: 8, soulsilver: 19 }
-  whirl-islands/b3f@static: { heartgold: 19, soulsilver: 8 }
+  bell-tower: { heartgold: 8, soulsilver: 13 }
+  whirl-islands/b3f@static: { heartgold: 13, soulsilver: 8 }
   kanto-route-27: 8
   tohjo-falls: 8
   kanto-route-26: 8
   kanto-victory-road-1: 8
-  # Kanto, after the Champion (parts 17–27)
+  # Kanto, after the Champion (parts 17–27): the S.S. Aqua docks at Vermilion City
   vermilion-city: 13
-  kanto-route-6: 14
-  saffron-city: 14
-  kanto-route-8: 15
-  kanto-route-10: 15
+  kanto-route-6: 13
+  saffron-city: 13
+  kanto-route-8: 13
+  kanto-route-10: 13
   kanto-route-10@static: 21 # Zapdos, once all 16 Badges are earned
-  rock-tunnel: 15
-  kanto-route-9: 15
-  kanto-power-plant: 15
-  cerulean-city: 15
-  kanto-route-24: 15
-  kanto-route-25: 15
+  rock-tunnel: 13
+  kanto-route-9: 13
+  kanto-power-plant: 13
+  cerulean-city: 13
+  kanto-route-24: 13
+  kanto-route-25: 13
   kanto-route-25@static: 18 # Suicune, after it is seen on Route 14 and Misty is beaten
-  kanto-route-5: 16
-  kanto-route-7: 16
-  celadon-city: 16
-  kanto-route-16: 17
-  kanto-route-17: 17
-  kanto-route-18: 17
-  fuchsia-city: 17
-  kanto-route-15: 18
-  kanto-route-14: 18
-  kanto-route-13: 18
-  kanto-route-12: 18
-  kanto-route-11: 18
-  digletts-cave: 18
+  kanto-route-5: 13
+  kanto-route-7: 13
+  celadon-city: 13
+  kanto-route-16: 13
+  kanto-route-17: 13
+  kanto-route-18: 13
+  fuchsia-city: 13
+  kanto-route-15: 13
+  kanto-route-14: 13
+  kanto-route-13: 13
+  kanto-route-12: 13
+  kanto-route-11: 13
+  digletts-cave: 13
   digletts-cave@npc-trade: excluded # Brock wants a Bonsly, which is not in the Johto Pokédex
-  kanto-route-2: 18
-  viridian-forest: 18
-  pewter-city: 18
-  kanto-route-3: 19
-  mt-moon: 19
-  kanto-route-4: 19
-  viridian-city: 19
-  kanto-route-1: 19
-  pallet-town: 19
-  kanto-sea-route-21: 19
-  cinnabar-island: 19
-  kanto-sea-route-20: 19
-  seafoam-islands: 19
-  kanto-sea-route-19: 20
+  kanto-route-2: 13
+  viridian-forest: 13
+  pewter-city: 13
+  kanto-route-3: 13
+  mt-moon: 13
+  kanto-route-4: 13
+  viridian-city: 13
+  kanto-route-1: 13
+  pallet-town: 13
+  kanto-sea-route-21: 13
+  cinnabar-island: 13
+  kanto-sea-route-20: 13
+  seafoam-islands: 13
+  kanto-sea-route-19: 13
+  kanto-route-22: 13
   # Once all 16 Badges are earned (parts 28–30)
-  kanto-route-22: 21
   kanto-route-28: 21
   mt-silver: 21
   cerulean-cave: 21
@@ -159,7 +162,7 @@ methods:
   surf: 4 # Ecruteak City, usable with the Fog Badge
   good-rod: 4 # Olivine City
   pokeflute: 15 # The EXPN Card, from Lavender's Radio Tower after the Power Plant
-  super-rod: 18 # Route 12
+  super-rod: 13 # Route 12
 
 trades:
   steelix: { stage: 33 } # Jasmine, after her rematch
@@ -172,17 +175,17 @@ items:
   moon-stone: 4 # Ruins of Alph, with Surf
   thunder-stone: 4 # Lass Dana's phone calls, Route 38
   water-stone: 6 # Fisherman Tully, Route 42
-  kings-rock: 6 # Slowpoke Well, with Surf and Strength
+  kings-rock: 4 # Slowpoke Well, with Surf and Strength
   dragon-scale: 8 # Mt. Mortar 2F, with Waterfall
   metal-coat: 13 # S.S. Aqua
-  up-grade: 14 # Silph Co.
+  up-grade: 13 # Silph Co.
 
 hms:
   cut: 2 # Ilex Forest
   rock-smash: 3 # Route 36
   surf: 3 # Ecruteak Dance Theater
   fly: 5 # Cianwood City, after Chuck
-  strength: 6 # Route 42
+  strength: 3 # Route 42, from a Hiker at Mt. Mortar
   whirlpool: 6 # Team Rocket HQ
   waterfall: 7 # Ice Path
   rock-climb: 21 # Professor Oak, once all 16 Badges are earned

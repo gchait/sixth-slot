@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../game.schema.json
 #
-# Pokémon Platinum, staged by the order of play in Bulbapedia's walkthrough:
+# Pokémon Platinum, staged with Bulbapedia's walkthrough:
 # https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Platinum
 
 name: Platinum
@@ -19,7 +19,8 @@ locations:
   oreburgh-gate: 0
   oreburgh-city: 0
   oreburgh-mine: 0
-  # Before Gardenia (parts 3–4)
+  sinnoh-route-204/south-towards-jubilife-city: 0 # Before Ravaged Path's rocks
+  # Before Gardenia (parts 3–4): Rock Smash works with the Coal Badge
   sinnoh-route-204: 1
   ravaged-path: 1
   floaroma-meadow: 1
@@ -27,6 +28,7 @@ locations:
   sinnoh-route-205: 1
   eterna-forest: 1
   eterna-city: 1
+  sinnoh-route-211/west-towards-eterna-city: 1
   # Before Fantina (parts 5–6)
   eterna-city/west-gate: 2 # Togepi Egg, from Cynthia
   old-chateau: 2
@@ -36,25 +38,25 @@ locations:
   mt-coronet: 2
   sinnoh-route-208: 2
   hearthome-city: 2
-  # Before Maylene (parts 6–8)
+  # Before Maylene (parts 6–8): Route 209's gate opens with the Relic Badge
   sinnoh-route-209: 3
   solaceon-ruins: 3
   lost-tower: 3
   sinnoh-route-210/south-towards-solaceon-town: 3
   sinnoh-route-215: 3
   veilstone-city: 3
-  # Before Crasher Wake (part 9)
-  sinnoh-route-214: 4
+  sinnoh-route-214: 3
   maniac-tunnel: excluded # After catching 26 kinds of Unown
-  ruin-maniac-cave: 4
-  valor-lakefront: 4
-  sinnoh-route-213: 4
-  pastoria-city: 4
-  great-marsh: 4
+  ruin-maniac-cave: 3
+  valor-lakefront: 3
+  sinnoh-route-213: 3
+  pastoria-city: 3
+  great-marsh: 3
+  sinnoh-route-212: 3 # Its north gate opens once Pastoria City is visited
   # Before Byron (parts 10–13)
-  sinnoh-route-212: 5
   sinnoh-route-210/west-towards-celestic-town: 5
   celestic-town: 5
+  sinnoh-route-211/east-towards-celestic-town: 5
   fuego-ironworks: 5
   sinnoh-route-219: 5
   sinnoh-sea-route-220: 5
@@ -131,10 +133,10 @@ items:
   water-stone: 3
   fire-stone: 3
   oval-stone: 3 # Lost Tower
-  magmarizer: 4 # Route 214
-  razor-fang: 4
+  magmarizer: 3 # Route 214
+  razor-fang: 3
+  dawn-stone: 3 # Route 212, in the mud near Pastoria City
   moon-stone: 5 # Celestic Town, with Surf
-  dawn-stone: 5 # Route 212
   electirizer: 5 # Fuego Ironworks, with Surf
   shiny-stone: 5 # Iron Island
   protector: 5
@@ -161,7 +163,7 @@ fieldMoves:
   surf: 5 # Fen Badge
 
 # https://bulbapedia.bulbagarden.net/wiki/Move_Reminder
-moveRelearner: 4 # Pastoria City, for Heart Scales mined in the Underground
+moveRelearner: 3 # Pastoria City, for Heart Scales mined in the Underground
 
 encounterConditions:
   time-*: 0 # Any time of day

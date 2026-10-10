@@ -112,10 +112,10 @@ describe("battle math", () => {
       game,
       fireRed({ starter: "squirtle" }),
     ).find((c) => c.id === "blastoise")!;
-    const moves = knownMoves(game, blastoise, 5);
+    const moves = knownMoves(game, blastoise, 4);
     expect(moves).toContain("water-gun");
     expect(moves).toContain("surf");
-    expect(knownMoves(game, blastoise, 4)).not.toContain("surf");
+    expect(knownMoves(game, blastoise, 3)).not.toContain("surf");
   });
 
   test("learns an evolved form's earlier moves only from the Move Reminder", async () => {

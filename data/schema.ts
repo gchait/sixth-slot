@@ -122,7 +122,7 @@ export const gameSchema = z.strictObject({
   locations: z
     .record(locationKey, locationPlacement)
     .describe(
-      "When each PokeAPI location is first reached on the standard route. location/area narrows a key to an area and @method to an encounter method; the most specific key wins. Every location with encounters needs a key.",
+      "When each PokeAPI location can first be reached, given the walkthrough's story so far; a place behind an event with a strong opponent, such as a villain's hideout, counts from where the walkthrough clears it. location/area narrows a key to an area and @method to an encounter method; the most specific key wins. Every location with encounters needs a key.",
     ),
   wrongEncounters: z
     .record(locationKey, z.array(identifier).min(1))

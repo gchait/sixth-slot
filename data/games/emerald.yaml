@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../game.schema.json
 #
-# Pokémon Emerald, staged by the order of play in Bulbapedia's walkthrough:
+# Pokémon Emerald, staged with Bulbapedia's walkthrough:
 # https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Emerald
 
 name: Emerald
@@ -21,22 +21,22 @@ locations:
   hoenn-route-104: 0
   petalburg-woods: 0
   rustboro-city: 0
-  # Before Brawly (parts 2–3)
-  hoenn-route-116: 1
-  rusturf-tunnel: 1
+  hoenn-route-116: 0
+  rusturf-tunnel: 0
+  # Before Brawly (parts 2–3): Mr. Briney sails once Peeko is rescued
   hoenn-route-105: 1
   hoenn-route-106: 1
   dewford-town: 1
-  # Before Wattson (parts 3–4)
-  granite-cave: 2
+  granite-cave: 1
+  # Before Wattson (parts 3–5): Mr. Briney sails on after the Letter reaches Steven
   hoenn-route-107: 2
   hoenn-route-108: 2
   hoenn-route-109: 2
   slateport-city: 2
   hoenn-route-110: 2
-  # Before Flannery (parts 5–7)
-  hoenn-route-117: 3
-  hoenn-route-118: 3
+  hoenn-route-117: 2
+  hoenn-route-118: 2 # The grass west of the river, from Mauville City
+  # Before Flannery (parts 5–7): Route 111's rocks need Rock Smash and the Dynamo Badge
   hoenn-route-111: 3
   hoenn-route-111@walk: 4 # The desert, which needs the Go-Goggles from Flannery
   hoenn-route-112: 3
@@ -47,45 +47,46 @@ locations:
   meteor-falls/b1f: 8 # Behind the waterfalls
   meteor-falls/back: 8
   meteor-falls/backsmall-room: 8
-  hoenn-route-115: 3
+  hoenn-route-115: 3 # Mostly reached from Meteor Falls
   jagged-pass: 3
   lavaridge-town: 3
   # Before Norman (part 8)
   mirage-tower: 4
-  # Before Winona (parts 9–10)
+  # Before Winona (parts 9–11): Surf works with the Balance Badge; Steven's
+  # Devon Scope opens Route 120
   abandoned-ship: 5
   new-mauville: 5
   hoenn-route-123: 5
   hoenn-route-119: 5
   fortree-city: 5
   hoenn-route-120: 5
-  # Before Tate & Liza (parts 11–14)
-  hoenn-route-121: 6
-  hoenn-safari-zone: 6
-  hoenn-route-122: 6
-  mt-pyre: 6
+  hoenn-route-121: 5
+  hoenn-safari-zone: 5
+  hoenn-route-122: 5
+  mt-pyre: 5
+  lilycove-city: 5
+  # Before Tate & Liza (parts 12–14): Route 124 opens once Team Aqua leaves Lilycove
   magma-hideout: 6
   team-magma-hideout: 6
-  lilycove-city: 6
   team-aqua-hideout: 6
   hoenn-route-124: 6
   mossdeep-city: 6
-  # Before Juan (parts 14–17)
-  hoenn-route-125: 7
-  shoal-cave: 7
-  hoenn-route-127: 7
-  hoenn-route-128: 7
+  hoenn-route-125: 6
+  shoal-cave: 6
+  hoenn-route-127: 6
+  hoenn-route-128: 6
+  hoenn-route-126: 6
+  hoenn-route-129: 6
+  hoenn-route-130: 6
+  hoenn-route-131: 6
+  pacifidlog-town: 6
+  hoenn-route-132: 6
+  hoenn-route-133: 6
+  hoenn-route-134: 6
+  # Before Juan (parts 14–17): Dive, from Steven after Tate & Liza
   seafloor-cavern: 7
-  hoenn-route-126: 7
   sootopolis-city: 7
   cave-of-origin: 7
-  hoenn-route-129: 7
-  hoenn-route-130: 7
-  hoenn-route-131: 7
-  pacifidlog-town: 7
-  hoenn-route-132: 7
-  hoenn-route-133: 7
-  hoenn-route-134: 7
   desert-ruins: 7
   island-cave: 7
   ancient-tomb: 7
@@ -134,7 +135,7 @@ items:
   water-stone: 7 # Abandoned Ship, with Dive
   deep-sea-tooth: 7 # From Captain Stern for the Scanner, found with Dive
   deep-sea-scale: 7
-  dragon-scale: 7 # Held by wild Horsea, Routes 132–134
+  dragon-scale: 6 # Held by wild Horsea, Routes 132–134
 
 evolutionConditions:
   beauty: 6 # Pokéblocks, with the Pokéblock Case from Lilycove's Contest Hall

@@ -72,12 +72,12 @@ describe("buildCandidates", () => {
 
   test("offers each stone evolution of Eevee once stones are sold", () => {
     for (const id of ["vaporeon", "jolteon", "flareon"]) {
-      expect(find(options(), id)).toMatchObject({ family: "eevee", joins: 3 });
+      expect(find(options(), id)).toMatchObject({ family: "eevee", joins: 2 });
     }
   });
 
   test("opens an in-game trade once the species it asks for can be held", () => {
-    expect(find(options(), "mr-mime")!.joins).toBe(3);
+    expect(find(options(), "mr-mime")!.joins).toBe(1);
     // Poliwhirl, which the Jynx trade asks for, first comes from the Super Rod.
     expect(find(options(), "jynx")!.joins).toBe(4);
   });
@@ -85,7 +85,7 @@ describe("buildCandidates", () => {
   test("leaves out legendaries unless allowed", () => {
     expect(find(options(), "zapdos")).toBeUndefined();
     expect(find(options({ allowLegendaries: true }), "zapdos")).toMatchObject({
-      joins: 7,
+      joins: 5,
     });
   });
 

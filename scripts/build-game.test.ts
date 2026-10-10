@@ -86,7 +86,7 @@ describe("FireRed & LeafGreen", () => {
 
   test("reads what in-game trades cost from PokeAPI", () => {
     expect(game.sources.firered["mr-mime"]).toEqual([
-      expect.objectContaining({ stage: 3, gives: "abra" }),
+      expect.objectContaining({ stage: 1, gives: "abra" }),
     ]);
     expect(game.sources.firered.lickitung[0]).toMatchObject({
       gives: "golduck",
@@ -104,7 +104,7 @@ describe("FireRed & LeafGreen", () => {
     });
     expect(evolution("raichu")).toMatchObject({
       label: "Thunder Stone",
-      requires: { stage: 3 },
+      requires: { stage: 2 },
     });
     expect(evolution("alakazam")).toMatchObject({
       label: "trade",
@@ -184,7 +184,7 @@ describe("game file checks", () => {
 
   test("rejects a field move that works before its HM is obtained", () => {
     const file = readGameFile("firered-leafgreen");
-    file.fieldMoves.fly = 4;
+    file.fieldMoves.fly = 3;
     expect(() => buildGame(file, tables)).toThrow(
       "fieldMoves.fly: works before hms.fly is obtained",
     );
@@ -360,8 +360,8 @@ describe("HeartGold & SoulSilver", () => {
 
   test("stages a place by version where the versions reach it at different times", () => {
     expect(stagesOf("heartgold", "ho-oh")).toEqual([8]);
-    expect(stagesOf("soulsilver", "ho-oh")).toEqual([19]);
-    expect(stagesOf("heartgold", "lugia")).toEqual([19]);
+    expect(stagesOf("soulsilver", "ho-oh")).toEqual([13]);
+    expect(stagesOf("heartgold", "lugia")).toEqual([13]);
     expect(stagesOf("soulsilver", "lugia")).toEqual([8]);
   });
 
@@ -377,12 +377,17 @@ describe("HeartGold & SoulSilver", () => {
     expect(stagesOf("heartgold", "houndoom")).toEqual([]);
     expect(stagesOf("heartgold", "porygon")).toEqual([]);
     expect(stagesOf("heartgold", "aerodactyl")).toEqual([]);
-    expect(stagesOf("heartgold", "snorlax")).toEqual([18]);
+    expect(stagesOf("heartgold", "snorlax")).toEqual([15]);
   });
 
   test("stages an area's method by the area before the method on the whole location", () => {
     // Route 47's tall grass waits for Waterfall, but Cliff Cave does not.
     expect(Math.min(...stagesOf("heartgold", "steelix"))).toBe(5);
+  });
+
+  test("counts the Safari Zone's other areas later than the Peak every layout has", () => {
+    expect(stagesOf("heartgold", "magneton")[0]).toBe(5);
+    expect(stagesOf("heartgold", "kangaskhan")[0]).toBe(8);
   });
 
   test("leaves out encounters PokeAPI lists wrongly, and entries it no longer lists", () => {

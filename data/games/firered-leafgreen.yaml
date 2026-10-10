@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=../game.schema.json
 #
-# Pokémon FireRed and LeafGreen, staged by the order of play in Bulbapedia's walkthrough:
+# Pokémon FireRed and LeafGreen, staged with Bulbapedia's walkthrough:
 # https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_FireRed_and_LeafGreen
 
 name: FireRed & LeafGreen
@@ -21,49 +21,48 @@ locations:
   kanto-route-22: 0
   kanto-route-2: 0
   viridian-forest: 0
-  # Before Misty
+  # Before Misty: Pewter's east exit opens with the Boulder Badge
   kanto-route-3: 1
   mt-moon: 1
   kanto-route-4: 1
   cerulean-city: 1
-  # Before Lt. Surge
-  kanto-route-24: 2
-  kanto-route-25: 2
-  kanto-route-5: 2
-  kanto-underground-path: 2
-  kanto-route-6: 2
-  vermilion-city: 2
-  ss-anne: 2
-  # Before Erika
-  kanto-route-11: 3
-  digletts-cave: 3
-  kanto-route-9: 3
-  kanto-route-10: 3
-  rock-tunnel: 3
-  kanto-route-8: 3
-  kanto-route-7: 3
-  celadon-city: 3
-  # Before Koga
-  celadon-city/prize-corner: 4
+  kanto-route-24: 1
+  kanto-route-25: 1
+  kanto-route-5: 1
+  kanto-underground-path: 1
+  kanto-route-6: 1
+  vermilion-city: 1
+  ss-anne: 1 # With the S.S. Ticket from Bill, on Route 25
+  kanto-route-11: 1
+  digletts-cave: 1
+  # Before Lt. Surge: Cut, from the S.S. Anne, works with the Cascade Badge
+  kanto-route-9: 2
+  kanto-route-10: 2
+  rock-tunnel: 2
+  kanto-route-8: 2
+  kanto-route-7: 2
+  celadon-city: 2
+  # Before Koga: the Poké Flute, after the Rocket Hideout and Pokémon Tower
   pokemon-tower: 4 # Ghosts can be caught only with the Silph Scope
   kanto-route-12: 4
   kanto-route-13: 4
   kanto-route-14: 4
   kanto-route-15: 4
   fuchsia-city: 4
-  # Before Sabrina
-  kanto-safari-zone: 5
-  kanto-route-18: 5
-  kanto-route-17: 5
-  kanto-route-16: 5
-  saffron-city: 5
-  # Before Blaine
-  kanto-sea-route-19: 6
-  kanto-sea-route-20: 6
-  seafoam-islands: 6
-  cinnabar-island: 6
-  pokemon-mansion: 6
-  # Before Giovanni
+  kanto-safari-zone: 4
+  kanto-route-18: 4
+  kanto-route-17: 4
+  kanto-route-16: 4
+  # Before Sabrina: Surf works with the Soul Badge
+  saffron-city: 5 # Gifts from the Fighting Dojo and Silph Co.
+  kanto-sea-route-19: 5
+  kanto-sea-route-20: 5
+  seafoam-islands: 5
+  cinnabar-island: 5
+  pokemon-mansion: 5
+  kanto-sea-route-21: 5
+  kanto-power-plant: 5
+  # Before Giovanni: Bill takes the player to the Sevii Islands after Blaine
   one-island: 7
   treasure-beach: 7
   kindle-road: 7
@@ -72,8 +71,6 @@ locations:
   three-isle-port: 7
   bond-bridge: 7
   berry-forest: 7
-  kanto-sea-route-21: 7
-  kanto-power-plant: 7
   # Before the Elite Four
   kanto-route-23: 8
   kanto-victory-road-2: 8
@@ -111,7 +108,7 @@ locations:
   kanto-pokecenter: excluded
 
 methods:
-  old-rod: 2 # Vermilion City
+  old-rod: 1 # Vermilion City
   good-rod: 4 # Fuchsia City
   super-rod: 4 # Route 12
   surf: 5 # Safari Zone, usable with the Soul Badge
@@ -119,19 +116,19 @@ methods:
   rock-smash: 7 # Kindle Road
 
 hms:
-  cut: 2 # S.S. Anne
-  surf: 5 # Safari Zone
-  strength: 5 # Safari Zone Warden, after the Safari Zone
-  fly: 5 # Route 16
+  cut: 1 # S.S. Anne
+  surf: 4 # Safari Zone
+  strength: 4 # Safari Zone Warden, after the Safari Zone
+  fly: 4 # Route 16
   rock-smash: 7 # Kindle Road
 
 # Badges from https://bulbapedia.bulbagarden.net/wiki/HM
 fieldMoves:
-  fly: 5 # Once obtained; the Thunder Badge comes earlier
+  fly: 4 # Once obtained; the Thunder Badge comes earlier
   surf: 5 # Soul Badge
 
 trades:
-  mr-mime: { stage: 3, place: "Route 2 (east side)" } # Behind a Cut tree
+  mr-mime: { stage: 1, place: "Route 2 (east side)" } # Through Diglett's Cave
 
 # https://bulbapedia.bulbagarden.net/wiki/Move_Reminder
 moveRelearner: 7 # Two Island, for Tiny Mushrooms from Mt. Moon or wild Paras
@@ -139,7 +136,7 @@ moveRelearner: 7 # Two Island, for Tiny Mushrooms from Mt. Moon or wild Paras
 encounterConditions:
   item-helix-fossil: 1 # Found in Mt. Moon, revived at Cinnabar Lab
   item-dome-fossil: 1
-  item-old-amber: 3 # Pewter Museum, with Cut
+  item-old-amber: 2 # Pewter Museum, with Cut
   # Game Corner prizes, by the prize money paid so far
   coins-120: 1
   coins-180: 1
@@ -154,10 +151,10 @@ encounterConditions:
 
 items:
   moon-stone: 1 # Mt. Moon
-  fire-stone: 3 # Celadon Department Store
-  water-stone: 3
-  thunder-stone: 3
-  leaf-stone: 3
+  fire-stone: 2 # Celadon Department Store
+  water-stone: 2
+  thunder-stone: 2
+  leaf-stone: 2
 
 battles:
   - id: brock

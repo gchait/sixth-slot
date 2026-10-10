@@ -91,8 +91,8 @@ The code is split in three:
 
 Games on the way are listed in `data/planned.yaml`, which the home page shows
 as coming soon; remove a game from there when it lands. Copy a file in
-`data/games/` and fill it in for the new game, following the order of play in
-a source such as the game's
+`data/games/` and fill it in for the new game, following the story in a source
+such as the game's
 [Bulbapedia walkthrough](https://bulbapedia.bulbagarden.net/wiki/Category:Walkthroughs).
 `data/schema.ts` describes every field, and editors show those descriptions
 through `data/game.schema.json`. `pnpm data` reports every location, encounter

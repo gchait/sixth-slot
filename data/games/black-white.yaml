@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=../game.schema.json
 #
-# Pokémon Black and White, staged by the order of play in Bulbapedia's
-# walkthrough:
+# Pokémon Black and White, staged with Bulbapedia's walkthrough:
 # https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Black_and_White
 
 name: Black & White
@@ -32,8 +31,8 @@ locations:
   # Before Lenora (part 3)
   unova-route-3: 1
   wellspring-cave: 1
+  pinwheel-forest/outside: 1 # Team Plasma blocks only the interior until the Basic Badge
   # Before Burgh (part 4)
-  pinwheel-forest/outside: 2
   pinwheel-forest/inside: 2
   nacrene-city/nacrene-museum: 2
   castelia-city/game-freak-hq-1f: excluded # Zorua, for an event Celebi
@@ -54,8 +53,8 @@ locations:
   driftveil-drawbridge: 4
   driftveil-city: 4
   cold-storage: 4
+  unova-route-6: 4 # Up to the web at Chargestone Cave, which Clay clears
   # Before Skyla (part 7)
-  unova-route-6: 5
   chargestone-cave: 5
   unova-route-7: 5
   celestial-tower: 5
