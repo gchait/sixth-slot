@@ -2,18 +2,20 @@
 // Every reference in the game file is checked against PokeAPI, and all problems
 // are reported together.
 import type { GameFile } from "../data/schema.ts";
-import type {
-  Battle,
-  Evolution,
-  EvolutionRequirements,
-  FieldMove,
-  GameData,
-  Move,
-  Opponent,
-  Source,
-  Species,
-  StatKey,
-  Stats,
+import {
+  met,
+  type Battle,
+  type BattleVariant,
+  type Evolution,
+  type EvolutionRequirements,
+  type FieldMove,
+  type GameData,
+  type Move,
+  type Opponent,
+  type Source,
+  type Species,
+  type StatKey,
+  type Stats,
 } from "../engine/data.ts";
 import {
   englishNames,
@@ -767,32 +769,53 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   const starters = file.starters.filter((s) => regionalSpecies(s, "starters"));
   let level = 0;
   const battles: Battle[] = file.battles.map((battle) => {
-    const parties: Record<string, Opponent[]> = {};
-    const shared = battle.party && opponents(battle.party, battle.id);
-    for (const starter of Object.keys(battle.partyByStarter ?? {})) {
-      if (!starters.includes(starter))
-        errors.push(`${battle.id}: ${starter} is not a starter`);
-    }
-    for (const starter of starters) {
-      const own = battle.partyByStarter?.[starter];
-      if (own) parties[starter] = opponents(own, `${battle.id} (${starter})`);
-      else if (shared) parties[starter] = shared;
-      else errors.push(`${battle.id}: no party for starter ${starter}`);
+    const variants: BattleVariant[] = battle.variants.map((variant, i) => {
+      const context = `${battle.id} variant ${i + 1}`;
+      if (variant.version && !versionIds.includes(variant.version))
+        errors.push(`${context}: ${variant.version} is not a version`);
+      if (variant.starter && !starters.includes(variant.starter))
+        errors.push(`${context}: ${variant.starter} is not a starter`);
+      return {
+        ...(variant.version && { version: variant.version }),
+        ...(variant.starter && { starter: variant.starter }),
+        ...(variant.name && { name: variant.name }),
+        ...(variant.party && { party: opponents(variant.party, context) }),
+      };
+    });
+    const built: Battle = {
+      id: battle.id,
+      ...(battle.name && { name: battle.name }),
+      title: battle.title,
+      postgame: battle.postgame,
+      level: 0,
+      ...(battle.party && { party: opponents(battle.party, battle.id) }),
+      ...(variants.length > 0 && { variants }),
+    };
+    for (const version of versionIds) {
+      for (const starter of starters) {
+        const player = `${version} with ${starter}`;
+        const matching = variants.filter(
+          (v) =>
+            (v.version === undefined || v.version === version) &&
+            (v.starter === undefined || v.starter === starter),
+        );
+        if (matching.length > 1)
+          errors.push(`${battle.id}: several variants for ${player}`);
+        const { name, party } = met(built, { version, starter });
+        if (name === undefined)
+          errors.push(`${battle.id}: no name for ${player}`);
+        if (party === undefined)
+          errors.push(`${battle.id}: no party for ${player}`);
+      }
     }
     level = Math.max(
       level,
-      ...Object.values(parties)
+      ...[built.party, ...variants.map((v) => v.party)]
         .flat()
-        .map((o) => o.level),
+        .map((o) => o?.level ?? 0),
     );
-    return {
-      id: battle.id,
-      name: battle.name,
-      title: battle.title,
-      postgame: battle.postgame,
-      level,
-      parties,
-    };
+    built.level = level;
+    return built;
   });
 
   const firstPostgame = battles.findIndex((b) => b.postgame);
@@ -1024,6 +1047,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   return {
     id: file.id,
     name: file.name,
+    generation,
     sprite: spriteUrl(file.sprites, "{national}"),
     versions,
     types,

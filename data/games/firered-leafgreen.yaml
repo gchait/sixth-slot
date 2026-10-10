@@ -258,28 +258,31 @@ battles:
   - id: champion
     name: Blue
     title: Champion
-    partyByStarter:
-      bulbasaur:
-        - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
-        - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
-        - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
-        - { species: exeggutor, level: 59, moves: [giga-drain, egg-bomb, sleep-powder, light-screen] }
-        - { species: gyarados, level: 61, moves: [hydro-pump, dragon-rage, bite, thrash] }
-        - { species: charizard, level: 63, moves: [fire-blast, aerial-ace, slash, fire-spin] }
-      charmander:
-        - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
-        - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
-        - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
-        - { species: arcanine, level: 59, moves: [extreme-speed, flamethrower, roar, bite] }
-        - { species: exeggutor, level: 61, moves: [giga-drain, egg-bomb, sleep-powder, light-screen] }
-        - { species: blastoise, level: 63, moves: [hydro-pump, rain-dance, skull-bash, bite] }
-      squirtle:
-        - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
-        - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
-        - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
-        - { species: gyarados, level: 59, moves: [hydro-pump, dragon-rage, bite, thrash] }
-        - { species: arcanine, level: 61, moves: [extreme-speed, flamethrower, roar, bite] }
-        - { species: venusaur, level: 63, moves: [solar-beam, synthesis, sunny-day, growth] }
+    variants:
+      - starter: bulbasaur
+        party:
+          - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
+          - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
+          - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
+          - { species: exeggutor, level: 59, moves: [giga-drain, egg-bomb, sleep-powder, light-screen] }
+          - { species: gyarados, level: 61, moves: [hydro-pump, dragon-rage, bite, thrash] }
+          - { species: charizard, level: 63, moves: [fire-blast, aerial-ace, slash, fire-spin] }
+      - starter: charmander
+        party:
+          - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
+          - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
+          - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
+          - { species: arcanine, level: 59, moves: [extreme-speed, flamethrower, roar, bite] }
+          - { species: exeggutor, level: 61, moves: [giga-drain, egg-bomb, sleep-powder, light-screen] }
+          - { species: blastoise, level: 63, moves: [hydro-pump, rain-dance, skull-bash, bite] }
+      - starter: squirtle
+        party:
+          - { species: pidgeot, level: 59, moves: [aerial-ace, feather-dance, sand-attack, whirlwind] }
+          - { species: alakazam, level: 57, moves: [psychic, future-sight, recover, reflect] }
+          - { species: rhydon, level: 59, moves: [take-down, earthquake, rock-tomb, scary-face] }
+          - { species: gyarados, level: 59, moves: [hydro-pump, dragon-rage, bite, thrash] }
+          - { species: arcanine, level: 61, moves: [extreme-speed, flamethrower, roar, bite] }
+          - { species: venusaur, level: 63, moves: [solar-beam, synthesis, sunny-day, growth] }
   - id: lorelei-rematch
     name: Lorelei
     title: Elite Four rematch
@@ -324,25 +327,28 @@ battles:
     name: Blue
     title: Champion rematch
     postgame: true
-    partyByStarter:
-      bulbasaur:
-        - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
-        - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
-        - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
-        - { species: exeggutor, level: 73, moves: [sleep-powder, light-screen, giga-drain, psychic] }
-        - { species: gyarados, level: 73, moves: [dragon-dance, hydro-pump, earthquake, hyper-beam] }
-        - { species: charizard, level: 75, moves: [fire-blast, aerial-ace, dragon-claw, earthquake] }
-      charmander:
-        - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
-        - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
-        - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
-        - { species: arcanine, level: 73, moves: [overheat, extreme-speed, iron-tail, aerial-ace] }
-        - { species: exeggutor, level: 73, moves: [sleep-powder, light-screen, giga-drain, psychic] }
-        - { species: blastoise, level: 75, moves: [rain-dance, hydro-pump, ice-beam, earthquake] }
-      squirtle:
-        - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
-        - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
-        - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
-        - { species: gyarados, level: 73, moves: [dragon-dance, hydro-pump, earthquake, hyper-beam] }
-        - { species: arcanine, level: 73, moves: [overheat, extreme-speed, iron-tail, aerial-ace] }
-        - { species: venusaur, level: 75, moves: [sunny-day, solar-beam, sludge-bomb, earthquake] }
+    variants:
+      - starter: bulbasaur
+        party:
+          - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
+          - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
+          - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
+          - { species: exeggutor, level: 73, moves: [sleep-powder, light-screen, giga-drain, psychic] }
+          - { species: gyarados, level: 73, moves: [dragon-dance, hydro-pump, earthquake, hyper-beam] }
+          - { species: charizard, level: 75, moves: [fire-blast, aerial-ace, dragon-claw, earthquake] }
+      - starter: charmander
+        party:
+          - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
+          - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
+          - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
+          - { species: arcanine, level: 73, moves: [overheat, extreme-speed, iron-tail, aerial-ace] }
+          - { species: exeggutor, level: 73, moves: [sleep-powder, light-screen, giga-drain, psychic] }
+          - { species: blastoise, level: 75, moves: [rain-dance, hydro-pump, ice-beam, earthquake] }
+      - starter: squirtle
+        party:
+          - { species: heracross, level: 72, moves: [megahorn, counter, rock-tomb, earthquake] }
+          - { species: alakazam, level: 73, moves: [psychic, reflect, calm-mind, shadow-ball] }
+          - { species: tyranitar, level: 72, moves: [crunch, thunderbolt, earthquake, aerial-ace] }
+          - { species: gyarados, level: 73, moves: [dragon-dance, hydro-pump, earthquake, hyper-beam] }
+          - { species: arcanine, level: 73, moves: [overheat, extreme-speed, iron-tail, aerial-ace] }
+          - { species: venusaur, level: 75, moves: [sunny-day, solar-beam, sludge-bomb, earthquake] }

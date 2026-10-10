@@ -315,6 +315,7 @@
             "pattern": "^[a-z0-9-]+$"
           },
           "name": {
+            "description": "The opponent; left out when the variants name every one.",
             "type": "string"
           },
           "title": {
@@ -326,6 +327,7 @@
             "type": "boolean"
           },
           "party": {
+            "description": "The opponent's party; left out when the variants give every one.",
             "minItems": 1,
             "maxItems": 6,
             "type": "array",
@@ -359,52 +361,66 @@
               "additionalProperties": false
             }
           },
-          "partyByStarter": {
-            "description": "Parties keyed by the player's starter, for rivals.",
-            "type": "object",
-            "propertyNames": {
-              "type": "string",
-              "pattern": "^[a-z0-9-]+$"
-            },
-            "additionalProperties": {
-              "minItems": 1,
-              "maxItems": 6,
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "species": {
-                    "type": "string",
-                    "pattern": "^[a-z0-9-]+$"
-                  },
-                  "level": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 100
-                  },
-                  "moves": {
-                    "minItems": 1,
-                    "maxItems": 4,
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "pattern": "^[a-z0-9-]+$"
-                    }
-                  }
+          "variants": {
+            "default": [],
+            "description": "Opponents that depend on the version or the player's starter, such as rivals. Each version and starter matches at most one.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
                 },
-                "required": [
-                  "species",
-                  "level",
-                  "moves"
-                ],
-                "additionalProperties": false
-              }
+                "starter": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "party": {
+                  "minItems": 1,
+                  "maxItems": 6,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "species": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9-]+$"
+                      },
+                      "level": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100
+                      },
+                      "moves": {
+                        "minItems": 1,
+                        "maxItems": 4,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9-]+$"
+                        }
+                      }
+                    },
+                    "required": [
+                      "species",
+                      "level",
+                      "moves"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "description": "What players of a version, or with a starter, meet instead: another opponent's name, another party, or both."
             }
           }
         },
         "required": [
           "id",
-          "name",
           "title"
         ],
         "additionalProperties": false

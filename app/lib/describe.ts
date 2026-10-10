@@ -1,9 +1,13 @@
-import type { Candidate } from "../../engine/candidates.ts";
-import type { GameData, Source } from "../../engine/data.ts";
+import type { Candidate, Options } from "../../engine/candidates.ts";
+import { met, type GameData, type Source } from "../../engine/data.ts";
 
 /** "Before Brock": a stage, named by the battle it leads to. */
-export function stageName(game: GameData, stage: number): string {
-  return `Before ${game.battles[stage].name}`;
+export function stageName(
+  game: GameData,
+  options: Options,
+  stage: number,
+): string {
+  return `Before ${met(game.battles[stage], options).name}`;
 }
 
 type PlacedSource = Source & { species: string };

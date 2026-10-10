@@ -11,7 +11,7 @@ import {
   type Matchup,
 } from "./battle.ts";
 import { buildCandidates, type Candidate, type Options } from "./candidates.ts";
-import { fieldMoveNames, type GameData, type Opponent } from "./data.ts";
+import { fieldMoveNames, met, type GameData, type Opponent } from "./data.ts";
 
 export const TEAM_SIZE = 6;
 /** Penalty per member beyond two that is weak to the same attacking type. */
@@ -46,8 +46,7 @@ export function scoredBattles(game: GameData, options: Options): number[] {
 export function opponentsFor(game: GameData, options: Options): Slot[] {
   const battles = scoredBattles(game, options);
   return battles.flatMap((b) => {
-    const { parties } = game.battles[b];
-    const party = parties[options.starter];
+    const { party } = met(game.battles[b], options);
     return party.map((opponent) => ({
       battle: b,
       opponent,

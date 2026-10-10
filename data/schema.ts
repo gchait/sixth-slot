@@ -57,26 +57,42 @@ const opponent = z.strictObject({
 
 const party = z.array(opponent).min(1).max(6);
 
-const battle = z
+const battleVariant = z
   .strictObject({
-    id: identifier,
-    name: z.string(),
-    title: z.string(),
-    postgame: z
-      .boolean()
-      .default(false)
-      .describe(
-        "A battle after the Champion, such as a rematch; scored only when the player asks. These come after every story battle.",
-      ),
+    version: identifier.optional(),
+    starter: identifier.optional(),
+    name: z.string().optional(),
     party: party.optional(),
-    partyByStarter: z
-      .record(identifier, party)
-      .optional()
-      .describe("Parties keyed by the player's starter, for rivals."),
   })
-  .refine((b) => (b.party === undefined) !== (b.partyByStarter === undefined), {
-    message: "give exactly one of party or partyByStarter",
-  });
+  .describe(
+    "What players of a version, or with a starter, meet instead: another opponent's name, another party, or both.",
+  );
+
+const battle = z.strictObject({
+  id: identifier,
+  name: z
+    .string()
+    .optional()
+    .describe("The opponent; left out when the variants name every one."),
+  title: z.string(),
+  postgame: z
+    .boolean()
+    .default(false)
+    .describe(
+      "A battle after the Champion, such as a rematch; scored only when the player asks. These come after every story battle.",
+    ),
+  party: party
+    .optional()
+    .describe(
+      "The opponent's party; left out when the variants give every one.",
+    ),
+  variants: z
+    .array(battleVariant)
+    .default([])
+    .describe(
+      "Opponents that depend on the version or the player's starter, such as rivals. Each version and starter matches at most one.",
+    ),
+});
 
 export const gameSchema = z.strictObject({
   name: z.string(),

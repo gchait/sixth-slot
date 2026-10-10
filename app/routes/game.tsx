@@ -132,6 +132,7 @@ function Results({
             <MemberCard
               key={c.id}
               game={game}
+              options={options}
               candidate={c}
               isStarter={c.family === options.starter}
               pinned={options.pinned.includes(c.id)}
@@ -186,7 +187,7 @@ function Results({
             by then.
           </p>
         </div>
-        <BattleTable game={game} reports={reports} />
+        <BattleTable game={game} options={options} reports={reports} />
       </section>
     </div>
   );

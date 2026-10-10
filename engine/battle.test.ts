@@ -68,6 +68,21 @@ describe("battle math", () => {
     );
   });
 
+  test("blocks Electric with Lightning Rod and Water with Storm Drain only from generation V", () => {
+    const electric = game.types.indexOf("electric");
+    const water = game.types.indexOf("water");
+    const rod = { ...game.species.pikachu, abilities: ["lightning-rod"] };
+    const drain = { ...game.species.lapras, abilities: ["storm-drain"] };
+    expect(effectiveness(game, electric, rod)).toBeGreaterThan(0);
+    expect(effectiveness(game, water, drain)).toBeGreaterThan(0);
+    const fifth = { ...game, generation: 5 };
+    expect(effectiveness(fifth, electric, rod)).toBe(0);
+    expect(effectiveness(fifth, water, drain)).toBe(0);
+    const grass = game.types.indexOf("grass");
+    const sipper = { ...game.species.tauros, abilities: ["sap-sipper"] };
+    expect(effectiveness(fifth, grass, sipper)).toBe(0);
+  });
+
   test("scales damage with effectiveness and same-type bonus", () => {
     const { squirtle, geodude, rattata } = game.species;
     const water = damageFraction(game, "water-gun", squirtle, 20, geodude, 20);

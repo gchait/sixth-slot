@@ -1,6 +1,6 @@
 import { Ban, Pin, PinOff } from "lucide-react";
 
-import type { Candidate } from "../../engine/candidates.ts";
+import type { Candidate, Options } from "../../engine/candidates.ts";
 import type { GameData } from "../../engine/data.ts";
 import { Sprite } from "~/components/sprite";
 import { TypeBadge } from "~/components/type-badge";
@@ -21,6 +21,7 @@ import {
 
 export function MemberCard({
   game,
+  options,
   candidate,
   isStarter,
   pinned,
@@ -28,6 +29,7 @@ export function MemberCard({
   onBan,
 }: {
   game: GameData;
+  options: Options;
   candidate: Candidate;
   isStarter: boolean;
   pinned: boolean;
@@ -97,7 +99,7 @@ export function MemberCard({
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
             <Badge variant="secondary">
-              {stageName(game, candidate.joins)}
+              {stageName(game, options, candidate.joins)}
             </Badge>
             {isStarter && <Badge variant="outline">Starter</Badge>}
             {pinned && <Badge variant="outline">Pinned</Badge>}
@@ -124,7 +126,7 @@ export function MemberCard({
                 {mergePlaces(more).map((source, i) => (
                   <li key={i} className="text-muted-foreground text-xs">
                     <span className="text-foreground font-medium">
-                      {stageName(game, source.stage)}:
+                      {stageName(game, options, source.stage)}:
                     </span>{" "}
                     {describeSource(game, source)}
                   </li>

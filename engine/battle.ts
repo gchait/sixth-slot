@@ -19,14 +19,20 @@ function always(species: Species, ...abilities: string[]): boolean {
   );
 }
 
-/** Types that an ability makes its holder immune to. */
-const immunities: Record<string, string> = {
-  levitate: "ground",
-  "flash-fire": "fire",
-  "volt-absorb": "electric",
-  "water-absorb": "water",
-  "motor-drive": "electric",
-  "dry-skin": "water",
+/**
+ * Types that an ability makes its holder immune to, and the generation it
+ * first does, when that came later than the ability.
+ */
+const immunities: Record<string, { type: string; since?: number }> = {
+  levitate: { type: "ground" },
+  "flash-fire": { type: "fire" },
+  "volt-absorb": { type: "electric" },
+  "water-absorb": { type: "water" },
+  "motor-drive": { type: "electric" },
+  "dry-skin": { type: "water" },
+  "lightning-rod": { type: "electric", since: 5 },
+  "storm-drain": { type: "water", since: 5 },
+  "sap-sipper": { type: "grass" },
 };
 
 /**
@@ -41,8 +47,13 @@ export function effectiveness(
   defender: Species,
 ): number {
   const typeName = game.types[moveType];
-  for (const [ability, immuneTo] of Object.entries(immunities)) {
-    if (typeName === immuneTo && always(defender, ability)) return 0;
+  for (const [ability, { type, since = 0 }] of Object.entries(immunities)) {
+    if (
+      typeName === type &&
+      game.generation >= since &&
+      always(defender, ability)
+    )
+      return 0;
   }
   let ability = 1;
   if (

@@ -1,4 +1,5 @@
-import type { GameData } from "../../engine/data.ts";
+import type { Options } from "../../engine/candidates.ts";
+import { met, type GameData } from "../../engine/data.ts";
 import type { BattleReport } from "../../engine/search.ts";
 import { Sprite } from "~/components/sprite";
 import { cn } from "~/lib/utils";
@@ -22,9 +23,11 @@ export function rating(score: number | null): {
 
 export function BattleTable({
   game,
+  options,
   reports,
 }: {
   game: GameData;
+  options: Options;
   reports: BattleReport[];
 }) {
   return (
@@ -38,7 +41,7 @@ export function BattleTable({
             className="grid grid-cols-1 gap-2 p-3 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-4"
           >
             <header className="flex items-baseline justify-between gap-2 sm:block">
-              <h3 className="font-semibold">{battle.name}</h3>
+              <h3 className="font-semibold">{met(battle, options).name}</h3>
               <p className="text-muted-foreground text-xs">
                 {battle.title} ·{" "}
                 <span className={cn("font-medium", overall.className)}>

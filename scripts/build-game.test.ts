@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { gameSchema } from "../data/schema.ts";
-import type { GameData } from "../engine/data.ts";
+import { met, type GameData } from "../engine/data.ts";
 import { buildGame, isPhysical } from "./build-game.ts";
 import { loadGame, readGameFile, readPlannedGames } from "./games.ts";
 import { loadTables, type Tables } from "./pokeapi.ts";
@@ -138,12 +138,9 @@ describe("FireRed & LeafGreen", () => {
       "champion",
     ]);
     const champion = game.battles.find((b) => b.id === "champion")!;
-    expect(Object.keys(champion.parties).sort()).toEqual([
-      "bulbasaur",
-      "charmander",
-      "squirtle",
-    ]);
-    expect(champion.parties.bulbasaur.at(-1)!.species).toBe("charizard");
+    const rival = met(champion, { version: "firered", starter: "bulbasaur" });
+    expect(rival.name).toBe("Blue");
+    expect(rival.party.at(-1)!.species).toBe("charizard");
     expect(champion.level).toBe(63);
   });
 });
@@ -433,6 +430,32 @@ describe("planned games", () => {
       expect(problems.filter((p) => !/no (story )?stage$/.test(p))).toEqual([]);
     },
   );
+});
+
+describe("battle variants", () => {
+  const champion = (file: ReturnType<typeof readGameFile>) =>
+    file.battles.find((b) => b.id === "champion")!;
+
+  test("must give every version and starter a party", () => {
+    const file = readGameFile("firered-leafgreen");
+    champion(file).variants.pop();
+    expect(() => buildGame(file, tables)).toThrow(
+      "champion: no party for firered with squirtle",
+    );
+  });
+
+  test("must not overlap or name an unknown version", () => {
+    const file = readGameFile("firered-leafgreen");
+    champion(file).variants.push(
+      { version: "firered", name: "Gary" },
+      { version: "crystal", name: "Silver" },
+    );
+    const build = () => buildGame(file, tables);
+    expect(build).toThrow(
+      "champion: several variants for firered with bulbasaur",
+    );
+    expect(build).toThrow("champion variant 5: crystal is not a version");
+  });
 });
 
 describe("game files with several Pokédexes", () => {

@@ -102,9 +102,18 @@ export interface Opponent {
   moves: string[];
 }
 
+/** An opponent met instead by players of a version, or with a starter. */
+export interface BattleVariant {
+  version?: string;
+  starter?: string;
+  name?: string;
+  party?: Opponent[];
+}
+
 export interface Battle {
   id: string;
-  name: string;
+  /** Left out when the variants name every opponent. */
+  name?: string;
   title: string;
   /** A battle after the Champion, such as a rematch, listed after every story battle. */
   postgame: boolean;
@@ -113,13 +122,15 @@ export interface Battle {
    * in it or any battle before, since a team does not lose levels.
    */
   level: number;
-  /** Keyed by the player's starter. */
-  parties: Record<string, Opponent[]>;
+  /** Left out when the variants give every party. */
+  party?: Opponent[];
+  variants?: BattleVariant[];
 }
 
 export interface GameData {
   id: string;
   name: string;
+  generation: number;
   /** Sprite URL with {national} standing for the National Pokédex number. */
   sprite: string;
   versions: { id: string; name: string }[];
@@ -156,4 +167,24 @@ export function spriteOf(game: GameData, species: string): string {
     "{national}",
     String(game.species[species].national),
   );
+}
+
+/**
+ * The opponent a player meets in a battle: the variant for their version and
+ * starter over the battle's own name and party. The build checks that every
+ * version and starter gets both.
+ */
+export function met(
+  battle: Battle,
+  player: { version: string; starter: string },
+): { name: string; party: Opponent[] } {
+  const variant = battle.variants?.find(
+    (v) =>
+      (v.version === undefined || v.version === player.version) &&
+      (v.starter === undefined || v.starter === player.starter),
+  );
+  return {
+    name: (variant?.name ?? battle.name)!,
+    party: (variant?.party ?? battle.party)!,
+  };
 }
