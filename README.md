@@ -15,7 +15,7 @@ the story.
 | Black 2 & White 2      |     V      | Unova           |
 | X & Y                  |     VI     | Kalos           |
 
-Generation I is not supported, since it has a single Special stat.
+Generation I is not supported.
 
 ## How teams are chosen
 
@@ -34,19 +34,18 @@ Generation I is not supported, since it has a single Special stat.
     season.
 - **One Pokémon per evolution family**, and one from each either-or gift, such
   as Hitmonlee or Hitmonchan.
-- **The moves needed outside battle all the time**, such as Fly and Surf, are
-  known by a member from when each works there. Moves needed only now and then,
-  such as Cut, are left to a Pokémon carried for them.
+- **Fly and Surf**: a member can use each from when it works outside battle.
+  Other moves used outside battle, such as Cut, are not required.
 
 ### Settings
 
-| Setting                    | Default | When on                                                                                   |
-| -------------------------- | :-----: | ----------------------------------------------------------------------------------------- |
-| No shared types            |   on    | No two members have a type in common.                                                     |
-| Legendaries                |   off   | Legendary Pokémon can join.                                                               |
-| Trade evolutions           |   off   | Evolutions that need a trade with another player count.                                   |
-| Post-game battles          |   off   | Rematches and battles after the story are scored too.                                     |
-| _Fly and Surf_ on the team |   on    | The team keeps the moves needed outside battle, as above; the label names the game's own. |
+| Setting                  | Default | When on                                                 |
+| ------------------------ | :-----: | ------------------------------------------------------- |
+| No shared types          |   on    | No two members have a type in common.                   |
+| Legendaries              |   off   | Legendary Pokémon can join.                             |
+| Trade evolutions         |   off   | Evolutions that need a trade with another player count. |
+| Post-game battles        |   off   | Rematches and battles after the story are scored too.   |
+| Fly and Surf on the team |   on    | The team keeps Fly and Surf, as above.                  |
 
 Any Pokémon can also be pinned to every team or excluded.
 

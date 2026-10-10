@@ -178,7 +178,7 @@ export const gameSchema = z.strictObject({
     .record(identifier, stage)
     .default({})
     .describe(
-      "Moves used outside battle throughout the game, too often to leave to a Pokémon kept only for them, by the stage from which they work outside battle. Teams keep a member that can use each from then on.",
+      "Moves used outside battle that the team must carry, by the stage from which they work outside battle. Teams keep a member that can use each from then on.",
     ),
   moveRelearner: storyStage
     .optional()

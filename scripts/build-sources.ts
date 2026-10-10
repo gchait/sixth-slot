@@ -225,10 +225,9 @@ export function buildSources(
       if (!available) continue;
       const locationName =
         locationNames.get(location.id) ?? location.identifier;
-      // Floors and sections matter little for wild Pokémon, but a one-time
-      // encounter is worth pinpointing.
+      // A one-time encounter also names its area, without a parenthesized floor
+      // or route number at the end.
       const once = oneTimeMethods.has(method.identifier);
-      // PokeAPI area names often end in a parenthesized floor or route number.
       const areaName =
         area.identifier && once
           ? areaNames.get(area.id)?.replace(/ \([^()]*\)$/, "")

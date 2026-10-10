@@ -138,7 +138,8 @@ export function buildEvolutions(
     const row = rows[0];
     const trigger = triggers.get(row.evolution_trigger_id);
     if (trigger === "shed") {
-      // Shedinja appears when Nincada evolves by level with a free party slot.
+      // Shedinja appears when Nincada evolves by level with a free party slot,
+      // and from generation IV a Poké Ball in the bag.
       shed.push({ from, to });
       continue;
     }
@@ -248,7 +249,7 @@ export function buildEvolutions(
       label.push(`with a ${types[type ?? 0]} Pokémon in the party`);
     }
     if (row.relative_physical_stats) {
-      // Which one depends on the Pokémon's stats, so it is hard to plan for.
+      // Which one depends on the Pokémon's Attack and Defense; it counts as random.
       requires.random = true;
       label.push(stats[row.relative_physical_stats]);
     }

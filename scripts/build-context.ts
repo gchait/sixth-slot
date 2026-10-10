@@ -83,9 +83,7 @@ export function buildContext(file: GameFile, t: Tables): BuildContext {
     throw new Error(`unknown version group ${file.versionGroup}`);
   const generation = Number(versionGroup.generation_id);
   if (generation === 1) {
-    throw new Error(
-      "generation 1 has a single Special stat, which is not supported",
-    );
+    throw new Error("generation 1 is not supported");
   }
 
   const versionNames = englishNames(t.version_names, "version_id");
