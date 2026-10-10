@@ -17,7 +17,7 @@ import { Card, CardContent } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
 import { readOptions, writeOptions } from "~/lib/options";
 import { useSearch } from "~/lib/use-search";
-import { cn } from "~/lib/utils";
+import { cn } from "cn";
 
 export async function loader({ pattern: id }: Route.LoaderArgs) {
   const text = await readFile(`generated/${id}.json`, "utf8");

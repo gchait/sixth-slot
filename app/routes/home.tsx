@@ -56,49 +56,44 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Choose a game</h2>
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {loaderData.games.map((game) => {
-            const card = (
-              <Card className="hover:bg-accent/50 transition-colors">
-                <CardHeader className="flex items-center justify-between gap-4">
-                  <div className="space-y-1.5">
-                    <CardTitle>{game.name}</CardTitle>
-                    {game.versions.length > 1 && (
-                      <CardDescription>
-                        {game.versions.join(" · ")}
-                      </CardDescription>
-                    )}
-                  </div>
-                  <div className="flex h-14 shrink-0 items-center">
-                    {game.starters.map((starter) => (
-                      <img
-                        key={starter.name}
-                        src={starter.url}
-                        alt={starter.name}
-                        width={starter.width}
-                        height={starter.height}
-                        style={{
-                          width: starter.width,
-                          height: starter.height,
-                          margin: `${(56 - starter.height) / 2}px ${(48 - starter.width) / 2}px`,
-                        }}
-                        className="max-w-none [image-rendering:pixelated]"
-                      />
-                    ))}
-                  </div>
-                </CardHeader>
-              </Card>
-            );
-            return (
-              <li key={game.id}>
-                <Link
-                  to={`/${game.id}/`}
-                  className="block rounded-xl focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]"
-                >
-                  {card}
-                </Link>
-              </li>
-            );
-          })}
+          {loaderData.games.map((game) => (
+            <li key={game.id}>
+              <Link
+                to={`/${game.id}/`}
+                className="block rounded-xl focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]"
+              >
+                <Card className="hover:bg-accent/50 transition-colors">
+                  <CardHeader className="flex items-center justify-between gap-4">
+                    <div className="space-y-1.5">
+                      <CardTitle>{game.name}</CardTitle>
+                      {game.versions.length > 1 && (
+                        <CardDescription>
+                          {game.versions.join(" · ")}
+                        </CardDescription>
+                      )}
+                    </div>
+                    <div className="flex h-14 shrink-0 items-center">
+                      {game.starters.map((starter) => (
+                        <img
+                          key={starter.name}
+                          src={starter.url}
+                          alt={starter.name}
+                          width={starter.width}
+                          height={starter.height}
+                          style={{
+                            width: starter.width,
+                            height: starter.height,
+                            margin: `${(56 - starter.height) / 2}px ${(48 - starter.width) / 2}px`,
+                          }}
+                          className="max-w-none [image-rendering:pixelated]"
+                        />
+                      ))}
+                    </div>
+                  </CardHeader>
+                </Card>
+              </Link>
+            </li>
+          ))}
         </ul>
       </section>
 

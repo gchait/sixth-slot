@@ -1,4 +1,4 @@
-import { cn } from "~/lib/utils";
+import { cn } from "cn";
 
 const colors: Record<string, string> = {
   normal: "bg-[#a8a878] text-white",

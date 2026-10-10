@@ -7,7 +7,7 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group";
-import { cn } from "~/lib/utils";
+import { cn } from "cn";
 
 function Setting({
   id,

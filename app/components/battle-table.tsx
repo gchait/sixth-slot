@@ -2,7 +2,7 @@ import type { Options } from "../../engine/candidates.ts";
 import { met, type GameData } from "../../engine/data.ts";
 import type { BattleReport } from "../../engine/search.ts";
 import { Sprite } from "~/components/sprite";
-import { cn } from "~/lib/utils";
+import { cn } from "cn";
 
 /** How a matchup score reads to a player. */
 function rating(score: number | null): {

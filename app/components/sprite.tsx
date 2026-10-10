@@ -1,5 +1,5 @@
 import { spriteOf, type GameData } from "../../engine/data.ts";
-import { cn } from "~/lib/utils";
+import { cn } from "cn";
 
 export function Sprite({
   game,
