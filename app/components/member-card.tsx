@@ -45,6 +45,7 @@ export function MemberCard({
           game={game}
           species={candidate.id}
           size={64}
+          decorative
           className="-my-1"
         />
         <div className="min-w-0 flex-1 space-y-1.5">

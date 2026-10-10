@@ -55,7 +55,12 @@ export function BattleTable({
                 const opponent = game.species[answer.opponent.species];
                 return (
                   <li key={i} className="flex items-center gap-2 text-sm">
-                    <Sprite game={game} species={opponent.id} size={32} />
+                    <Sprite
+                      game={game}
+                      species={opponent.id}
+                      size={32}
+                      decorative
+                    />
                     <span className="min-w-0 flex-1">
                       {opponent.name}{" "}
                       <span className="text-muted-foreground">
@@ -63,7 +68,11 @@ export function BattleTable({
                       </span>
                       {answer.form && (
                         <>
-                          <span className="text-muted-foreground"> ← </span>
+                          <span className="text-muted-foreground" aria-hidden>
+                            {" "}
+                            ←{" "}
+                          </span>
+                          <span className="sr-only">, answered by </span>
                           {game.species[answer.form].name}
                           {answer.matchup?.move && (
                             <span className="text-muted-foreground">

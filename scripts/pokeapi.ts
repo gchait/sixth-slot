@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { parseCsv } from "./csv.ts";
 
-export const POKEAPI_COMMIT = "2fe95532d27a9bf340575253aff50868319d8182";
+const POKEAPI_COMMIT = "2fe95532d27a9bf340575253aff50868319d8182";
 
 /** A sprite's URL, from the pinned commit of PokeAPI's sprite repository. */
 export function spriteUrl(folder: string, national: string): string {
@@ -46,18 +46,18 @@ export function englishNames(table: Table, idKey: string): Map<string, string> {
 }
 
 /** The commit of PokeAPI's sprite repository the site loads images from. */
-export const SPRITES_COMMIT = "35fdbe9bdec8f519f882c3edc3c0185f08af4d86";
+const SPRITES_COMMIT = "35fdbe9bdec8f519f882c3edc3c0185f08af4d86";
 
 export type Table = Record<string, string>[];
 
-export async function loadTable(name: string): Promise<Table> {
+async function loadTable(name: string): Promise<Table> {
   const csv = await pinnedFile(
     `https://raw.githubusercontent.com/PokeAPI/pokeapi/${POKEAPI_COMMIT}/data/v2/csv/${name}.csv`,
   );
   return parseCsv(csv.toString("utf8"));
 }
 
-export const tableNames = [
+const tableNames = [
   "abilities",
   "encounter_condition_value_map",
   "encounter_condition_values",

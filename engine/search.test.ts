@@ -146,6 +146,11 @@ describe("search", () => {
     }
   });
 
+  test("keeps the starter even when it is excluded", () => {
+    const { teams } = search(game, options({ banned: ["charizard"] }));
+    expect(teams[0].members).toContain("charizard");
+  });
+
   test("explains pins that cannot go together", () => {
     expect(() => search(game, options({ pinned: ["pidgeot"] }))).toThrow(
       "Pidgeot cannot join Charizard",

@@ -79,6 +79,7 @@ export function Controls({
   const set = (patch: Partial<Options>) => onChange({ ...options, ...patch });
   return (
     <div className="space-y-6">
+      <h2 className="sr-only">Settings</h2>
       {game.versions.length > 1 && (
         <div className="space-y-2">
           <h3 className="text-sm font-medium">Version</h3>
@@ -119,7 +120,7 @@ export function Controls({
                     : "hover:bg-accent/50",
                 )}
               >
-                <Sprite game={game} species={starter} size={56} />
+                <Sprite game={game} species={starter} size={56} decorative />
                 {game.species[starter].name}
               </button>
             );

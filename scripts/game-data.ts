@@ -29,7 +29,7 @@ export interface Sprite {
  * transparent background from one with a solid one. The first pixel of an image
  * is stored as is, whatever filter its row uses.
  */
-export function cornerIsTransparent(png: Buffer): boolean {
+function cornerIsTransparent(png: Buffer): boolean {
   let offset = 8;
   let header: { bitDepth: number; colorType: number } | undefined;
   let transparency: Buffer | undefined;

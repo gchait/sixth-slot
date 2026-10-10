@@ -15,7 +15,7 @@ import { fieldMoveNames, met, type GameData, type Opponent } from "./data.ts";
 
 export const TEAM_SIZE = 6;
 /** Penalty per member beyond two that is weak to the same attacking type. */
-export const SHARED_WEAKNESS_PENALTY = 0.05;
+const SHARED_WEAKNESS_PENALTY = 0.05;
 
 export interface Team {
   members: string[];
@@ -36,14 +36,14 @@ interface Slot {
 }
 
 /** The battles a team is scored on, by index into GameData.battles. */
-export function scoredBattles(game: GameData, options: Options): number[] {
+function scoredBattles(game: GameData, options: Options): number[] {
   return game.battles.flatMap((battle, b) =>
     !battle.postgame || options.includePostgame ? [b] : [],
   );
 }
 
 /** Every opponent the team faces, weighted so each battle counts equally. */
-export function opponentsFor(game: GameData, options: Options): Slot[] {
+function opponentsFor(game: GameData, options: Options): Slot[] {
   const battles = scoredBattles(game, options);
   return battles.flatMap((b) => {
     const { party } = met(game.battles[b], options);
@@ -56,7 +56,7 @@ export function opponentsFor(game: GameData, options: Options): Slot[] {
 }
 
 /** The member's matchup against the opponent, or null if it has not joined yet. */
-export function candidateMatchup(
+function candidateMatchup(
   game: GameData,
   candidate: Candidate,
   slot: Slot,
@@ -106,8 +106,12 @@ export function search(
 ): SearchResult {
   const all = buildCandidates(game, options);
   const banned = new Set(options.banned);
+  // The starter is always on the team, so excluding it has no effect.
   const candidates = all.filter(
-    (c) => !banned.has(c.id) || options.pinned.includes(c.id),
+    (c) =>
+      !banned.has(c.id) ||
+      options.pinned.includes(c.id) ||
+      c.family === options.starter,
   );
 
   const starters = candidates.filter((c) => c.family === options.starter);
