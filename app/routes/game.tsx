@@ -1,11 +1,11 @@
 import { readFile } from "node:fs/promises";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { Link, useSearchParams } from "react-router";
 
 import type { Options } from "../../engine/candidates.ts";
 import type { GameData } from "../../engine/data.ts";
 import { MATCHUP_LIMIT } from "../../engine/battle.ts";
-import { explain, type SearchResult } from "../../engine/search.ts";
+import { explain, type SearchResult, type Team } from "../../engine/search.ts";
 import type { Route } from "./+types/game";
 import { BattleTable } from "~/components/battle-table";
 import { Controls } from "~/components/controls";
@@ -36,6 +36,18 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 const noSubscription = () => () => {};
 
+/**
+ * Each team's members with those it shares with the first team in the same
+ * places, so the differences between teams line up.
+ */
+function aligned(teams: Team[]): string[][] {
+  const first = teams[0]?.members ?? [];
+  return teams.map(({ members }) => {
+    const others = members.filter((m) => !first.includes(m));
+    return first.map((m) => (members.includes(m) ? m : others.shift()!));
+  });
+}
+
 /** Team score out of 100: the average best matchup over every battle. */
 const percent = (score: number) =>
   Math.round((Math.max(0, score) / MATCHUP_LIMIT) * 100);
@@ -54,14 +66,25 @@ function Results({
   onChange: (options: Options) => void;
 }) {
   const [selected, setSelected] = useState(0);
-  const team = result.teams[Math.min(selected, result.teams.length - 1)];
+  const index = Math.min(selected, result.teams.length - 1);
+  const team = result.teams[index];
+  const rows = useMemo(() => aligned(result.teams), [result]);
   const members = useMemo(
     () =>
-      team
-        ? team.members.map((id) => result.candidates.find((c) => c.id === id)!)
-        : [],
-    [team, result],
+      (rows[index] ?? []).map((id) =>
+        result.candidates.find((c) => c.id === id)!,
+      ),
+    [rows, index, result],
   );
+  const teamSection = useRef<HTMLElement>(null);
+  const select = (i: number) => {
+    setSelected(i);
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    teamSection.current?.scrollIntoView({
+      behavior: reduce ? "auto" : "smooth",
+      block: "start",
+    });
+  };
   const reports = useMemo(
     () => explain(game, options, members),
     [game, options, members],
@@ -90,7 +113,7 @@ function Results({
 
   return (
     <div className="space-y-8">
-      <section className="space-y-3">
+      <section ref={teamSection} className="scroll-mt-4 space-y-3">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-xl font-semibold">
             {selected === 0 ? "Best team" : `Team #${selected + 1}`}
@@ -121,13 +144,13 @@ function Results({
 
       {result.teams.length > 1 && (
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold">Close alternatives</h2>
+          <h2 className="text-lg font-semibold">Top teams</h2>
           <ul className="grid grid-cols-1 gap-2">
             {result.teams.map((t, i) => (
               <li key={t.members.join()}>
                 <button
                   type="button"
-                  onClick={() => setSelected(i)}
+                  onClick={() => select(i)}
                   aria-current={i === selected}
                   className={cn(
                     "flex w-full items-center gap-2 rounded-lg border px-3 py-1 text-left transition-colors",
@@ -141,7 +164,7 @@ function Results({
                     #{i + 1}
                   </span>
                   <span className="flex min-w-0 flex-1 flex-wrap">
-                    {t.members.map((id) => (
+                    {rows[i].map((id) => (
                       <Sprite key={id} game={game} species={id} size={40} />
                     ))}
                   </span>

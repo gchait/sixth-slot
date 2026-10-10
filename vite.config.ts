@@ -5,6 +5,7 @@ import { stripVTControlCharacters } from "node:util";
 import { createLogger, defineConfig } from "vite";
 
 import { gameData } from "./scripts/vite-game-data.ts";
+import { notFoundPage } from "./scripts/vite-not-found.ts";
 
 // Vite notices that say nothing actionable for this project: how to expose the
 // dev server on the network, and the server-side module runner connecting.
@@ -17,7 +18,7 @@ logger.info = (message, options) => {
 
 export default defineConfig({
   customLogger: logger,
-  plugins: [gameData(), tailwindcss(), reactRouter()],
+  plugins: [gameData(), notFoundPage(), tailwindcss(), reactRouter()],
   resolve: {
     tsconfigPaths: true,
   },

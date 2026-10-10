@@ -79,11 +79,51 @@ test("keeps a member for each field move unless told not to", async ({
   await expect(page).toHaveURL(/field=0/);
 });
 
-test("the not-found page links back home", async ({ page }) => {
-  await page.goto("./404/");
+test("an unknown address gets the not-found page, which links home", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  const response = await page.goto("./no-such-game/");
+  expect(response!.status()).toBe(404);
   await expect(page).toHaveTitle("Page not found · sixth-slot");
+  await expect(
+    page.getByRole("heading", { name: "Page not found" }),
+  ).toBeVisible();
+  expect(errors.filter((e) => !e.includes("404"))).toEqual([]);
   await page.getByRole("link", { name: "← sixth-slot" }).click();
   await expect(page.getByText("Coming soon").first()).toBeVisible();
+});
+
+test("lines up the top teams and shows the one picked", async ({ page }) => {
+  await page.goto("./emerald/?starter=mudkip");
+  const rows = page.getByRole("list").filter({ has: page.getByText("#1") });
+  await expect(rows.getByRole("button")).toHaveCount(10);
+  const names = await rows
+    .getByRole("button")
+    .evaluateAll((buttons) =>
+      buttons.map((b) => [...b.querySelectorAll("img")].map((i) => i.alt)),
+    );
+  for (const row of names) {
+    row.forEach((name, i) => {
+      if (names[0].includes(name)) expect(name).toBe(names[0][i]);
+    });
+  }
+  await rows.getByRole("button", { name: /^#3/ }).click();
+  await expect(page.getByRole("heading", { name: /Team #3/ })).toBeInViewport();
+});
+
+test("lists further places once per stage, Pokémon and method", async ({
+  page,
+}) => {
+  await page.goto("./platinum/?starter=piplup&pin=crobat");
+  const card = page.locator("[data-slot=card]").filter({
+    has: page.getByRole("heading", { name: "Crobat" }),
+  });
+  await card.getByText(/more places/).click();
+  await expect(
+    card.getByText(/Zubat · [^·]+, [^·]+ · walking/).first(),
+  ).toBeVisible();
 });
 
 test("scores post-game battles when asked to", async ({ page }) => {

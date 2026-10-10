@@ -12,7 +12,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
-import { describeLine, describeSource, stageName } from "~/lib/describe";
+import {
+  describeLine,
+  describeSource,
+  mergePlaces,
+  stageName,
+} from "~/lib/describe";
 
 export function MemberCard({
   game,
@@ -116,7 +121,7 @@ export function MemberCard({
                 {more.length} more {more.length === 1 ? "place" : "places"}
               </summary>
               <ul className="mt-1 space-y-0.5">
-                {more.map((source, i) => (
+                {mergePlaces(more).map((source, i) => (
                   <li key={i} className="text-muted-foreground text-xs">
                     <span className="text-foreground font-medium">
                       {stageName(game, source.stage)}:
