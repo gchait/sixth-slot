@@ -53,6 +53,19 @@ describe("battle math", () => {
     );
   });
 
+  test("blocks Electric with Motor Drive and Water with Dry Skin, which takes more from Fire", () => {
+    const electric = game.types.indexOf("electric");
+    const water = game.types.indexOf("water");
+    const fire = game.types.indexOf("fire");
+    const motor = { ...game.species.pikachu, abilities: ["motor-drive"] };
+    const dry = { ...game.species.paras, abilities: ["dry-skin"] };
+    expect(effectiveness(game, electric, motor)).toBe(0);
+    expect(effectiveness(game, water, dry)).toBe(0);
+    expect(effectiveness(game, fire, dry)).toBe(
+      1.25 * effectiveness(game, fire, game.species.paras),
+    );
+  });
+
   test("scales damage with effectiveness and same-type bonus", () => {
     const { squirtle, geodude, rattata } = game.species;
     const water = damageFraction(game, "water-gun", squirtle, 20, geodude, 20);

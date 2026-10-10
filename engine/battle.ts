@@ -24,11 +24,13 @@ const immunities: Record<string, string> = {
   "flash-fire": "fire",
   "volt-absorb": "electric",
   "water-absorb": "water",
+  "motor-drive": "electric",
+  "dry-skin": "water",
 };
 
 /**
  * How much of a move's damage the defender takes: the type chart, then the
- * abilities it is sure to have that block or soften the type. Wonder Guard is
+ * abilities it is sure to have that block or change the type's damage. Wonder Guard is
  * left out: it turns on status, weather and other indirect damage, which
  * matchups do not model, so crediting it would overrate Shedinja.
  */
@@ -41,12 +43,16 @@ export function effectiveness(
   for (const [ability, immuneTo] of Object.entries(immunities)) {
     if (typeName === immuneTo && always(defender, ability)) return 0;
   }
-  const softened =
+  let ability = 1;
+  if (
     (typeName === "fire" || typeName === "ice") &&
-    always(defender, "thick-fat");
+    always(defender, "thick-fat")
+  )
+    ability *= 0.5;
+  if (typeName === "fire" && always(defender, "dry-skin")) ability *= 1.25;
   return defender.types.reduce(
     (m, t) => m * game.typeChart[moveType][t],
-    softened ? 0.5 : 1,
+    ability,
   );
 }
 

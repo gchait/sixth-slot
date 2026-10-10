@@ -863,12 +863,18 @@ export function buildGame(file: GameFile, t: Tables): GameData {
         );
         continue;
       }
-      if (placement === "postgame" || placement === "excluded") continue;
+      const methodStage = file.methods[method.identifier] ?? 0;
+      if (
+        placement === "postgame" ||
+        placement === "excluded" ||
+        methodStage === "postgame"
+      )
+        continue;
       const speciesId = pokemonSpecies.get(encounter.pokemon_id)!;
       if (!regional.has(speciesId)) continue;
 
       const speciesIdentifier = speciesById.get(speciesId)!.identifier;
-      let stage = Math.max(placement, file.methods[method.identifier] ?? 0);
+      let stage = Math.max(placement, methodStage);
       let gives: string | undefined;
       let place: string | undefined;
       const conditions = (conditionsByEncounter.get(encounter.id) ?? []).map(

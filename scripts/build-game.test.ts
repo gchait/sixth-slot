@@ -320,6 +320,38 @@ describe("Crystal", () => {
   });
 });
 
+describe("Platinum", () => {
+  let platinum: GameData;
+  beforeAll(async () => {
+    platinum = await loadGame("platinum");
+  });
+  const stagesOf = (species: string) =>
+    (platinum.sources.platinum[species] ?? []).map((s) => s.stage);
+
+  test("splits physical and special by move from generation IV", () => {
+    expect(platinum.moves["shadow-ball"].physical).toBe(false);
+    expect(platinum.moves["night-slash"].physical).toBe(true);
+  });
+
+  test("leaves out encounters that need the post-game Super Rod", () => {
+    expect(stagesOf("gyarados")).toEqual([]);
+    expect(stagesOf("magikarp")).toContain(0);
+  });
+
+  test("leaves out rare Honey Tree outcomes and other players", () => {
+    expect(stagesOf("heracross")).toEqual([]);
+    expect(stagesOf("munchlax")).toEqual([]);
+    expect(stagesOf("spiritomb")).toEqual([]);
+    expect(Math.min(...stagesOf("combee"))).toBe(1);
+  });
+
+  test("evolves by place from the first area reached", () => {
+    expect(platinum.evolutions.find((e) => e.to === "magnezone")).toMatchObject(
+      { label: "at Mt. Coronet", requires: { stage: 2 } },
+    );
+  });
+});
+
 describe("planned games", () => {
   test.each(readPlannedGames())(
     "$name lacks only the stages its game file will give",

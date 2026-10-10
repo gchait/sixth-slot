@@ -4,7 +4,8 @@ Plan the best team for a Pokémon playthrough: pick your starter, and get five
 teammates the game actually lets you catch, balanced for every battle on the
 way to the Champion.
 
-Supported games: **Crystal**, **FireRed & LeafGreen** and **Emerald**.
+Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald** and
+**Platinum**.
 
 ## How teams are chosen
 
@@ -39,9 +40,9 @@ turn after accuracy, number of strikes and turns spent charging. A member counts
 only from the battle by which you can have it, in the form and with the moves it
 would have by then: level-up moves and the HMs obtained so far. Abilities count
 where a species is sure to have them and they change damage: immunities such as
-Levitate, and Thick Fat, Huge Power and Truant. Teams where many members share a
-weakness lose a little. The search checks every valid team, skipping only those
-that provably cannot make the top ten.
+Levitate, and Thick Fat, Dry Skin, Huge Power and Truant. Teams where many
+members share a weakness lose a little. The search checks every valid team,
+skipping only those that provably cannot make the top ten.
 
 **What it leaves out**
 

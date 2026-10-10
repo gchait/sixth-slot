@@ -1,11 +1,6 @@
 # Games shown on the home page as coming soon. Remove a game from here when
 # its file in data/games/ lands.
 
-- versionGroup: platinum
-  name: Platinum
-  pokedex: [extended-sinnoh]
-  sprites: generation-iv/platinum
-  starters: [turtwig, chimchar, piplup]
 - versionGroup: heartgold-soulsilver
   name: HeartGold & SoulSilver
   pokedex: [updated-johto]

@@ -95,7 +95,7 @@ export const gameSchema = z.strictObject({
       "When each PokeAPI location is first reached on the standard route. location/area narrows a key to an area and @method to an encounter method; the most specific key wins. Every location with encounters needs a key.",
     ),
   methods: z
-    .record(identifier, stage)
+    .record(identifier, storyStage)
     .default({})
     .describe(
       "Encounter methods that need an item or Badge first; unlisted methods need nothing.",
