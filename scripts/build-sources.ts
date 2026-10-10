@@ -30,6 +30,18 @@ function plain(name: string): string {
     .replace(/\bmount\b/g, "mt.");
 }
 
+/** PokeAPI's English name, with Pokémon and the Poké Flute spelled as in the games. */
+const pokemonSpelling = (name: string) =>
+  name.replace(/\bPokemon\b/g, "Pokémon").replace("Pokéflute", "Poké Flute");
+
+/** An encounter method's name, with PokeAPI's capitalized ambush places in lowercase. */
+const methodName = (name: string) =>
+  pokemonSpelling(name).replace(
+    /^Ambushed by a Wild Pokémon from (a|the) (.+)$/,
+    (_, article: string, place: string) =>
+      `Ambushed by a wild Pokémon from ${article} ${place.toLowerCase()}`,
+  );
+
 /** Every location key must exist in PokeAPI. */
 function checkLocationKeys({ file, t, errors }: BuildContext) {
   const locationsByIdentifier = indexBy(t.locations, "identifier");
@@ -223,14 +235,18 @@ export function buildSources(
         else stage = Math.max(stage, rule.placement);
       }
       if (!available) continue;
-      const locationName =
-        locationNames.get(location.id) ?? location.identifier;
+      const locationName = pokemonSpelling(
+        locationNames.get(location.id) ?? location.identifier,
+      );
       // A one-time encounter also names its area, without a parenthesized floor
       // or route number at the end.
       const once = oneTimeMethods.has(method.identifier);
       const areaName =
         area.identifier && once
-          ? areaNames.get(area.id)?.replace(/ \([^()]*\)$/, "")
+          ? pokemonSpelling(areaNames.get(area.id) ?? "").replace(
+              / \([^()]*\)$/,
+              "",
+            )
           : undefined;
       const levels: [number, number] = [
         Number(encounter.min_level),
@@ -246,7 +262,7 @@ export function buildSources(
             : plain(areaName).includes(plain(locationName))
               ? areaName
               : `${locationName} (${areaName})`,
-        method: methodNames.get(method.id) ?? method.identifier,
+        method: methodName(methodNames.get(method.id) ?? method.identifier),
         ...(once && { once }),
         ...(gives
           ? { gives }

@@ -505,6 +505,17 @@ describe("X & Y", () => {
   test("counts Route 22's grass from the start, as the walkthrough suggests for Viola", () => {
     expect(Math.min(...xy.sources.x.litleo.map((s) => s.stage))).toBe(0);
   });
+
+  test("names methods and evolutions as the games spell them", () => {
+    const methods = Object.values(xy.sources.x)
+      .flat()
+      .map((s) => s.method);
+    expect(methods).toContain("Ambushed by a wild Pokémon from a trash can");
+    expect(methods.join()).not.toContain("Pokemon");
+    const label = (to: string) => xy.evolutions.find((e) => e.to === to)?.label;
+    expect(label("gallade")).toBe("Dawn Stone, male only");
+    expect(label("sylveon")).toBe("knowing a Fairy move, affection");
+  });
 });
 
 describe("game files placing a location by version", () => {

@@ -11,6 +11,8 @@ import type { MoveCatalog, TypeTable } from "./build-moves.ts";
 import type { SpeciesCatalog } from "./build-species.ts";
 import { englishNames, identifierById, type Table } from "./pokeapi.ts";
 
+const capitalized = (word: string) => word[0].toUpperCase() + word.slice(1);
+
 /**
  * Evolutions by the methods of the latest version group up to this game. Rows
  * that differ only in the form they name, such as Burmy's cloaks, are one
@@ -206,7 +208,7 @@ export function buildEvolutions(
           `${context} needs a ${typeName} move, which it does not learn by level`,
         );
       else requires.level = Math.max(requires.level ?? 0, level);
-      label.push(`knowing a ${typeName} move`);
+      label.push(`knowing a ${capitalized(typeName)} move`);
     }
     if (row.minimum_happiness || row.minimum_affection) {
       requires.friendship = true;
@@ -246,7 +248,9 @@ export function buildEvolutions(
       if (type === undefined)
         errors.push(`${context}: party type ${row.party_type_id} is missing`);
       else requires.partyType = type;
-      label.push(`with a ${types[type ?? 0]} Pokémon in the party`);
+      label.push(
+        `with a ${capitalized(types[type ?? 0])} Pokémon in the party`,
+      );
     }
     if (row.relative_physical_stats) {
       // Which one depends on the Pokémon's Attack and Defense; it counts as random.
@@ -261,7 +265,7 @@ export function buildEvolutions(
           ? "at night"
           : `during the ${row.time_of_day}`,
       );
-    if (row.gender_id) label.push(`(${genders[row.gender_id]})`);
+    if (row.gender_id) label.push(`${genders[row.gender_id]} only`);
     if (row.needs_overworld_rain === "1") label.push("in the rain");
     if (row.turn_upside_down === "1") label.push("upside down");
 
