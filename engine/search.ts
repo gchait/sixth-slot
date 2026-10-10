@@ -346,7 +346,7 @@ export function search(
   return { candidates: all, teams, evaluated };
 }
 
-export interface Answer {
+interface Answer {
   opponent: Opponent;
   /** The member with the best matchup and the form it has by then, if any member has joined. */
   member: string | null;

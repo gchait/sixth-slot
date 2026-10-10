@@ -1,9 +1,10 @@
 import { beforeAll, describe, expect, test } from "vitest";
 
+import { buildCandidates } from "../../engine/candidates.ts";
 import type { GameData } from "../../engine/data.ts";
 import { fireRed as options } from "../../engine/test-options.ts";
 import { loadGame } from "../../scripts/games.ts";
-import { describeSource, stageName } from "./describe.ts";
+import { describeLine, describeSource, stageName } from "./describe.ts";
 
 let hgss: GameData;
 beforeAll(async () => {
@@ -38,5 +39,27 @@ describe("describeSource", () => {
     expect(describeSource(hgss, { ...trade, species: "steelix" })).toBe(
       "Steelix · Olivine City Gym · trade any Pokémon",
     );
+  });
+});
+
+describe("describeLine", () => {
+  const lineOf = (game: GameData, id: string, starter: string) =>
+    describeLine(
+      game,
+      buildCandidates(
+        game,
+        options({ version: game.versions[0].id, starter }),
+      ).find((c) => c.id === id)!,
+    );
+
+  test("starts at the first form that can be obtained", async () => {
+    const emerald = await loadGame("emerald");
+    expect(lineOf(emerald, "azumarill", "mudkip")).toBe(
+      "Marill → Azumarill (Lv 18)",
+    );
+  });
+
+  test("is left out when only the final form can be obtained", async () => {
+    expect(lineOf(await loadGame("x-y"), "snorlax", "chespin")).toBeUndefined();
   });
 });

@@ -57,7 +57,7 @@ function averageStrikes(min: number, max: number, generation: number) {
 }
 
 /** Until generation IV, a move's type decides whether it is physical. */
-export function isPhysical(generation: number, type: Row, move: Row): boolean {
+function isPhysical(generation: number, type: Row, move: Row): boolean {
   return (generation <= 3 ? type : move).damage_class_id === "2";
 }
 

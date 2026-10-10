@@ -2,7 +2,6 @@ import { beforeAll, describe, expect, test } from "vitest";
 
 import { met, type GameData } from "../engine/data.ts";
 import { buildGame } from "./build-game.ts";
-import { isPhysical } from "./build-moves.ts";
 import { loadGame, readGameFile } from "./games.ts";
 import { loadTables, type Tables } from "./pokeapi.ts";
 
@@ -575,16 +574,5 @@ describe("game files with several Pokédexes", () => {
       label: "friendship",
       requires: { friendship: true },
     });
-  });
-});
-
-describe("isPhysical", () => {
-  test("follows the type until generation IV and the move after", () => {
-    const shadowBall = tables.moves.find(
-      (m) => m.identifier === "shadow-ball",
-    )!;
-    const ghost = tables.types.find((t) => t.identifier === "ghost")!;
-    expect(isPhysical(3, ghost, shadowBall)).toBe(true);
-    expect(isPhysical(4, ghost, shadowBall)).toBe(false);
   });
 });

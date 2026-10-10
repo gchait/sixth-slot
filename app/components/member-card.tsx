@@ -38,6 +38,7 @@ export function MemberCard({
 }) {
   const species = game.species[candidate.id];
   const [first, ...more] = candidate.sources;
+  const line = describeLine(game, candidate);
   return (
     <Card className="gap-0 py-0">
       <CardContent className="flex gap-3 p-4">
@@ -112,11 +113,7 @@ export function MemberCard({
                 </Badge>
               ))}
           </div>
-          {candidate.line.length > 1 && (
-            <p className="text-muted-foreground text-xs">
-              {describeLine(game, candidate)}
-            </p>
-          )}
+          {line && <p className="text-muted-foreground text-xs">{line}</p>}
           {first && <p className="text-sm">{describeSource(game, first)}</p>}
           {more.length > 0 && (
             <details className="text-sm">

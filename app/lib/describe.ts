@@ -54,15 +54,27 @@ export function describeSource(game: GameData, source: PlacedSource): string {
   return `${name} · ${source.location} · ${method} · ${levels}`;
 }
 
-/** "Charmander → Charmeleon (Lv 16) → Charizard (Lv 36)". */
-export function describeLine(game: GameData, candidate: Candidate): string {
-  return candidate.line
+/**
+ * "Charmander → Charmeleon (Lv 16) → Charizard (Lv 36)", from the first form
+ * that can be obtained; undefined when that is the final form.
+ */
+export function describeLine(
+  game: GameData,
+  candidate: Candidate,
+): string | undefined {
+  const { line, evolves, sources } = candidate;
+  const first = line.findIndex((species) =>
+    sources.some((s) => s.species === species),
+  );
+  if (first === line.length - 1) return undefined;
+  return line
     .map((species, i) => {
       const name = game.species[species].name;
-      if (i === 0) return name;
-      if (!candidate.evolves[i - 1]) return `${name} (caught)`;
+      if (i === first) return name;
+      if (!evolves[i - 1]) return `${name} (caught)`;
       const { label } = game.evolutions.find((e) => e.to === species)!;
       return `${name} (${label})`;
     })
+    .slice(first)
     .join(" → ");
 }
