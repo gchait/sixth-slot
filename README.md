@@ -15,8 +15,6 @@ the story.
 | Black 2 & White 2      |     V      | Unova           |
 | X & Y                  |     VI     | Kalos           |
 
-Generation I is not supported.
-
 ## How teams are chosen
 
 ### What a team can hold
