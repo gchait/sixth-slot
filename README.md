@@ -5,7 +5,7 @@ teammates the game actually lets you catch, balanced for every battle on the
 way to the Champion.
 
 Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald**,
-**Platinum** and **HeartGold & SoulSilver**.
+**Platinum**, **HeartGold & SoulSilver** and **Black & White**.
 
 ## How teams are chosen
 
@@ -19,7 +19,8 @@ Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald**,
   is needed.
 - Nothing rests on luck that cannot be retried: a random evolution counts only
   when its base can be caught again, and what the game decides by Trainer ID is
-  left out.
+  left out. A Pokémon that depends on the season counts only where it is found
+  in every season.
 - One Pokémon per evolution family, and one from each either-or gift (such as
   Hitmonlee or Hitmonchan).
 - Someone on the team can use the moves needed outside battle all the time,

@@ -62,10 +62,10 @@ test("plans a single-version game without a version choice", async ({
 
 test("lists planned games as coming soon, without a link", async ({ page }) => {
   await page.goto("./");
-  await expect(page.getByText("Black & White")).toBeVisible();
-  await expect(page.getByRole("link", { name: /Black & White/ })).toHaveCount(
-    0,
-  );
+  await expect(page.getByText("Black 2 & White 2")).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Black 2 & White 2/ }),
+  ).toHaveCount(0);
   await expect(page.getByText("Coming soon").first()).toBeVisible();
 });
 

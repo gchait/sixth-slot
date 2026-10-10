@@ -386,6 +386,46 @@ describe("HeartGold & SoulSilver", () => {
   });
 });
 
+describe("Black & White", () => {
+  let bw: GameData;
+  beforeAll(async () => {
+    bw = await loadGame("black-white");
+  });
+  const stagesOf = (species: string) =>
+    (bw.sources.black[species] ?? []).map((s) => s.stage);
+
+  test("counts a seasonal encounter only where it is found in every season", () => {
+    // Route 6 has Vanillite only in winter, while Cold Storage has it all year.
+    expect(bw.sources.black.vanillite.map((s) => s.location)).not.toContain(
+      "Route 6",
+    );
+    expect(Math.min(...stagesOf("vanillite"))).toBe(4);
+  });
+
+  test("gives each starter its own Dreamyard monkey", () => {
+    const gift = (species: string) =>
+      bw.sources.black[species].find((s) => s.location === "Dreamyard");
+    expect(gift("panpour")).toMatchObject({ stage: 0, starter: "snivy" });
+    expect(gift("pansage")).toMatchObject({ starter: "tepig" });
+    expect(gift("pansear")).toMatchObject({ starter: "oshawott" });
+  });
+
+  test("names the first and last Gym Leaders by starter and version", () => {
+    const [striaton] = bw.battles;
+    expect(met(striaton, { version: "black", starter: "snivy" }).name).toBe(
+      "Chili",
+    );
+    const opelucid = bw.battles.find((b) => b.id === "opelucid")!;
+    expect(met(opelucid, { version: "white", starter: "snivy" }).name).toBe(
+      "Iris",
+    );
+    const n = bw.battles.find((b) => b.id === "n")!;
+    expect(
+      met(n, { version: "black", starter: "snivy" }).party[0].species,
+    ).toBe("zekrom");
+  });
+});
+
 describe("game files placing a location by version", () => {
   test("evolve by that place from the latest version's stage", () => {
     const file = readGameFile("platinum");

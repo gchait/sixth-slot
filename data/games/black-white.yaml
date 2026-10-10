@@ -1,0 +1,325 @@
+# yaml-language-server: $schema=../game.schema.json
+#
+# Pokémon Black and White, staged by the order of play in Bulbapedia's
+# walkthrough:
+# https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Black_and_White
+
+name: Black & White
+versionGroup: black-white
+pokedex: [original-unova]
+sprites: generation-v/black-white
+starters: [snivy, tepig, oshawott]
+
+exclusiveGroups:
+  - [tirtouga, archen] # Cover or Plume Fossil in Relic Castle
+
+# The Dreamyard girl gives the monkey that beats the first Gym Leader (part 2).
+giftsByStarter:
+  snivy: panpour
+  tepig: pansage
+  oshawott: pansear
+
+locations:
+  # Before the Striaton Gym (parts 1–2)
+  nuvema-town: 0
+  unova-route-1: 0
+  unova-route-1@dark-grass: 6 # The southwest, across water with Surf (part 8)
+  unova-route-2: 0
+  striaton-city: 0
+  dreamyard: 0
+  dreamyard@dark-grass: 14 # The basement, once its obstacles are gone after Ghetsis
+  dreamyard/b1f: 14
+  # Before Lenora (part 3)
+  unova-route-3: 1
+  wellspring-cave: 1
+  # Before Burgh (part 4)
+  pinwheel-forest/outside: 2
+  pinwheel-forest/inside: 2
+  nacrene-city/nacrene-museum: 2
+  castelia-city/game-freak-hq-1f: excluded # Zorua, for an event Celebi
+  liberty-garden: excluded # Victini, for an event Liberty Pass
+  # Before Elesa (part 5)
+  unova-route-4: 3
+  desert-resort: 3
+  relic-castle/a: 3
+  relic-castle/b: 7 # B2F to B5F, on the way to the Dark or Light Stone (part 10)
+  relic-castle/c: 14 # Deeper rooms after Ghetsis (part 13)
+  relic-castle/d: 14
+  # East of Nimbasa City, short of the gate shut until after Alder
+  unova-route-16: 3
+  lostlorn-forest: 3
+  lostlorn-forest@static: excluded # Zoroark, for an event Shiny legendary beast
+  # Before Clay (part 6)
+  unova-route-5: 4
+  driftveil-drawbridge: 4
+  driftveil-city: 4
+  cold-storage: 4
+  # Before Skyla (part 7)
+  unova-route-6: 5
+  chargestone-cave: 5
+  unova-route-7: 5
+  celestial-tower: 5
+  team-flare-secret-hq: excluded # PokeAPI's place for the roaming Tornadus or Thundurus
+  # Before Brycen (parts 8–9), with Surf from Alder
+  unova-route-17: 6
+  unova-route-18: 6
+  p2-laboratory: 6
+  mistralton-cave: 6
+  guidance-chamber: 6
+  pinwheel-forest/rumination-field: 6
+  twist-mountain: 6
+  icirrus-city: 6
+  # Before Drayden or Iris (parts 9–11)
+  dragonspiral-tower: 7
+  dragonspiral-tower/7f: excluded # Reshiram or Zekrom again, only if it got away at N's Castle
+  unova-route-8: 7
+  moor-of-icirrus: 7
+  unova-route-9: 7
+  # Before the Elite Four (part 11)
+  unova-route-10: 8
+  unova-victory-road: 8
+  trial-chamber: 8
+  # Before N (part 12)
+  ns-castle: 12
+  # After Ghetsis, before the Elite Four again (parts 13–14)
+  challengers-cave: 14
+  # East Unova, open after Alder (parts 16–18)
+  unova-route-11: postgame
+  village-bridge: postgame
+  unova-route-12: postgame
+  unova-route-13: postgame
+  giant-chasm: postgame
+  undella-town: postgame
+  undella-bay: postgame
+  unova-route-14: postgame
+  abundant-shrine: postgame
+  unova-route-15: postgame
+  marvelous-bridge: postgame
+
+methods:
+  surf: 6 # From Alder, after Skyla
+  surf-spots: 6
+  super-rod: 14 # From Looker, after Ghetsis
+  super-rod-spots: 14
+
+items:
+  leaf-stone: 2 # Castelia City, one of three stones from a scientist
+  moon-stone: 2 # From Lenora, Pinwheel Forest
+  fire-stone: 3 # Desert Resort
+  sun-stone: 3 # Nimbasa City
+  water-stone: 4 # Driftveil City
+  shiny-stone: 5 # Route 6
+  thunder-stone: 5 # Chargestone Cave
+  dusk-stone: 6 # Mistralton Cave, with Surf
+
+hms:
+  cut: 1 # From Fennel, after the Striaton Gym
+  strength: 3 # Nimbasa City
+  fly: 5 # From Bianca, after Clay
+  surf: 6 # From Alder, after Skyla
+  waterfall: 6 # Route 18, with Surf
+  dive: postgame # Undella Town
+
+# Generation V needs no Badge for a move used outside battle:
+# https://bulbapedia.bulbagarden.net/wiki/HM
+fieldMoves:
+  fly: 5
+  surf: 6
+
+encounterConditions:
+  season-*: always # The season changes each month
+  weekday-*: 0
+  defeated-ghetsis: 14
+  item-cover-fossil: 3
+  item-plume-fossil: 3
+  item-*: excluded # Other fossils, from outside the game
+  special-encounter-couldnt-capture-before: excluded
+
+battles:
+  - id: striaton
+    title: Gym Leader
+    variants:
+      - starter: snivy
+        name: Chili
+        party:
+          - { species: lillipup, level: 12, moves: [bite, work-up] }
+          - { species: pansear, level: 14, moves: [incinerate, work-up] }
+      - starter: tepig
+        name: Cress
+        party:
+          - { species: lillipup, level: 12, moves: [bite, work-up] }
+          - { species: panpour, level: 14, moves: [water-gun, work-up] }
+      - starter: oshawott
+        name: Cilan
+        party:
+          - { species: lillipup, level: 12, moves: [bite, work-up] }
+          - { species: pansage, level: 14, moves: [vine-whip, work-up] }
+  - id: lenora
+    name: Lenora
+    title: Gym Leader
+    party:
+      - { species: herdier, level: 18, moves: [take-down, bite, retaliate, leer] }
+      - { species: watchog, level: 20, moves: [leer, crunch, retaliate, hypnosis] }
+  - id: burgh
+    name: Burgh
+    title: Gym Leader
+    party:
+      - { species: whirlipede, level: 21, moves: [screech, pursuit, poison-tail, struggle-bug] }
+      - { species: dwebble, level: 21, moves: [sand-attack, feint-attack, smack-down, struggle-bug] }
+      - { species: leavanny, level: 23, moves: [protect, string-shot, razor-leaf, struggle-bug] }
+  - id: elesa
+    name: Elesa
+    title: Gym Leader
+    party:
+      - { species: emolga, level: 25, moves: [quick-attack, pursuit, aerial-ace, volt-switch] }
+      - { species: emolga, level: 25, moves: [quick-attack, pursuit, aerial-ace, volt-switch] }
+      - { species: zebstrika, level: 27, moves: [quick-attack, flame-charge, spark, volt-switch] }
+  - id: clay
+    name: Clay
+    title: Gym Leader
+    party:
+      - { species: krokorok, level: 29, moves: [swagger, torment, crunch, bulldoze] }
+      - { species: palpitoad, level: 29, moves: [aqua-ring, bubble-beam, muddy-water, bulldoze] }
+      - { species: excadrill, level: 31, moves: [hone-claws, slash, rock-slide, bulldoze] }
+  - id: skyla
+    name: Skyla
+    title: Gym Leader
+    party:
+      - { species: swoobat, level: 33, moves: [acrobatics, amnesia, assurance, heart-stamp] }
+      - { species: unfezant, level: 33, moves: [leer, quick-attack, air-slash, razor-wind] }
+      - { species: swanna, level: 35, moves: [aqua-ring, aerial-ace, bubble-beam, air-slash] }
+  - id: brycen
+    name: Brycen
+    title: Gym Leader
+    party:
+      - { species: vanillish, level: 37, moves: [acid-armor, astonish, mirror-shot, frost-breath] }
+      - { species: cryogonal, level: 37, moves: [reflect, rapid-spin, aurora-beam, frost-breath] }
+      - { species: beartic, level: 39, moves: [swagger, brine, slash, icicle-crash] }
+  - id: opelucid
+    title: Gym Leader
+    party:
+      - { species: fraxure, level: 41, moves: [dragon-dance, dragon-rage, assurance, dragon-tail] }
+      - { species: druddigon, level: 41, moves: [revenge, chip-away, night-slash, dragon-tail] }
+      - { species: haxorus, level: 43, moves: [dragon-dance, assurance, slash, dragon-tail] }
+    variants:
+      - { version: black, name: Drayden }
+      - { version: white, name: Iris }
+  - id: shauntal
+    name: Shauntal
+    title: Elite Four
+    party:
+      - { species: cofagrigus, level: 48, moves: [psychic, will-o-wisp, shadow-ball, grass-knot] }
+      - { species: jellicent, level: 48, moves: [shadow-ball, surf, energy-ball, brine] }
+      - { species: golurk, level: 48, moves: [curse, brick-break, earthquake, shadow-punch] }
+      - { species: chandelure, level: 50, moves: [fire-blast, psychic, shadow-ball, payback] }
+  - id: grimsley
+    name: Grimsley
+    title: Elite Four
+    party:
+      - { species: scrafty, level: 48, moves: [sand-attack, crunch, poison-jab, brick-break] }
+      - { species: krookodile, level: 48, moves: [crunch, dragon-claw, foul-play, earthquake] }
+      - { species: liepard, level: 48, moves: [fake-out, attract, aerial-ace, night-slash] }
+      - { species: bisharp, level: 50, moves: [x-scissor, night-slash, metal-claw, aerial-ace] }
+  - id: caitlin
+    name: Caitlin
+    title: Elite Four
+    party:
+      - { species: reuniclus, level: 48, moves: [energy-ball, thunder, focus-blast, psychic] }
+      - { species: musharna, level: 48, moves: [reflect, charge-beam, shadow-ball, psychic] }
+      - { species: sigilyph, level: 48, moves: [shadow-ball, ice-beam, air-slash, psychic] }
+      - { species: gothitelle, level: 50, moves: [calm-mind, thunderbolt, shadow-ball, psychic] }
+  - id: marshal
+    name: Marshal
+    title: Elite Four
+    party:
+      - { species: throh, level: 48, moves: [stone-edge, payback, bulldoze, storm-throw] }
+      - { species: sawk, level: 48, moves: [stone-edge, karate-chop, grass-knot, retaliate] }
+      - { species: conkeldurr, level: 48, moves: [stone-edge, hammer-arm, retaliate, grass-knot] }
+      - { species: mienshao, level: 50, moves: [u-turn, jump-kick, rock-slide, retaliate] }
+  - id: n
+    name: N
+    title: Team Plasma
+    variants:
+      - version: black
+        party:
+          - { species: zekrom, level: 52, moves: [fusion-bolt, zen-headbutt, giga-impact, light-screen] }
+          - { species: carracosta, level: 50, moves: [stone-edge, aqua-jet, crunch, waterfall] }
+          - { species: vanilluxe, level: 50, moves: [blizzard, hail, flash-cannon, frost-breath] }
+          - { species: archeops, level: 50, moves: [stone-edge, acrobatics, dragon-claw, crunch] }
+          - { species: zoroark, level: 50, moves: [flamethrower, focus-blast, night-slash, retaliate] }
+          - { species: klinklang, level: 50, moves: [flash-cannon, metal-sound, hyper-beam, thunderbolt] }
+      - version: white
+        party:
+          - { species: reshiram, level: 52, moves: [hyper-beam, fusion-flare, extrasensory, reflect] }
+          - { species: carracosta, level: 50, moves: [stone-edge, aqua-jet, crunch, waterfall] }
+          - { species: vanilluxe, level: 50, moves: [blizzard, hail, flash-cannon, frost-breath] }
+          - { species: archeops, level: 50, moves: [stone-edge, acrobatics, dragon-claw, crunch] }
+          - { species: zoroark, level: 50, moves: [flamethrower, focus-blast, night-slash, retaliate] }
+          - { species: klinklang, level: 50, moves: [flash-cannon, metal-sound, hyper-beam, thunderbolt] }
+  - id: ghetsis
+    name: Ghetsis
+    title: Team Plasma
+    party:
+      - { species: cofagrigus, level: 52, moves: [shadow-ball, protect, psychic, toxic] }
+      - { species: bouffalant, level: 52, moves: [head-charge, wild-charge, earthquake, poison-jab] }
+      - { species: seismitoad, level: 52, moves: [muddy-water, rain-dance, earthquake, sludge-wave] }
+      - { species: bisharp, level: 52, moves: [night-slash, stone-edge, x-scissor, metal-burst] }
+      - { species: eelektross, level: 52, moves: [wild-charge, flamethrower, acrobatics, crunch] }
+      - { species: hydreigon, level: 54, moves: [dragon-pulse, fire-blast, surf, focus-blast] }
+  # After Ghetsis, from each Bulbapedia page: the Elite Four's rematch teams,
+  # then Alder.
+  - id: shauntal-rematch
+    name: Shauntal
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: cofagrigus, level: 71, moves: [shadow-ball, will-o-wisp, psychic, energy-ball] }
+      - { species: jellicent, level: 71, moves: [sludge-wave, hydro-pump, psychic, shadow-ball] }
+      - { species: golurk, level: 71, moves: [hammer-arm, earthquake, shadow-punch, curse] }
+      - { species: froslass, level: 71, moves: [blizzard, ice-shard, shadow-ball, psychic] }
+      - { species: drifblim, level: 71, moves: [thunder, shadow-ball, acrobatics, psychic] }
+      - { species: chandelure, level: 73, moves: [fire-blast, psychic, shadow-ball, payback] }
+  - id: grimsley-rematch
+    name: Grimsley
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: sharpedo, level: 71, moves: [waterfall, night-slash, earthquake, aqua-jet] }
+      - { species: scrafty, level: 71, moves: [crunch, poison-jab, head-smash, brick-break] }
+      - { species: krookodile, level: 71, moves: [outrage, earthquake, foul-play, smack-down] }
+      - { species: liepard, level: 71, moves: [sucker-punch, fake-out, aerial-ace, attract] }
+      - { species: drapion, level: 71, moves: [poison-fang, fire-fang, crunch, thunder-fang] }
+      - { species: bisharp, level: 73, moves: [x-scissor, night-slash, aerial-ace, guillotine] }
+  - id: caitlin-rematch
+    name: Caitlin
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: musharna, level: 71, moves: [reflect, hypnosis, dream-eater, psychic] }
+      - { species: sigilyph, level: 71, moves: [flash-cannon, ice-beam, air-slash, psychic] }
+      - { species: reuniclus, level: 71, moves: [energy-ball, thunder, focus-blast, psychic] }
+      - { species: gothitelle, level: 71, moves: [flatter, payback, thunderbolt, psychic] }
+      - { species: bronzong, level: 71, moves: [payback, charge-beam, flash-cannon, psychic] }
+      - { species: metagross, level: 73, moves: [bullet-punch, earthquake, zen-headbutt, giga-impact] }
+  - id: marshal-rematch
+    name: Marshal
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: breloom, level: 71, moves: [spore, sky-uppercut, mach-punch, grass-knot] }
+      - { species: throh, level: 71, moves: [earthquake, superpower, retaliate, grass-knot] }
+      - { species: sawk, level: 71, moves: [close-combat, stone-edge, poison-jab, retaliate] }
+      - { species: mienshao, level: 71, moves: [u-turn, fake-out, acrobatics, high-jump-kick] }
+      - { species: toxicroak, level: 71, moves: [earthquake, toxic, venoshock, low-sweep] }
+      - { species: conkeldurr, level: 73, moves: [hammer-arm, earthquake, stone-edge, payback] }
+  - id: alder
+    name: Alder
+    title: Champion
+    postgame: true
+    party:
+      - { species: accelgor, level: 75, moves: [bug-buzz, focus-blast, me-first, energy-ball] }
+      - { species: bouffalant, level: 75, moves: [head-charge, megahorn, stone-edge, earthquake] }
+      - { species: druddigon, level: 75, moves: [night-slash, outrage, superpower, payback] }
+      - { species: vanilluxe, level: 75, moves: [blizzard, light-screen, flash-cannon, acid-armor] }
+      - { species: escavalier, level: 75, moves: [x-scissor, giga-impact, iron-head, aerial-ace] }
+      - { species: volcarona, level: 77, moves: [overheat, bug-buzz, quiver-dance, hyper-beam] }

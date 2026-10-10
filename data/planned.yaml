@@ -1,11 +1,6 @@
 # Games shown on the home page as coming soon. Remove a game from here when
 # its file in data/games/ lands.
 
-- versionGroup: black-white
-  name: Black & White
-  pokedex: [original-unova]
-  sprites: generation-v/black-white
-  starters: [snivy, tepig, oshawott]
 - versionGroup: black-2-white-2
   name: Black 2 & White 2
   pokedex: [updated-unova]

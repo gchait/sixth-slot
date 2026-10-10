@@ -60,6 +60,16 @@ describe("buildCandidates", () => {
     expect(steelix(true).evolves).toEqual([true]);
   });
 
+  test("offers a starter's own gift only to that starter", async () => {
+    const bw = await loadGame("black-white");
+    const joins = (starter: string, id: string) =>
+      buildCandidates(bw, options({ version: "black", starter })).find(
+        (c) => c.id === id,
+      )!.joins;
+    expect(joins("snivy", "simipour")).toBe(0);
+    expect(joins("tepig", "simipour")).toBe(2);
+  });
+
   test("offers each stone evolution of Eevee once stones are sold", () => {
     for (const id of ["vaporeon", "jolteon", "flareon"]) {
       expect(find(options(), id)).toMatchObject({ family: "eevee", joins: 3 });
