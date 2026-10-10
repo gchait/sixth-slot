@@ -5,7 +5,7 @@ import { expect, test } from "vitest";
 import { sprite, writeGameData, type GameSummary } from "./game-data.ts";
 import { spriteUrl } from "./pokeapi.ts";
 
-test("lists the games in release order, each once", async () => {
+test("lists the games in PokeAPI's order, each once", async () => {
   await writeGameData();
   const games = JSON.parse(
     readFileSync("generated/games.json", "utf8"),

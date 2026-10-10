@@ -1,5 +1,5 @@
 // Writes generated/<game>.json for every file in data/games/, and an index of
-// those games in release order.
+// those games in PokeAPI's order: by release, with related games grouped.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { inflateSync } from "node:zlib";

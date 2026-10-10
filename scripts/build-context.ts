@@ -55,7 +55,7 @@ export interface BuildContext {
   errors: string[];
   versionGroup: Row;
   generation: number;
-  /** The version group's place in release order. */
+  /** The version group's place in PokeAPI's order: by release, with related games grouped. */
   groupOrder: number;
   groupOrderById: Map<string, number>;
   versions: { id: string; name: string }[];

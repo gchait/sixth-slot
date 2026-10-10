@@ -25,7 +25,7 @@ export async function loader({ pattern: id }: Route.LoaderArgs) {
 }
 
 const summary =
-  "Six Pokémon you can actually get, scored against every Gym Leader, the Elite Four and the story's final battles, counting each member only from when you can catch it.";
+  "Six Pokémon you can actually get, scored against every Gym Leader, the Elite Four and the story's final battles, counting each member only from when you can get it.";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   return [

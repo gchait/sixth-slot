@@ -18,7 +18,7 @@ export async function loader() {
 }
 
 const summary =
-  "The best team for a Pokémon playthrough. Pick your starter, and get five teammates the game actually lets you catch, balanced for every major battle of the story.";
+  "The best team for a Pokémon playthrough. Pick your starter, and get five teammates the game really offers, balanced for every major battle of the story.";
 
 export function meta() {
   return [
