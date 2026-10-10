@@ -148,16 +148,12 @@ addresses without a file with `404/index.html` and status 404. Files in
 `assets/` can be cached for good, since their names carry a hash of their
 content.
 
-### Adding a game
+### Game files
 
-1. Copy a file in `data/games/` and fill it in for the new game, following the
-   story in its
-   [Bulbapedia walkthrough](https://bulbapedia.bulbagarden.net/wiki/Category:Walkthroughs).
-   `data/schema.ts` describes every field, and editors show those descriptions
-   through `data/game.schema.json`.
-2. Run `pnpm data`. It fails, listing every location, encounter condition, item
-   or evolution the file does not place.
-3. Add the game to the table at the top of this file.
+`data/schema.ts` describes every field of the files in `data/games/`, and
+editors show those descriptions through `data/game.schema.json`. `pnpm data`
+fails, listing every location, encounter condition, item or evolution a file
+does not place.
 
 Every fact comes from a source: PokeAPI, or Bulbapedia for stages and battles.
 Where Bulbapedia or the game's [pret](https://github.com/pret) decompilation, if

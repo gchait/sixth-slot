@@ -1,4 +1,4 @@
-// Checks every game in data/games/, so a new game is covered without new tests.
+// Checks every game in data/games/.
 import { describe, expect, test } from "vitest";
 
 import { gameIds, loadGame } from "../scripts/games.ts";

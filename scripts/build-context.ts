@@ -82,9 +82,6 @@ export function buildContext(file: GameFile, t: Tables): BuildContext {
   if (!versionGroup)
     throw new Error(`unknown version group ${file.versionGroup}`);
   const generation = Number(versionGroup.generation_id);
-  if (generation === 1) {
-    throw new Error("generation 1 is not supported");
-  }
 
   const versionNames = englishNames(t.version_names, "version_id");
   const versions = t.versions
