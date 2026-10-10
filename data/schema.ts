@@ -106,6 +106,12 @@ export const gameSchema = z.strictObject({
     .describe(
       "Families of which a playthrough can get only one, such as fossil choices.",
     ),
+  giftsByStarter: z
+    .record(identifier, identifier)
+    .default({})
+    .describe(
+      "Gifts that depend on the player's starter: the species each starter is given.",
+    ),
   locations: z
     .record(
       z
@@ -145,11 +151,11 @@ export const gameSchema = z.strictObject({
   encounterConditions: z
     .record(
       z.string().regex(/^[a-z0-9*-]+$/, "use a PokeAPI condition value"),
-      placement,
+      z.union([placement, z.literal("always")]),
     )
     .default({})
     .describe(
-      "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text. A Game Corner prize (coins-N) is staged where the walkthrough's trainers have paid twice its price in coins at ₽20 each, and excluded if the story pays less.",
+      "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text. always counts an encounter only where it is found at the same place, the same way, under every value of its condition, such as in every season. A Game Corner prize (coins-N) is staged where the walkthrough's trainers have paid twice its price in coins at ₽20 each, and excluded if the story pays less.",
     ),
   items: z
     .record(identifier, storyStage)

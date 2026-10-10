@@ -44,6 +44,19 @@
         }
       }
     },
+    "giftsByStarter": {
+      "default": {},
+      "description": "Gifts that depend on the player's starter: the species each starter is given.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      }
+    },
     "locations": {
       "type": "object",
       "propertyNames": {
@@ -153,7 +166,7 @@
     },
     "encounterConditions": {
       "default": {},
-      "description": "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text. A Game Corner prize (coins-N) is staged where the walkthrough's trainers have paid twice its price in coins at ₽20 each, and excluded if the story pays less.",
+      "description": "PokeAPI's encounter conditions, such as the time of day or a fossil. Every condition on a story encounter needs an entry; * matches any text. always counts an encounter only where it is found at the same place, the same way, under every value of its condition, such as in every season. A Game Corner prize (coins-N) is staged where the walkthrough's trainers have paid twice its price in coins at ₽20 each, and excluded if the story pays less.",
       "type": "object",
       "propertyNames": {
         "type": "string",
@@ -162,21 +175,29 @@
       "additionalProperties": {
         "anyOf": [
           {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 9007199254740991,
-            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991,
+                "description": "The number of battles under `battles` beaten by then: 0 is before the first."
+              },
+              {
+                "type": "string",
+                "const": "postgame"
+              },
+              {
+                "type": "string",
+                "const": "excluded"
+              }
+            ],
+            "description": "A stage; postgame for post-game story areas; excluded for events and rare-day places."
           },
           {
             "type": "string",
-            "const": "postgame"
-          },
-          {
-            "type": "string",
-            "const": "excluded"
+            "const": "always"
           }
-        ],
-        "description": "A stage; postgame for post-game story areas; excluded for events and rare-day places."
+        ]
       }
     },
     "items": {

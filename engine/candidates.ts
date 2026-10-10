@@ -64,8 +64,17 @@ export interface Candidate {
 }
 
 export function buildCandidates(game: GameData, options: Options): Candidate[] {
-  const sources = game.sources[options.version];
-  if (!sources) throw new Error(`${game.id} has no version ${options.version}`);
+  const versionSources = game.sources[options.version];
+  if (!versionSources)
+    throw new Error(`${game.id} has no version ${options.version}`);
+  const sources = Object.fromEntries(
+    Object.entries(versionSources).map(([species, list]) => [
+      species,
+      list.filter(
+        (s) => s.starter === undefined || s.starter === options.starter,
+      ),
+    ]),
+  );
   if (!game.starters.includes(options.starter)) {
     throw new Error(`${options.starter} is not a starter in ${game.id}`);
   }

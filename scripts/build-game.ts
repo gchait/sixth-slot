@@ -898,6 +898,39 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       placement,
     }),
   );
+  const ruleFor = (condition: string) =>
+    conditionRules.find((r) => r.matches.test(condition));
+  const conditionsOf = (encounter: Record<string, string>) =>
+    (conditionsByEncounter.get(encounter.id) ?? []).map((row) =>
+      conditionValues.get(row.encounter_condition_value_id)!,
+    );
+  const valueRows = indexBy(t.encounter_condition_values, "identifier");
+  const valuesByCondition = groupBy(
+    t.encounter_condition_values,
+    "encounter_condition_id",
+  );
+  /** An encounter apart from its conditions ruled "always". */
+  const sameEncounter = (
+    encounter: Record<string, string>,
+    conditions: string[],
+  ) =>
+    [
+      encounter.version_id,
+      encounter.location_area_id,
+      slots.get(encounter.encounter_slot_id)!.encounter_method_id,
+      encounter.pokemon_id,
+      ...conditions.filter((c) => ruleFor(c)?.placement !== "always").sort(),
+    ].join("|");
+  /** The values of "always" conditions each encounter is found under. */
+  const foundUnder = new Map<string, Set<string>>();
+  for (const encounter of t.encounters) {
+    const conditions = conditionsOf(encounter);
+    for (const condition of conditions) {
+      if (ruleFor(condition)?.placement !== "always") continue;
+      const key = sameEncounter(encounter, conditions);
+      foundUnder.set(key, (foundUnder.get(key) ?? new Set()).add(condition));
+    }
+  }
   const unmappedConditions = new Set<string>();
   const sources: Record<string, Record<string, Source[]>> = {};
   for (const version of t.versions.filter(
@@ -940,9 +973,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       let stage = Math.max(placement, methodStage);
       let gives: string | undefined;
       let place: string | undefined;
-      const conditions = (conditionsByEncounter.get(encounter.id) ?? []).map(
-        (row) => conditionValues.get(row.encounter_condition_value_id)!,
-      );
+      const conditions = conditionsOf(encounter);
       if (method.identifier === "npc-trade") {
         // The trade's condition names the species the trader wants.
         const wanted = conditions.filter((c) => c.startsWith("trade-"));
@@ -965,9 +996,16 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       let available = true;
       for (const condition of conditions) {
         if (condition.startsWith("trade-")) continue;
-        const rule = conditionRules.find((r) => r.matches.test(condition));
+        const rule = ruleFor(condition);
         if (!rule) unmappedConditions.add(condition);
-        if (!rule || typeof rule.placement !== "number") available = false;
+        if (rule?.placement === "always") {
+          const found = foundUnder.get(sameEncounter(encounter, conditions))!;
+          const values = valuesByCondition.get(
+            valueRows.get(condition)!.encounter_condition_id,
+          )!;
+          if (!values.every((v) => found.has(v.identifier))) available = false;
+        } else if (!rule || typeof rule.placement !== "number")
+          available = false;
         else stage = Math.max(stage, rule.placement);
       }
       if (!available) continue;
@@ -1032,6 +1070,17 @@ export function buildGame(file: GameFile, t: Tables): GameData {
   for (const traded of Object.keys(file.trades)) {
     if (!usedTrades.has(traded))
       errors.push(`trades: ${traded} is not traded during the story`);
+  }
+
+  for (const [starter, gift] of Object.entries(file.giftsByStarter)) {
+    if (!starters.includes(starter))
+      errors.push(`giftsByStarter: ${starter} is not a starter`);
+    const gifts = Object.values(sources)
+      .flatMap((bySpecies) => bySpecies[gift] ?? [])
+      .filter((source) => source.once && !("gives" in source));
+    if (gifts.length === 0)
+      errors.push(`giftsByStarter: ${gift} is not a gift`);
+    for (const source of gifts) source.starter = starter;
   }
 
   const exclusiveGroups = file.exclusiveGroups.map((group) =>
