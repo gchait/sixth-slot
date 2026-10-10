@@ -3,7 +3,6 @@ import { Link } from "react-router";
 
 import type { GameSummary } from "../../scripts/game-data.ts";
 import type { Route } from "./+types/home";
-import { Badge } from "~/components/ui/badge";
 import {
   Card,
   CardDescription,
@@ -59,24 +58,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {loaderData.games.map((game) => {
             const card = (
-              <Card
-                className={
-                  game.planned
-                    ? "opacity-60"
-                    : "hover:bg-accent/50 transition-colors"
-                }
-              >
+              <Card className="hover:bg-accent/50 transition-colors">
                 <CardHeader className="flex items-center justify-between gap-4">
                   <div className="space-y-1.5">
                     <CardTitle>{game.name}</CardTitle>
-                    {game.planned ? (
-                      <Badge variant="outline">Coming soon</Badge>
-                    ) : (
-                      game.versions.length > 1 && (
-                        <CardDescription>
-                          {game.versions.join(" · ")}
-                        </CardDescription>
-                      )
+                    {game.versions.length > 1 && (
+                      <CardDescription>
+                        {game.versions.join(" · ")}
+                      </CardDescription>
                     )}
                   </div>
                   <div className="flex h-14 shrink-0 items-center">
@@ -101,16 +90,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             );
             return (
               <li key={game.id}>
-                {game.planned ? (
-                  card
-                ) : (
-                  <Link
-                    to={`/${game.id}/`}
-                    className="block rounded-xl focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]"
-                  >
-                    {card}
-                  </Link>
-                )}
+                <Link
+                  to={`/${game.id}/`}
+                  className="block rounded-xl focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]"
+                >
+                  {card}
+                </Link>
               </li>
             );
           })}

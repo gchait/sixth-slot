@@ -123,25 +123,32 @@ export function buildEvolutions(
     return level;
   };
 
-  interface Method {
-    requires: EvolutionRequirements;
-    label: string;
-    afterStory: boolean;
-  }
-  /** One evolution method, or undefined if it cannot be read. */
-  function readMethod(
-    row: Record<string, string>,
-    trigger: string | undefined,
-    from: string,
-    context: string,
-  ): Method | undefined {
+  for (const [evolvedId, rows] of evolutionRows) {
+    const to = speciesById.get(evolvedId)!.identifier;
+    const from = speciesById.get(
+      speciesById.get(evolvedId)!.evolves_from_species_id,
+    )!.identifier;
+    const context = `${from} -> ${to}`;
+    if (rows.length !== 1) {
+      errors.push(
+        `${context}: ${rows.length} evolution methods apply, expected 1`,
+      );
+      continue;
+    }
+    const row = rows[0];
+    const trigger = triggers.get(row.evolution_trigger_id);
+    if (trigger === "shed") {
+      // Shedinja appears when Nincada evolves by level with a free party slot.
+      shed.push({ from, to });
+      continue;
+    }
     if (
       trigger !== "level-up" &&
       trigger !== "use-item" &&
       trigger !== "trade"
     ) {
       errors.push(`${context}: unsupported evolution method ${trigger}`);
-      return undefined;
+      continue;
     }
 
     const requires: EvolutionRequirements = {};
@@ -257,36 +264,10 @@ export function buildEvolutions(
 
     if (trigger === "level-up" && label.length === 0) {
       errors.push(`${context}: level-up evolution without a condition`);
-      return undefined;
-    }
-    return { requires, label: label.join(", "), afterStory };
-  }
-
-  for (const [evolvedId, rows] of evolutionRows) {
-    const to = speciesById.get(evolvedId)!.identifier;
-    const from = speciesById.get(
-      speciesById.get(evolvedId)!.evolves_from_species_id,
-    )!.identifier;
-    const context = `${from} -> ${to}`;
-    const triggerOf = (row: Record<string, string>) =>
-      triggers.get(row.evolution_trigger_id);
-    if (rows.length === 1 && triggerOf(rows[0]) === "shed") {
-      // Shedinja appears when Nincada evolves by level with a free party slot.
-      shed.push({ from, to });
       continue;
     }
-    const methods = rows.map((row) =>
-      readMethod(row, triggerOf(row), from, context),
-    );
-    if (methods.some((m) => m === undefined)) continue;
-    // Several methods are alternatives, such as evolving in either of two
-    // places: the player takes whichever the story offers first.
-    const story = (methods as Method[]).filter((m) => !m.afterStory);
-    if (story.length === 0) continue;
-    const first = story.reduce((a, b) =>
-      (b.requires.stage ?? 0) < (a.requires.stage ?? 0) ? b : a,
-    );
-    evolutions.push({ from, to, label: first.label, requires: first.requires });
+    if (!afterStory)
+      evolutions.push({ from, to, label: label.join(", "), requires });
   }
 
   // A Pokémon with several evolutions that read the same evolves into one of

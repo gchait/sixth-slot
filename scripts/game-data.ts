@@ -1,18 +1,13 @@
 // Writes generated/<game>.json for every file in data/games/, and an index of
-// those games and the planned ones, in release order.
+// those games in release order.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { inflateSync } from "node:zlib";
 
 import { spriteOf } from "../engine/data.ts";
 import { buildGame } from "./build-game.ts";
-import {
-  gameIds,
-  gameTables,
-  readGameFile,
-  readPlannedGames,
-} from "./games.ts";
-import { englishNames, pinnedFile, spriteUrl } from "./pokeapi.ts";
+import { gameIds, gameTables, readGameFile } from "./games.ts";
+import { pinnedFile } from "./pokeapi.ts";
 
 const outDir = fileURLToPath(new URL("../generated/", import.meta.url));
 
@@ -81,8 +76,6 @@ export interface GameSummary {
   name: string;
   versions: string[];
   starters: Sprite[];
-  /** Listed but not playable yet. */
-  planned: boolean;
 }
 
 export async function writeGameData(): Promise<void> {
@@ -91,15 +84,9 @@ export async function writeGameData(): Promise<void> {
   const order = new Map(
     tables.version_groups.map((vg) => [vg.identifier, Number(vg.order)]),
   );
-  const species = new Map(tables.pokemon_species.map((s) => [s.identifier, s]));
-  const names = englishNames(
-    tables.pokemon_species_names,
-    "pokemon_species_id",
-  );
   const summaries: GameSummary[] = [];
   const releaseOrder = new Map<string, number>();
 
-  const playable = new Set<string>();
   for (const id of gameIds()) {
     const file = readGameFile(id);
     const game = buildGame(file, tables);
@@ -113,38 +100,8 @@ export async function writeGameData(): Promise<void> {
           sprite(game.species[s].name, spriteOf(game, s)),
         ),
       ),
-      planned: false,
     });
     releaseOrder.set(id, order.get(file.versionGroup)!);
-    playable.add(file.versionGroup);
-  }
-
-  for (const game of readPlannedGames()) {
-    if (!order.has(game.versionGroup))
-      throw new Error(
-        `data/planned.yaml: unknown version group ${game.versionGroup}`,
-      );
-    if (playable.has(game.versionGroup))
-      throw new Error(
-        `data/planned.yaml: ${game.name} is already in data/games/`,
-      );
-    summaries.push({
-      id: game.versionGroup,
-      name: game.name,
-      versions: [],
-      starters: await Promise.all(
-        game.starters.map((s) => {
-          const row = species.get(s);
-          if (!row) throw new Error(`data/planned.yaml: unknown species ${s}`);
-          return sprite(
-            names.get(row.id) ?? s,
-            spriteUrl(game.sprites, row.id),
-          );
-        }),
-      ),
-      planned: true,
-    });
-    releaseOrder.set(game.versionGroup, order.get(game.versionGroup)!);
   }
 
   summaries.sort((a, b) => releaseOrder.get(a.id)! - releaseOrder.get(b.id)!);

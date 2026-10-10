@@ -5,7 +5,7 @@ import { expect, test } from "vitest";
 import { sprite, writeGameData, type GameSummary } from "./game-data.ts";
 import { spriteUrl } from "./pokeapi.ts";
 
-test("lists playable and planned games in release order, each once", async () => {
+test("lists the games in release order, each once", async () => {
   await writeGameData();
   const games = JSON.parse(
     readFileSync("generated/games.json", "utf8"),
@@ -13,11 +13,13 @@ test("lists playable and planned games in release order, each once", async () =>
   const ids = games.map((g) => g.id);
   expect(new Set(ids).size).toBe(ids.length);
   expect(ids.indexOf("crystal")).toBeLessThan(ids.indexOf("emerald"));
-  expect(ids.indexOf("x-y")).toBeLessThan(ids.indexOf("sun-moon"));
-  expect(games.find((g) => g.id === "crystal")!.planned).toBe(false);
-  expect(games.find((g) => g.id === "sun-moon")).toMatchObject({
-    planned: true,
-    starters: [{ name: "Rowlet" }, { name: "Litten" }, { name: "Popplio" }],
+  expect(ids.indexOf("black-2-white-2")).toBeLessThan(ids.indexOf("x-y"));
+  expect(games.find((g) => g.id === "crystal")).toMatchObject({
+    starters: [
+      { name: "Chikorita" },
+      { name: "Cyndaquil" },
+      { name: "Totodile" },
+    ],
   });
 });
 

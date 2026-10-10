@@ -1,4 +1,4 @@
-// Schema for the hand-curated files in data/games/ and data/planned.yaml. The
+// Schema for the hand-curated files in data/games/. The
 // build validates every file against it, and `pnpm data:schema` exports it,
 // descriptions included, as JSON Schema for editors.
 import { z } from "zod";
@@ -43,12 +43,10 @@ const locationKey = z
   );
 
 const spriteFolder = z
-  .union([
-    z.string().regex(/^[a-z0-9-]+(\/[a-z0-9-]+)+$/),
-    z.literal("default"),
-  ])
+  .string()
+  .regex(/^[a-z0-9-]+(\/[a-z0-9-]+)+$/)
   .describe(
-    "Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository, with transparent backgrounds, or default for the repository's main sprites, which cover every species.",
+    "Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository, with transparent backgrounds.",
   );
 
 const starters = z.array(identifier).min(1);
@@ -207,16 +205,3 @@ export const gameSchema = z.strictObject({
 
 /** A game file, with the id its file name gives it. */
 export type GameFile = z.infer<typeof gameSchema> & { id: string };
-
-export const plannedSchema = z.array(
-  z.strictObject({
-    versionGroup: identifier,
-    name: z.string(),
-    pokedex,
-    sprites: spriteFolder,
-    starters,
-  }),
-);
-
-/** A game shown as coming soon. */
-export type PlannedGame = z.infer<typeof plannedSchema>[number];

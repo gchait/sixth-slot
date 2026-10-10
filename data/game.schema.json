@@ -19,17 +19,9 @@
       "description": "The regional Pokédex, or several when the game splits it."
     },
     "sprites": {
-      "anyOf": [
-        {
-          "type": "string",
-          "pattern": "^[a-z0-9-]+(\\/[a-z0-9-]+)+$"
-        },
-        {
-          "type": "string",
-          "const": "default"
-        }
-      ],
-      "description": "Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository, with transparent backgrounds, or default for the repository's main sprites, which cover every species."
+      "type": "string",
+      "pattern": "^[a-z0-9-]+(\\/[a-z0-9-]+)+$",
+      "description": "Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository, with transparent backgrounds."
     },
     "starters": {
       "minItems": 1,

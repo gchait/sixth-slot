@@ -60,13 +60,6 @@ test("plans a single-version game without a version choice", async ({
   await expect(page.getByText("Version", { exact: true })).toHaveCount(0);
 });
 
-test("lists planned games as coming soon, without a link", async ({ page }) => {
-  await page.goto("./");
-  await expect(page.getByText("Sun & Moon", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Sun & Moon/ })).toHaveCount(0);
-  await expect(page.getByText("Coming soon").first()).toBeVisible();
-});
-
 test("keeps a member for each field move unless told not to", async ({
   page,
 }) => {
@@ -90,7 +83,7 @@ test("an unknown address gets the not-found page, which links home", async ({
   ).toBeVisible();
   expect(errors.filter((e) => !e.includes("404"))).toEqual([]);
   await page.getByRole("link", { name: "← sixth-slot" }).click();
-  await expect(page.getByText("Coming soon").first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /X & Y/ })).toBeVisible();
 });
 
 test("lines up the top teams and shows the one picked", async ({ page }) => {

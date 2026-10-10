@@ -1,10 +1,9 @@
 import { beforeAll, describe, expect, test } from "vitest";
 
-import { gameSchema } from "../data/schema.ts";
 import { met, type GameData } from "../engine/data.ts";
 import { buildGame } from "./build-game.ts";
 import { isPhysical } from "./build-moves.ts";
-import { loadGame, readGameFile, readPlannedGames } from "./games.ts";
+import { loadGame, readGameFile } from "./games.ts";
 import { loadTables, type Tables } from "./pokeapi.ts";
 
 let tables: Tables;
@@ -517,41 +516,6 @@ describe("game files placing a location by version", () => {
       requires: { stage: 5 },
     });
   });
-});
-
-describe("planned games", () => {
-  test.each(readPlannedGames())(
-    "$name lacks only the stages its game file will give",
-    ({ versionGroup, name, pokedex, sprites, starters }) => {
-      const file = {
-        id: versionGroup,
-        ...gameSchema.parse({
-          name,
-          versionGroup,
-          pokedex,
-          sprites,
-          starters,
-          locations: {},
-          battles: [
-            {
-              id: "first",
-              name: "First",
-              title: "Gym Leader",
-              party: [{ species: starters[0], level: 5, moves: ["tackle"] }],
-            },
-          ],
-        }),
-      };
-      let problems: string[] = [];
-      try {
-        buildGame(file, tables);
-      } catch (error) {
-        problems = (error as Error).message.split("\n").slice(1);
-      }
-      expect(problems.length).toBeGreaterThan(0);
-      expect(problems.filter((p) => !/no (story )?stage$/.test(p))).toEqual([]);
-    },
-  );
 });
 
 describe("battle variants", () => {
