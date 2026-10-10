@@ -35,6 +35,11 @@ export interface Candidate {
   id: string;
   /** Species from the line's first member to its final species. */
   line: string[];
+  /**
+   * For each evolution in the line, whether the options let it happen by some
+   * battle; when they do not, the later form has to be caught.
+   */
+  evolves: boolean[];
   /** The first species of the line; at most one member per family. */
   family: string;
   /**
@@ -195,6 +200,9 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
     candidates.push({
       id: species,
       line,
+      evolves: steps.map((step) =>
+        game.battles.some((_, battle) => canEvolve(step, battle, -1)),
+      ),
       family,
       forms,
       joins,

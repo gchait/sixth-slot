@@ -45,6 +45,21 @@ describe("buildCandidates", () => {
     expect(find(trading, "alakazam")).toBeDefined();
   });
 
+  test("marks an evolution the options rule out, whose form must be caught", async () => {
+    const hgss = await loadGame("heartgold-soulsilver");
+    const steelix = (allowTradeEvolutions: boolean) =>
+      buildCandidates(
+        hgss,
+        options({
+          version: "heartgold",
+          starter: "chikorita",
+          allowTradeEvolutions,
+        }),
+      ).find((c) => c.id === "steelix")!;
+    expect(steelix(false).evolves).toEqual([false]);
+    expect(steelix(true).evolves).toEqual([true]);
+  });
+
   test("offers each stone evolution of Eevee once stones are sold", () => {
     for (const id of ["vaporeon", "jolteon", "flareon"]) {
       expect(find(options(), id)).toMatchObject({ family: "eevee", joins: 3 });

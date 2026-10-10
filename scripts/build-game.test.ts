@@ -382,6 +382,11 @@ describe("HeartGold & SoulSilver", () => {
     expect(stagesOf("heartgold", "aerodactyl")).toEqual([]);
     expect(stagesOf("heartgold", "snorlax")).toEqual([18]);
   });
+
+  test("stages an area's method by the area before the method on the whole location", () => {
+    // Route 47's tall grass waits for Waterfall, but Cliff Cave does not.
+    expect(Math.min(...stagesOf("heartgold", "steelix"))).toBe(5);
+  });
 });
 
 describe("game files placing a location by version", () => {

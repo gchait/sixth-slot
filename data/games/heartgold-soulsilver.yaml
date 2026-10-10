@@ -22,8 +22,6 @@ locations:
   johto-route-31: 0
   dark-cave/violet-city-entrance: 0 # The cave entrance on Route 31
   violet-city: 0
-  violet-city/poke-mart: 0 # The Mystery Egg, from Elm's aide after Falkner
-  violet-city/pokemon-center: 0
   sprout-tower: 0
   # Before Bugsy (parts 4–5)
   johto-route-32: 1
@@ -59,7 +57,7 @@ locations:
   # Before Jasmine (part 10): Cliff Edge Gate opens once Amphy is healed
   johto-route-47: 5
   johto-route-47@walk: 8 # Tall grass behind a waterfall
-  johto-route-47/inside-cave: 5 # Cliff Cave
+  johto-route-47/inside-cave@walk: 5 # Cliff Cave, on the way to Route 48
   johto-route-47/cave-gate: 21 # A pond in Cliff Edge Gate, with Rock Climb
   johto-route-48: 5
   safari-zone-gate: 5
@@ -210,7 +208,7 @@ encounterConditions:
   coins-*: excluded # Coins come only from Voltorb Flip outside Japan
   item-*: excluded # Fossils are rare finds in breakable rocks
   story-progress-before-national-dex: 0
-  story-progress-zephyr-badge: 1
+  story-progress-zephyr-badge: 1 # The Mystery Egg, from Elm's aide after Falkner
   story-progress-awakened-beasts: 3
   story-progress-national-dex: 13 # Olivine City, after the Hall of Fame
   story-progress-returned-machine-part: 15

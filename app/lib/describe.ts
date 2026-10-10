@@ -44,6 +44,7 @@ export function describeLine(game: GameData, candidate: Candidate): string {
     .map((species, i) => {
       const name = game.species[species].name;
       if (i === 0) return name;
+      if (!candidate.evolves[i - 1]) return `${name} (caught)`;
       const { label } = game.evolutions.find((e) => e.to === species)!;
       return `${name} (${label})`;
     })
