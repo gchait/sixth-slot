@@ -295,6 +295,21 @@ describe("Crystal", () => {
     expect(Math.min(...stagesOf("lapras"))).toBe(4);
   });
 
+  test("keeps a place's levels apart where its areas open at different stages", () => {
+    expect(crystal.sources.crystal.teddiursa).toEqual([
+      expect.objectContaining({
+        stage: 0,
+        location: "Dark Cave",
+        levels: [2, 2],
+      }),
+      expect.objectContaining({
+        stage: 7,
+        location: "Dark Cave",
+        levels: [20, 20],
+      }),
+    ]);
+  });
+
   test("leaves out the Odd Egg, which hatches at random", () => {
     expect(stagesOf("elekid")).toEqual([]);
     expect(stagesOf("tyrogue")).toEqual([8]);

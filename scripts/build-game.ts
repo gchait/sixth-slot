@@ -1054,12 +1054,11 @@ export function buildGame(file: GameFile, t: Tables): GameData {
         ...(once && { once }),
         ...(gives ? { gives } : { levels }),
       };
-      const key = `${source.species}|${source.location}|${source.method}`;
+      const key = `${source.species}|${source.location}|${source.method}|${stage}`;
       const existing = merged.get(key);
       if (!existing) {
         merged.set(key, source);
       } else {
-        existing.stage = Math.min(existing.stage, source.stage);
         if ("levels" in existing && "levels" in source) {
           existing.levels = [
             Math.min(existing.levels[0], source.levels[0]),
