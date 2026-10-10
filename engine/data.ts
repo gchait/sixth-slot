@@ -117,7 +117,7 @@ export interface Battle {
   /** Left out when the variants name every opponent. */
   name?: string;
   title: string;
-  /** A battle after the Champion, such as a rematch, listed after every story battle. */
+  /** A battle after the story, such as a rematch, listed after every story battle. */
   postgame: boolean;
   /**
    * The player's level by this battle, taken to be the highest opponent level

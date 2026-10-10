@@ -10,7 +10,7 @@ export interface Options {
   uniqueTypes: boolean;
   allowLegendaries: boolean;
   allowTradeEvolutions: boolean;
-  /** Also score the battles after the Champion. */
+  /** Also score the battles after the story. */
   includePostgame: boolean;
   /** Some member can use each of the game's field moves from when it works. */
   carryFieldMoves: boolean;

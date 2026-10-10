@@ -344,7 +344,7 @@
           },
           "postgame": {
             "default": false,
-            "description": "A battle after the Champion, such as a rematch; scored only when the player asks. These come after every story battle.",
+            "description": "A battle after the story, such as a rematch; scored only when the player asks. These come after every story battle.",
             "type": "boolean"
           },
           "party": {

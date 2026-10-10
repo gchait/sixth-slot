@@ -19,7 +19,7 @@ export async function loader() {
 }
 
 const summary =
-  "The best team for a Pokémon playthrough. Pick your starter, and get five teammates the game actually lets you catch, balanced for every battle on the way to the Champion.";
+  "The best team for a Pokémon playthrough. Pick your starter, and get five teammates the game actually lets you catch, balanced for every major battle of the story.";
 
 export function meta() {
   return [
@@ -35,7 +35,7 @@ const steps = [
   },
   {
     title: "Scored against real battles",
-    text: "Every gym leader, the Elite Four and the Champion, using their actual teams and moves and your Pokémon's level-up moves and HMs.",
+    text: "Every Gym Leader, the Elite Four and the story's final battles, using their actual teams and moves and your Pokémon's level-up moves and HMs.",
   },
   {
     title: "Your rules",

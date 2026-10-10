@@ -153,7 +153,7 @@ export function Controls({
           <Setting
             id="postgame"
             label="Post-game battles"
-            hint="Also score rematches and battles after the Champion."
+            hint="Also score rematches and battles after the story."
             checked={options.includePostgame}
             onChange={(includePostgame) => set({ includePostgame })}
           />

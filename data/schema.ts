@@ -79,7 +79,7 @@ const battle = z.strictObject({
     .boolean()
     .default(false)
     .describe(
-      "A battle after the Champion, such as a rematch; scored only when the player asks. These come after every story battle.",
+      "A battle after the story, such as a rematch; scored only when the player asks. These come after every story battle.",
     ),
   party: party
     .optional()

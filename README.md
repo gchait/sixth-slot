@@ -1,8 +1,8 @@
 # sixth-slot
 
 Plan the best team for a Pokémon playthrough: pick your starter, and get five
-teammates the game actually lets you catch, balanced for every battle on the
-way to the Champion.
+teammates the game actually lets you catch, balanced for every major battle
+of the story.
 
 Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald**,
 **Platinum**, **HeartGold & SoulSilver** and **Black & White**.
@@ -30,14 +30,16 @@ Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald**,
   evolutions that need a trade with another player are off, and those
   outside-battle moves are kept on the team. Each can be changed, and any
   Pokémon can be pinned or excluded.
-- Battles after the Champion, such as FireRed's second Elite Four round,
-  Emerald's first Gym Leader rematches or Crystal's Kanto Gym Leaders and Red,
+- Battles after the story, such as FireRed's second Elite Four round,
+  Emerald's first Gym Leader rematches, Crystal's Kanto Gym Leaders and Red, or
+  Black and White's Champion,
   can be scored too. They count Pokémon caught on the way to them, but not
   post-game story areas.
 
 **How a team is scored**
 
-The team faces every Gym Leader, the Elite Four and the Champion, with their
+The team faces every Gym Leader, the Elite Four and the story's final battles,
+with their
 real teams and moves. For each opponent, the team's best one-on-one matchup
 counts: how many more hits your Pokémon survives than it needs, using the game's
 own stat and damage formulas, with each move counted by its average damage per
