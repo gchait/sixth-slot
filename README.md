@@ -4,8 +4,8 @@ Plan the best team for a Pokémon playthrough: pick your starter, and get five
 teammates the game actually lets you catch, balanced for every battle on the
 way to the Champion.
 
-Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald** and
-**Platinum**.
+Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald**,
+**Platinum** and **HeartGold & SoulSilver**.
 
 ## How teams are chosen
 
@@ -14,8 +14,9 @@ Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald** and
 - Your starter is always on the team.
 - Only Pokémon your version can get: wild encounters, gifts, static encounters
   and in-game trades, each from the point in the story where it becomes
-  reachable. Game Corner prizes count once the story's prize money could pay for
-  them twice over, so neither gambling nor grinding is needed.
+  reachable. Game Corner prizes count once the story's prize money could buy
+  their coins twice over, where coins are sold, so neither gambling nor grinding
+  is needed.
 - Nothing rests on luck that cannot be retried: a random evolution counts only
   when its base can be caught again, and what the game decides by Trainer ID is
   left out.

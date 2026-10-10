@@ -26,6 +26,15 @@ const placement = z
     "A stage; postgame for post-game story areas; excluded for events and rare-day places.",
   );
 
+const locationPlacement = z.union([
+  placement,
+  z
+    .record(identifier, placement)
+    .describe(
+      "A placement for each version, for a place the versions reach at different times.",
+    ),
+]);
+
 const spriteFolder = z
   .string()
   .regex(/^[a-z0-9-]+(\/[a-z0-9-]+)+$/)
@@ -89,7 +98,7 @@ export const gameSchema = z.strictObject({
           /^[a-z0-9-]+(\/[a-z0-9-]+)?(@[a-z0-9-]+)?$/,
           "use location, location/area, optionally followed by @method",
         ),
-      placement,
+      locationPlacement,
     )
     .describe(
       "When each PokeAPI location is first reached on the standard route. location/area narrows a key to an area and @method to an encounter method; the most specific key wins. Every location with encounters needs a key.",
@@ -147,7 +156,7 @@ export const gameSchema = z.strictObject({
   moveRelearner: storyStage
     .optional()
     .describe(
-      "When the Move Reminder can first reteach level-up moves, paid with items found without grinding; left out if the game has none.",
+      "When the Move Reminder can first reteach level-up moves, paid with items found without grinding; left out if the game has none or its price needs grinding.",
     ),
   moves: z
     .record(identifier, storyStage)

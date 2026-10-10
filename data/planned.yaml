@@ -1,11 +1,6 @@
 # Games shown on the home page as coming soon. Remove a game from here when
 # its file in data/games/ lands.
 
-- versionGroup: heartgold-soulsilver
-  name: HeartGold & SoulSilver
-  pokedex: [updated-johto]
-  sprites: generation-iv/heartgold-soulsilver
-  starters: [chikorita, cyndaquil, totodile]
 - versionGroup: black-white
   name: Black & White
   pokedex: [original-unova]

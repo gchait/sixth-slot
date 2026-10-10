@@ -353,6 +353,48 @@ describe("Platinum", () => {
   });
 });
 
+describe("HeartGold & SoulSilver", () => {
+  let hgss: GameData;
+  beforeAll(async () => {
+    hgss = await loadGame("heartgold-soulsilver");
+  });
+  const stagesOf = (version: string, species: string) =>
+    (hgss.sources[version][species] ?? []).map((s) => s.stage);
+
+  test("stages a place by version where the versions reach it at different times", () => {
+    expect(stagesOf("heartgold", "ho-oh")).toEqual([8]);
+    expect(stagesOf("soulsilver", "ho-oh")).toEqual([19]);
+    expect(stagesOf("heartgold", "lugia")).toEqual([19]);
+    expect(stagesOf("soulsilver", "lugia")).toEqual([8]);
+  });
+
+  test("needs a placement for every version in a by-version placement", () => {
+    const file = readGameFile("heartgold-soulsilver");
+    file.locations["bell-tower"] = { heartgold: 8 };
+    expect(() => buildGame(file, tables)).toThrow(
+      "locations.bell-tower: give a placement for each of heartgold, soulsilver",
+    );
+  });
+
+  test("leaves out what depends on chance, waiting days or the Game Corner", () => {
+    expect(stagesOf("heartgold", "houndoom")).toEqual([]);
+    expect(stagesOf("heartgold", "porygon")).toEqual([]);
+    expect(stagesOf("heartgold", "aerodactyl")).toEqual([]);
+    expect(stagesOf("heartgold", "snorlax")).toEqual([18]);
+  });
+});
+
+describe("game files placing a location by version", () => {
+  test("evolve by that place from the latest version's stage", () => {
+    const file = readGameFile("platinum");
+    file.locations["mt-coronet"] = { platinum: 5 };
+    const game = buildGame(file, tables);
+    expect(game.evolutions.find((e) => e.to === "magnezone")).toMatchObject({
+      requires: { stage: 5 },
+    });
+  });
+});
+
 describe("planned games", () => {
   test.each(readPlannedGames())(
     "$name lacks only the stages its game file will give",

@@ -23,6 +23,8 @@ import {
   type Tables,
 } from "./pokeapi.ts";
 
+type Placement = GameFile["locations"][string];
+
 /**
  * How much of a move's damage counts toward a typical attack, by move effect:
  * moves that knock out the user or need a sleeping user or target count for
@@ -166,6 +168,27 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       id: v.identifier,
       name: versionNames.get(v.id) ?? v.identifier,
     }));
+  const versionIds = versions.map((v) => v.id);
+  for (const [key, placement] of Object.entries(file.locations)) {
+    if (
+      typeof placement === "object" &&
+      Object.keys(placement).sort().join() !== [...versionIds].sort().join()
+    )
+      errors.push(
+        `locations.${key}: give a placement for each of ${versionIds.join(", ")}`,
+      );
+  }
+  /** A location's placement in one version. */
+  const inVersion = (placement: Placement | undefined, version: string) =>
+    typeof placement === "object" ? placement[version] : placement;
+  /** A location's placement in every version: the latest of them. */
+  const inEveryVersion = (placement: Placement | undefined) => {
+    if (typeof placement !== "object") return placement;
+    const stages = Object.values(placement);
+    return stages.every((stage) => typeof stage === "number")
+      ? Math.max(...stages)
+      : "postgame";
+  };
 
   // Types and the type chart as they were in this generation.
   const typeRows = t.types
@@ -642,7 +665,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
       const place = locationsById.get(row.location_id)!;
       atStage(
         needStage(
-          file.locations[place.identifier],
+          inEveryVersion(file.locations[place.identifier]),
           context,
           `locations.${place.identifier}`,
         ),
@@ -786,8 +809,12 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     if (typeof stage === "number" && stage >= battles.length)
       errors.push(`${where}: stage ${stage} is after the last battle`);
   };
-  for (const [key, stage] of Object.entries(file.locations))
-    checkStage(`locations.${key}`, stage);
+  for (const [key, placement] of Object.entries(file.locations)) {
+    for (const stage of typeof placement === "object"
+      ? Object.values(placement)
+      : [placement])
+      checkStage(`locations.${key}`, stage);
+  }
   for (const [key, stage] of Object.entries(file.methods))
     checkStage(`methods.${key}`, stage);
   for (const [key, stage] of Object.entries(file.items))
@@ -863,11 +890,13 @@ export function buildGame(file: GameFile, t: Tables): GameData {
         slots.get(encounter.encounter_slot_id)!.encounter_method_id,
       )!;
       const inArea = `${location.identifier}/${area.identifier}`;
-      const placement =
+      const placement = inVersion(
         file.locations[`${inArea}@${method.identifier}`] ??
-        file.locations[`${location.identifier}@${method.identifier}`] ??
-        file.locations[inArea] ??
-        file.locations[location.identifier];
+          file.locations[`${location.identifier}@${method.identifier}`] ??
+          file.locations[inArea] ??
+          file.locations[location.identifier],
+        version.identifier,
+      );
       if (placement === undefined) {
         unmapped.add(
           location.identifier + (area.identifier ? `/${area.identifier}` : ""),

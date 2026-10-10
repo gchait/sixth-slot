@@ -1,0 +1,647 @@
+# yaml-language-server: $schema=../game.schema.json
+#
+# Pokémon HeartGold and SoulSilver, staged by the order of play in Bulbapedia's
+# walkthrough:
+# https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_HeartGold_and_SoulSilver
+
+name: HeartGold & SoulSilver
+versionGroup: heartgold-soulsilver
+pokedex: [updated-johto]
+sprites: generation-iv/heartgold-soulsilver
+starters: [chikorita, cyndaquil, totodile]
+
+exclusiveGroups:
+  - [bulbasaur, charmander, squirtle] # Professor Oak's gift after Red
+
+locations:
+  # Before Falkner (parts 1–3)
+  new-bark-town: 0
+  johto-route-29: 0
+  cherrygrove-city: 0
+  johto-route-30: 0
+  johto-route-31: 0
+  dark-cave/violet-city-entrance: 0 # The cave entrance on Route 31
+  violet-city: 0
+  violet-city/poke-mart: 0 # The Mystery Egg, from Elm's aide after Falkner
+  violet-city/pokemon-center: 0
+  sprout-tower: 0
+  # Before Bugsy (parts 4–5)
+  johto-route-32: 1
+  ruins-of-alph: 1
+  union-cave: 1
+  union-cave/b2f: 4 # Across water, with Surf
+  johto-route-33: 1
+  azalea-town: 1
+  slowpoke-well: 1
+  slowpoke-well/b1f: 6 # The lower floor, with Surf and Strength
+  # Before Whitney (parts 5–6)
+  ilex-forest: 2
+  johto-route-34: 2
+  goldenrod-city: 2
+  # Before Morty (parts 7–8)
+  johto-route-35: 3
+  goldenrod-city/north-gate: 3 # Webster, at the Route 35 gate
+  national-park: 3
+  johto-route-36: 3
+  johto-route-37: 3
+  ecruteak-city: 3
+  goldenrod-city/bills-house: 3 # After meeting Bill in Ecruteak City
+  burned-tower: 3
+  roaming-johto: 3 # Raikou and Entei flee the Burned Tower
+  # Before Chuck (parts 8–10)
+  johto-route-38: 4
+  johto-route-39: 4
+  olivine-city: 4
+  johto-sea-route-40: 4
+  johto-sea-route-41: 4
+  cianwood-city: 4
+  cianwood-city/pokemon-center: excluded # Only to a player with one Pokémon and none in the PC
+  # Before Jasmine (part 10): Cliff Edge Gate opens once Amphy is healed
+  johto-route-47: 5
+  johto-route-47@walk: 8 # Tall grass behind a waterfall
+  johto-route-47/inside-cave: 5 # Cliff Cave
+  johto-route-47/cave-gate: 21 # A pond in Cliff Edge Gate, with Rock Climb
+  johto-route-48: 5
+  safari-zone-gate: 5
+  johto-safari-zone: 5
+  # Before Pryce (parts 10–11)
+  johto-route-42: 6
+  mt-mortar: 6
+  mt-mortar/upper-cave: 8 # With Waterfall
+  mt-mortar/b1f: 8
+  johto-route-43: 6
+  lake-of-rage: 6
+  team-rocket-hq: 6
+  # Before Clair (parts 12–13)
+  johto-route-44: 7
+  ice-path: 7
+  whirl-islands: 7 # With Whirlpool
+  blackthorn-city: 7
+  # Before the Elite Four (parts 13–15). The tower Pokémon come with the bell
+  # from the Kimono Girls in one version, and with the wing from Pewter City in
+  # the other (part 24).
+  dragons-den: 8
+  johto-route-45: 8
+  dark-cave/blackthorn-city-entrance: 8
+  johto-route-46: 8
+  bell-tower: { heartgold: 8, soulsilver: 19 }
+  whirl-islands/b3f@static: { heartgold: 19, soulsilver: 8 }
+  kanto-route-27: 8
+  tohjo-falls: 8
+  kanto-route-26: 8
+  kanto-victory-road-1: 8
+  # Kanto, after the Champion (parts 17–27)
+  vermilion-city: 13
+  kanto-route-6: 14
+  saffron-city: 14
+  kanto-route-8: 15
+  kanto-route-10: 15
+  kanto-route-10@static: 21 # Zapdos, once all 16 Badges are earned
+  rock-tunnel: 15
+  kanto-route-9: 15
+  kanto-power-plant: 15
+  cerulean-city: 15
+  kanto-route-24: 15
+  kanto-route-25: 15
+  kanto-route-25@static: 18 # Suicune, after it is seen on Route 14 and Misty is beaten
+  kanto-route-5: 16
+  kanto-route-7: 16
+  celadon-city: 16
+  kanto-route-16: 17
+  kanto-route-17: 17
+  kanto-route-18: 17
+  fuchsia-city: 17
+  kanto-route-15: 18
+  kanto-route-14: 18
+  kanto-route-13: 18
+  kanto-route-12: 18
+  kanto-route-11: 18
+  digletts-cave: 18
+  digletts-cave@npc-trade: excluded # Brock wants a Bonsly, which is not in the Johto Pokédex
+  kanto-route-2: 18
+  viridian-forest: 18
+  pewter-city: 18
+  kanto-route-3: 19
+  mt-moon: 19
+  kanto-route-4: 19
+  viridian-city: 19
+  kanto-route-1: 19
+  pallet-town: 19
+  kanto-sea-route-21: 19
+  cinnabar-island: 19
+  kanto-sea-route-20: 19
+  seafoam-islands: 19
+  kanto-sea-route-19: 20
+  # Once all 16 Badges are earned (parts 28–30)
+  kanto-route-22: 21
+  kanto-route-28: 21
+  mt-silver: 21
+  cerulean-cave: 21
+  # The orbs' story after Red (part 31), and event distributions
+  embedded-tower: postgame
+  sinjoh-ruins: excluded
+  johto-pokemart: excluded
+  # PokeAPI gives these no place in the game.
+  unknown-all-bugs: excluded
+  unknown-all-poliwag: excluded
+  unknown-all-rattata: excluded
+
+methods:
+  old-rod: 1 # Route 32
+  headbutt: 2 # Ilex Forest
+  rock-smash: 3 # Route 36
+  squirt-bottle: 3 # Goldenrod Flower Shop, after Whitney
+  surf: 4 # Ecruteak City, usable with the Fog Badge
+  good-rod: 4 # Olivine City
+  pokeflute: 15 # The EXPN Card, from Lavender's Radio Tower after the Power Plant
+  super-rod: 18 # Route 12
+
+trades:
+  steelix: { stage: 33 } # Jasmine, after her rematch
+  pikachu: { stage: 36 } # Lt. Surge, after his rematch
+
+items:
+  leaf-stone: 2 # Picnicker Gina's phone calls, Route 34
+  fire-stone: 3 # School Kid Alan's phone calls, Route 36
+  sun-stone: 3 # First prize in the National Park's Bug-Catching Contest
+  moon-stone: 4 # Ruins of Alph, with Surf
+  thunder-stone: 4 # Lass Dana's phone calls, Route 38
+  water-stone: 6 # Fisherman Tully, Route 42
+  kings-rock: 6 # Slowpoke Well, with Surf and Strength
+  dragon-scale: 8 # Mt. Mortar 2F, with Waterfall
+  metal-coat: 13 # S.S. Aqua
+  up-grade: 14 # Silph Co.
+
+hms:
+  cut: 2 # Ilex Forest
+  rock-smash: 3 # Route 36
+  surf: 3 # Ecruteak Dance Theater
+  fly: 5 # Cianwood City, after Chuck
+  strength: 6 # Route 42
+  whirlpool: 6 # Team Rocket HQ
+  waterfall: 7 # Ice Path
+  rock-climb: 21 # Professor Oak, once all 16 Badges are earned
+
+# Badges from the walkthrough
+fieldMoves:
+  surf: 4 # Fog Badge
+  fly: 5 # Storm Badge
+
+# https://bulbapedia.bulbagarden.net/wiki/Heart_Scale
+# No moveRelearner: the Move Reminder in Blackthorn City takes a Heart Scale,
+# and the story leaves two in the field; the rest come from one breakable rock
+# in twenty.
+
+encounterConditions:
+  time-*: 0 # Any time of day
+  weekday-*: 0 # Lapras in Union Cave on Fridays, and the Bug-Catching Contest
+  swarm-no: 0
+  swarm-yes: excluded # A different swarm each day
+  radio-off: 0
+  radio-hoenn: 13 # The Hoenn and Sinnoh Sound, with the National Pokédex
+  radio-sinnoh: 13
+  # Every Trainer ID gets trees of both groups in each place
+  headbutt-tree-common: 0
+  headbutt-tree-rare: 0
+  headbutt-tree-secret: 21 # A third group of trees, most behind rocky walls for Rock Climb
+  bug-catching-contest-*: 0
+  johto-safari-blocks-inactive: 0
+  johto-safari-blocks-*: excluded # Objects unlocked over gameplay hours and days
+  coins-*: excluded # Coins come only from Voltorb Flip outside Japan
+  item-*: excluded # Fossils are rare finds in breakable rocks
+  story-progress-before-national-dex: 0
+  story-progress-zephyr-badge: 1
+  story-progress-awakened-beasts: 3
+  story-progress-national-dex: 13 # Olivine City, after the Hall of Fame
+  story-progress-returned-machine-part: 15
+  story-progress-vermilion-copycat: 15 # Latias or Latios roam once Steven appears
+  story-progress-receive-tm-from-claire: 8
+  story-progress-beat-red: 22
+  other-received-kanto-starter: 22 # From Professor Oak, after Red
+  other-snorlax-11-beat-league: excluded # Snorlax again, after another Pokémon League win
+  other-correct-password: excluded # An Egg for a password from outside the game
+  other-event-arceus-in-party: excluded
+
+battles:
+  - id: falkner
+    name: Falkner
+    title: Gym Leader
+    party:
+      - { species: pidgey, level: 9, moves: [tackle, sand-attack] }
+      - { species: pidgeotto, level: 13, moves: [tackle, roost, gust] }
+  - id: bugsy
+    name: Bugsy
+    title: Gym Leader
+    party:
+      - { species: scyther, level: 17, moves: [u-turn, quick-attack, leer, focus-energy] }
+      - { species: metapod, level: 15, moves: [tackle] }
+      - { species: kakuna, level: 15, moves: [poison-sting] }
+  - id: whitney
+    name: Whitney
+    title: Gym Leader
+    party:
+      - { species: clefairy, level: 17, moves: [mimic, encore, double-slap, metronome] }
+      - { species: miltank, level: 19, moves: [stomp, rollout, attract, milk-drink] }
+  - id: morty
+    name: Morty
+    title: Gym Leader
+    party:
+      - { species: gastly, level: 21, moves: [lick, spite, mean-look, curse] }
+      - { species: haunter, level: 21, moves: [hypnosis, dream-eater, curse, nightmare] }
+      - { species: gengar, level: 25, moves: [hypnosis, shadow-ball, mean-look, sucker-punch] }
+      - { species: haunter, level: 23, moves: [curse, mean-look, sucker-punch, night-shade] }
+  - id: chuck
+    name: Chuck
+    title: Gym Leader
+    party:
+      - { species: primeape, level: 29, moves: [leer, double-team, rock-slide, focus-punch] }
+      - { species: poliwrath, level: 31, moves: [hypnosis, body-slam, surf, focus-punch] }
+  - id: jasmine
+    name: Jasmine
+    title: Gym Leader
+    party:
+      - { species: magnemite, level: 30, moves: [thunderbolt, sonic-boom, supersonic, thunder-wave] }
+      - { species: magnemite, level: 30, moves: [thunderbolt, sonic-boom, supersonic, thunder-wave] }
+      - { species: steelix, level: 35, moves: [iron-tail, rock-throw, sandstorm, screech] }
+  - id: pryce
+    name: Pryce
+    title: Gym Leader
+    party:
+      - { species: seel, level: 30, moves: [icy-wind, rest, snore, hail] }
+      - { species: dewgong, level: 32, moves: [aurora-beam, rest, sleep-talk, ice-shard] }
+      - { species: piloswine, level: 34, moves: [blizzard, ice-fang, mud-bomb, hail] }
+  - id: clair
+    name: Clair
+    title: Gym Leader
+    party:
+      - { species: gyarados, level: 38, moves: [bite, twister, dragon-rage, dragon-pulse] }
+      - { species: dragonair, level: 38, moves: [thunder-wave, slam, aqua-tail, dragon-pulse] }
+      - { species: dragonair, level: 38, moves: [thunder-wave, slam, fire-blast, dragon-pulse] }
+      - { species: kingdra, level: 41, moves: [hydro-pump, smokescreen, hyper-beam, dragon-pulse] }
+  - id: will
+    name: Will
+    title: Elite Four
+    party:
+      - { species: xatu, level: 40, moves: [u-turn, me-first, confuse-ray, psychic] }
+      - { species: jynx, level: 41, moves: [lovely-kiss, double-slap, ice-punch, psychic] }
+      - { species: slowbro, level: 41, moves: [curse, amnesia, water-pulse, psychic] }
+      - { species: exeggutor, level: 41, moves: [reflect, hypnosis, egg-bomb, psychic] }
+      - { species: xatu, level: 42, moves: [aerial-ace, ominous-wind, confuse-ray, psychic] }
+  - id: koga
+    name: Koga
+    title: Elite Four
+    party:
+      - { species: ariados, level: 40, moves: [spider-web, baton-pass, giga-drain, poison-jab] }
+      - { species: forretress, level: 43, moves: [swift, explosion, protect, toxic-spikes] }
+      - { species: muk, level: 42, moves: [gunk-shot, minimize, screech, toxic] }
+      - { species: venomoth, level: 41, moves: [psychic, gust, supersonic, toxic] }
+      - { species: crobat, level: 44, moves: [quick-attack, wing-attack, double-team, poison-fang] }
+  - id: bruno
+    name: Bruno
+    title: Elite Four
+    party:
+      - { species: hitmontop, level: 42, moves: [dig, counter, triple-kick, quick-attack] }
+      - { species: hitmonlee, level: 42, moves: [high-jump-kick, blaze-kick, focus-energy, swagger] }
+      - { species: hitmonchan, level: 42, moves: [thunder-punch, ice-punch, fire-punch, bullet-punch] }
+      - { species: onix, level: 43, moves: [sandstorm, dragon-breath, rock-slide, earthquake] }
+      - { species: machamp, level: 46, moves: [revenge, cross-chop, rock-slide, foresight] }
+  - id: karen
+    name: Karen
+    title: Elite Four
+    party:
+      - { species: umbreon, level: 42, moves: [double-team, confuse-ray, feint-attack, payback] }
+      - { species: vileplume, level: 42, moves: [stun-spore, petal-dance, acid, moonlight] }
+      - { species: murkrow, level: 44, moves: [sucker-punch, feint-attack, pluck, whirlwind] }
+      - { species: gengar, level: 45, moves: [focus-blast, destiny-bond, spite, lick] }
+      - { species: houndoom, level: 47, moves: [nasty-plot, dark-pulse, flamethrower, crunch] }
+  - id: lance
+    name: Lance
+    title: Champion
+    party:
+      - { species: gyarados, level: 46, moves: [waterfall, dragon-pulse, ice-fang, flail] }
+      - { species: dragonite, level: 49, moves: [dragon-rush, thunder-wave, thunder, hyper-beam] }
+      - { species: dragonite, level: 49, moves: [dragon-rush, thunder-wave, blizzard, hyper-beam] }
+      - { species: aerodactyl, level: 48, moves: [rock-slide, aerial-ace, crunch, thunder-fang] }
+      - { species: charizard, level: 48, moves: [air-slash, fire-fang, dragon-claw, shadow-claw] }
+      - { species: dragonite, level: 50, moves: [outrage, safeguard, fire-blast, hyper-beam] }
+  # Kanto's Gym Leaders and Red, in the walkthrough's order after the Champion.
+  - id: lt-surge
+    name: Lt. Surge
+    title: Gym Leader
+    postgame: true
+    party:
+      - { species: raichu, level: 51, moves: [thunder-wave, shock-wave, quick-attack, double-team] }
+      - { species: electrode, level: 47, moves: [thunder-wave, double-team, shock-wave, light-screen] }
+      - { species: electrode, level: 47, moves: [screech, double-team, self-destruct, charge-beam] }
+      - { species: magneton, level: 47, moves: [supersonic, double-team, shock-wave, mirror-shot] }
+      - { species: electabuzz, level: 53, moves: [quick-attack, shock-wave, light-screen, low-kick] }
+  - id: sabrina
+    name: Sabrina
+    title: Gym Leader
+    postgame: true
+    party:
+      - { species: espeon, level: 53, moves: [calm-mind, shadow-ball, psychic, skill-swap] }
+      - { species: mr-mime, level: 53, moves: [mimic, light-screen, psychic, skill-swap] }
+      - { species: alakazam, level: 55, moves: [psychic, skill-swap, reflect, energy-ball] }
+  - id: misty
+    name: Misty
+    title: Gym Leader
+    postgame: true
+    party:
+      - { species: golduck, level: 49, moves: [water-pulse, disable, psychic, psych-up] }
+      - { species: quagsire, level: 49, moves: [water-pulse, amnesia, rain-dance, earthquake] }
+      - { species: lapras, level: 52, moves: [ice-beam, sing, water-pulse, body-slam] }
+      - { species: starmie, level: 54, moves: [water-pulse, confuse-ray, ice-beam, recover] }
+  - id: erika
+    name: Erika
+    title: Gym Leader
+    postgame: true
+    party:
+      - { species: jumpluff, level: 51, moves: [leech-seed, u-turn, giga-drain, sunny-day] }
+      - { species: tangela, level: 52, moves: [ancient-power, wring-out, giga-drain, sleep-powder] }
+      - { species: victreebel, level: 56, moves: [sunny-day, grass-knot, leaf-storm, razor-leaf] }
+      - { species: bellossom, level: 56, moves: [sunny-day, solar-beam, giga-drain, synthesis] }
+  - id: janine
+    name: Janine
+    title: Gym Leader
+    postgame: true
+    party:
+      - { species: crobat, level: 47, moves: [confuse-ray, screech, wing-attack, supersonic] }
+      - { species: weezing, level: 44, moves: [sludge-bomb, toxic, explosion, double-hit] }
+      - { species: ariados, level: 47, moves: [swagger, night-shade, poison-jab, pin-missile] }
+      - { species: ariados, level: 47, moves: [psychic, poison-jab, scary-face, pin-missile] }
+      - { species: venomoth, level: 50, moves: [double-team, psychic, sludge-bomb, signal-beam] }
+  - id: brock
+    name: Brock
+    title: Gym Leader
+    postgame: true
+    party:
+      - { species: graveler, level: 51, moves: [defense-curl, rollout, earthquake, rock-slide] }
+      - { species: rhyhorn, level: 51, moves: [earthquake, sandstorm, scary-face, horn-drill] }
+      - { species: omastar, level: 53, moves: [protect, spike-cannon, ancient-power, brine] }
+      - { species: kabutops, level: 52, moves: [endure, giga-drain, aqua-jet, rock-slide] }
+      - { species: onix, level: 54, moves: [screech, sandstorm, iron-tail, rock-slide] }
+  - id: blaine
+    name: Blaine
+    title: Gym Leader
+    postgame: true
+    party:
+      - { species: magcargo, level: 54, moves: [overheat, sunny-day, smog, rock-slide] }
+      - { species: magmar, level: 54, moves: [thunder-punch, confuse-ray, overheat, sunny-day] }
+      - { species: rapidash, level: 59, moves: [quick-attack, bounce, overheat, flare-blitz] }
+  - id: blue
+    name: Blue
+    title: Gym Leader
+    postgame: true
+    party:
+      - { species: exeggutor, level: 55, moves: [leaf-storm, psychic, hypnosis, trick-room] }
+      - { species: arcanine, level: 58, moves: [roar, dragon-pulse, flare-blitz, extreme-speed] }
+      - { species: rhydon, level: 58, moves: [megahorn, stone-edge, thunder-fang, earthquake] }
+      - { species: gyarados, level: 52, moves: [ice-fang, waterfall, dragon-dance, return] }
+      - { species: machamp, level: 56, moves: [dynamic-punch, earthquake, stone-edge, thunder-punch] }
+      - { species: pidgeot, level: 60, moves: [return, whirlwind, air-slash, mirror-move] }
+  - id: red
+    name: Red
+    title: Pokémon Trainer
+    postgame: true
+    party:
+      - { species: pikachu, level: 88, moves: [volt-tackle, iron-tail, quick-attack, thunderbolt] }
+      - { species: lapras, level: 80, moves: [body-slam, brine, blizzard, psychic] }
+      - { species: snorlax, level: 82, moves: [shadow-ball, crunch, blizzard, giga-impact] }
+      - { species: venusaur, level: 84, moves: [frenzy-plant, giga-drain, sludge-bomb, sleep-powder] }
+      - { species: charizard, level: 84, moves: [blast-burn, flare-blitz, air-slash, dragon-pulse] }
+      - { species: blastoise, level: 84, moves: [hydro-cannon, blizzard, flash-cannon, focus-blast] }
+  # Rematches once all 16 Badges are earned, from each Bulbapedia page: the
+  # Elite Four and Lance at the Indigo Plateau, then the Gym Leaders at the
+  # Fighting Dojo, called on their days.
+  - id: will-rematch
+    name: Will
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: bronzong, level: 58, moves: [gravity, reflect, payback, psychic] }
+      - { species: jynx, level: 60, moves: [fake-tears, lovely-kiss, dream-eater, blizzard] }
+      - { species: grumpig, level: 59, moves: [confuse-ray, signal-beam, power-gem, psychic] }
+      - { species: slowbro, level: 60, moves: [curse, amnesia, body-slam, psychic] }
+      - { species: gardevoir, level: 61, moves: [calm-mind, charge-beam, focus-blast, psychic] }
+      - { species: xatu, level: 62, moves: [confuse-ray, quick-attack, shadow-ball, psychic] }
+  - id: koga-rematch
+    name: Koga
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: skuntank, level: 61, moves: [toxic, dig, sucker-punch, explosion] }
+      - { species: venomoth, level: 63, moves: [baton-pass, double-team, silver-wind, psychic] }
+      - { species: toxicroak, level: 60, moves: [swagger, x-scissor, cross-chop, gunk-shot] }
+      - { species: swalot, level: 62, moves: [sludge-bomb, amnesia, pain-split, yawn] }
+      - { species: crobat, level: 64, moves: [fly, cross-poison, mean-look, toxic] }
+      - { species: muk, level: 62, moves: [minimize, screech, swagger, toxic] }
+  - id: bruno-rematch
+    name: Bruno
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: hitmontop, level: 62, moves: [close-combat, earthquake, counter, quick-attack] }
+      - { species: hitmonlee, level: 61, moves: [close-combat, blaze-kick, reversal, swagger] }
+      - { species: hitmonchan, level: 61, moves: [close-combat, drain-punch, bullet-punch, substitute] }
+      - { species: hariyama, level: 62, moves: [bulk-up, low-kick, payback, bullet-punch] }
+      - { species: lucario, level: 64, moves: [close-combat, iron-tail, counter, extreme-speed] }
+      - { species: machamp, level: 64, moves: [dynamic-punch, stone-edge, bullet-punch, foresight] }
+  - id: karen-rematch
+    name: Karen
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: weavile, level: 62, moves: [ice-punch, night-slash, low-kick, ice-shard] }
+      - { species: absol, level: 62, moves: [detect, perish-song, night-slash, psycho-cut] }
+      - { species: spiritomb, level: 62, moves: [curse, confuse-ray, pain-split, sucker-punch] }
+      - { species: houndoom, level: 63, moves: [nasty-plot, dark-pulse, flamethrower, sludge-bomb] }
+      - { species: honchkrow, level: 64, moves: [thunder-wave, whirlwind, drill-peck, sucker-punch] }
+      - { species: umbreon, level: 64, moves: [confuse-ray, curse, payback, sucker-punch] }
+  - id: lance-rematch
+    name: Lance
+    title: Champion rematch
+    postgame: true
+    party:
+      - { species: salamence, level: 72, moves: [dragon-claw, flamethrower, shadow-claw, rest] }
+      - { species: gyarados, level: 68, moves: [dragon-dance, waterfall, ice-fang, thunder-wave] }
+      - { species: garchomp, level: 72, moves: [outrage, swords-dance, earthquake, roar] }
+      - { species: altaria, level: 73, moves: [double-team, dragon-breath, perish-song, hyper-beam] }
+      - { species: charizard, level: 68, moves: [flamethrower, hyper-beam, dragon-claw, air-slash] }
+      - { species: dragonite, level: 75, moves: [draco-meteor, safeguard, fire-blast, hyper-beam] }
+  - id: falkner-rematch
+    name: Falkner
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: staraptor, level: 50, moves: [u-turn, close-combat, brave-bird, attract] }
+      - { species: noctowl, level: 52, moves: [air-slash, shadow-ball, feather-dance, roost] }
+      - { species: swellow, level: 52, moves: [protect, double-team, facade, endeavor] }
+      - { species: honchkrow, level: 54, moves: [dark-pulse, night-slash, sucker-punch, thunder-wave] }
+      - { species: pelipper, level: 48, moves: [surf, ice-beam, hidden-power, tailwind] }
+      - { species: pidgeot, level: 56, moves: [return, double-team, swagger, roost] }
+  - id: bugsy-rematch
+    name: Bugsy
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: scizor, level: 56, moves: [x-scissor, swords-dance, bullet-punch, superpower] }
+      - { species: shedinja, level: 48, moves: [x-scissor, shadow-sneak, swagger, toxic] }
+      - { species: yanmega, level: 52, moves: [bug-buzz, air-slash, detect, ancient-power] }
+      - { species: pinsir, level: 55, moves: [x-scissor, rock-tomb, earthquake, guillotine] }
+      - { species: heracross, level: 54, moves: [megahorn, counter, stone-edge, close-combat] }
+      - { species: vespiquen, level: 52, moves: [attack-order, defend-order, protect, confuse-ray] }
+  - id: whitney-rematch
+    name: Whitney
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: girafarig, level: 52, moves: [calm-mind, baton-pass, shadow-ball, psychic] }
+      - { species: lickilicky, level: 50, moves: [wring-out, flamethrower, thunderbolt, ice-beam] }
+      - { species: bibarel, level: 54, moves: [double-team, surf, charge-beam, ice-beam] }
+      - { species: delcatty, level: 54, moves: [fake-out, baton-pass, assist, calm-mind] }
+      - { species: clefable, level: 52, moves: [calm-mind, fire-blast, thunder, blizzard] }
+      - { species: miltank, level: 58, moves: [body-slam, attract, rest, sleep-talk] }
+  - id: morty-rematch
+    name: Morty
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: drifblim, level: 52, moves: [shadow-ball, substitute, thunderbolt, destiny-bond] }
+      - { species: dusknoir, level: 52, moves: [will-o-wisp, substitute, pain-split, payback] }
+      - { species: sableye, level: 52, moves: [fake-out, ice-punch, brick-break, sucker-punch] }
+      - { species: mismagius, level: 54, moves: [astonish, mean-look, perish-song, confuse-ray] }
+      - { species: gengar, level: 57, moves: [shadow-ball, hypnosis, focus-blast, confuse-ray] }
+      - { species: gengar, level: 57, moves: [shadow-ball, substitute, thunderbolt, destiny-bond] }
+  - id: chuck-rematch
+    name: Chuck
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: medicham, level: 54, moves: [attract, psycho-cut, thunder-punch, high-jump-kick] }
+      - { species: hitmonchan, level: 52, moves: [swagger, double-team, mach-punch, focus-punch] }
+      - { species: hitmonlee, level: 55, moves: [fake-out, bulk-up, blaze-kick, high-jump-kick] }
+      - { species: breloom, level: 54, moves: [substitute, stone-edge, drain-punch, focus-punch] }
+      - { species: primeape, level: 56, moves: [swagger, payback, thunder-punch, close-combat] }
+      - { species: poliwrath, level: 60, moves: [substitute, double-team, waterfall, focus-punch] }
+  - id: jasmine-rematch
+    name: Jasmine
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: metagross, level: 52, moves: [meteor-mash, gravity, bullet-punch, explosion] }
+      - { species: magnezone, level: 56, moves: [metal-sound, mirror-coat, lock-on, zap-cannon] }
+      - { species: skarmory, level: 52, moves: [steel-wing, night-slash, air-slash, spikes] }
+      - { species: bronzong, level: 50, moves: [gyro-ball, gravity, hypnosis, dream-eater] }
+      - { species: empoleon, level: 52, moves: [hydro-pump, blizzard, aqua-jet, roar] }
+      - { species: steelix, level: 62, moves: [iron-tail, stone-edge, stealth-rock, roar] }
+  - id: pryce-rematch
+    name: Pryce
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: abomasnow, level: 56, moves: [ice-shard, wood-hammer, earthquake, blizzard] }
+      - { species: dewgong, level: 58, moves: [dive, rest, sleep-talk, sheer-cold] }
+      - { species: glalie, level: 52, moves: [torment, payback, attract, blizzard] }
+      - { species: froslass, level: 52, moves: [ice-shard, confuse-ray, attract, blizzard] }
+      - { species: walrein, level: 54, moves: [swagger, hail, body-slam, blizzard] }
+      - { species: mamoswine, level: 60, moves: [earthquake, double-team, stone-edge, avalanche] }
+  - id: clair-rematch
+    name: Clair
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: gyarados, level: 56, moves: [dragon-dance, waterfall, earthquake, dragon-pulse] }
+      - { species: dragonair, level: 52, moves: [dragon-rush, thunder-wave, thunderbolt, flamethrower] }
+      - { species: aerodactyl, level: 52, moves: [rock-slide, thunder-fang, earthquake, roar] }
+      - { species: kingdra, level: 56, moves: [dragon-breath, hydro-pump, ice-beam, yawn] }
+      - { species: charizard, level: 52, moves: [dragon-claw, shadow-claw, fire-fang, air-slash] }
+      - { species: dragonite, level: 60, moves: [dragon-breath, safeguard, thunder, hyper-beam] }
+  - id: lt-surge-rematch
+    name: Lt. Surge
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: raichu, level: 60, moves: [thunderbolt, grass-knot, quick-attack, thunder-wave] }
+      - { species: manectric, level: 52, moves: [natural-gift, discharge, thunder-wave, overheat] }
+      - { species: magnezone, level: 52, moves: [thunderbolt, magnet-rise, double-team, mirror-shot] }
+      - { species: electrode, level: 52, moves: [thunder-wave, double-team, thunderbolt, explosion] }
+      - { species: pachirisu, level: 58, moves: [quick-attack, sweet-kiss, super-fang, discharge] }
+      - { species: electivire, level: 56, moves: [thunderbolt, ice-punch, cross-chop, earthquake] }
+  - id: sabrina-rematch
+    name: Sabrina
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: alakazam, level: 60, moves: [gravity, psychic, focus-blast, energy-ball] }
+      - { species: espeon, level: 58, moves: [calm-mind, psychic, shadow-ball, baton-pass] }
+      - { species: mr-mime, level: 56, moves: [reflect, skill-swap, thunder, psychic] }
+      - { species: jynx, level: 54, moves: [psychic, focus-blast, blizzard, perish-song] }
+      - { species: wobbuffet, level: 53, moves: [counter, mirror-coat, destiny-bond, encore] }
+      - { species: gallade, level: 53, moves: [stone-edge, psycho-cut, night-slash, close-combat] }
+  - id: misty-rematch
+    name: Misty
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: starmie, level: 60, moves: [thunderbolt, ice-beam, psychic, surf] }
+      - { species: quagsire, level: 56, moves: [rain-dance, amnesia, water-pulse, earthquake] }
+      - { species: lapras, level: 56, moves: [rain-dance, perish-song, blizzard, surf] }
+      - { species: lanturn, level: 54, moves: [thunderbolt, thunder-wave, confuse-ray, surf] }
+      - { species: floatzel, level: 54, moves: [agility, waterfall, ice-fang, baton-pass] }
+      - { species: milotic, level: 60, moves: [hydro-pump, ice-beam, rest, sleep-talk] }
+  - id: erika-rematch
+    name: Erika
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: shiftry, level: 54, moves: [leaf-storm, sucker-punch, sunny-day, explosion] }
+      - { species: jumpluff, level: 53, moves: [u-turn, memento, sleep-powder, giga-drain] }
+      - { species: victreebel, level: 56, moves: [natural-gift, sludge-bomb, leaf-storm, leaf-blade] }
+      - { species: bellossom, level: 56, moves: [sunny-day, solar-beam, giga-drain, attract] }
+      - { species: tangrowth, level: 60, moves: [swords-dance, power-whip, rock-slide, earthquake] }
+      - { species: roserade, level: 55, moves: [weather-ball, energy-ball, sludge-bomb, stun-spore] }
+  - id: janine-rematch
+    name: Janine
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: crobat, level: 52, moves: [heat-wave, cross-poison, confuse-ray, u-turn] }
+      - { species: weezing, level: 56, moves: [thunderbolt, sludge-bomb, toxic, explosion] }
+      - { species: toxicroak, level: 52, moves: [cross-chop, poison-jab, attract, substitute] }
+      - { species: ariados, level: 58, moves: [bounce, toxic, swagger, night-shade] }
+      - { species: venomoth, level: 59, moves: [psychic, bug-buzz, sleep-powder, double-team] }
+      - { species: drapion, level: 55, moves: [confuse-ray, swords-dance, cross-poison, crunch] }
+  - id: brock-rematch
+    name: Brock
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: golem, level: 55, moves: [sandstorm, rock-slide, rock-polish, earthquake] }
+      - { species: relicanth, level: 54, moves: [head-smash, aqua-tail, earthquake, rest] }
+      - { species: omastar, level: 56, moves: [protect, sandstorm, brine, ancient-power] }
+      - { species: kabutops, level: 55, moves: [rock-slide, aqua-jet, endure, giga-drain] }
+      - { species: onix, level: 61, moves: [stealth-rock, rock-slide, rock-polish, sandstorm] }
+      - { species: rampardos, level: 57, moves: [earthquake, stone-edge, avalanche, rock-polish] }
+  - id: blaine-rematch
+    name: Blaine
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: torkoal, level: 54, moves: [yawn, sunny-day, body-slam, overheat] }
+      - { species: camerupt, level: 57, moves: [eruption, earthquake, solar-beam, sunny-day] }
+      - { species: rapidash, level: 60, moves: [flare-blitz, megahorn, quick-attack, overheat] }
+      - { species: magcargo, level: 58, moves: [curse, gyro-ball, overheat, stone-edge] }
+      - { species: houndoom, level: 54, moves: [dark-pulse, flamethrower, shadow-ball, sucker-punch] }
+      - { species: magmortar, level: 62, moves: [flamethrower, thunderbolt, low-kick, confuse-ray] }
+  - id: blue-rematch
+    name: Blue
+    title: Gym Leader rematch
+    postgame: true
+    party:
+      - { species: exeggutor, level: 67, moves: [leaf-storm, psychic, explosion, trick-room] }
+      - { species: machamp, level: 69, moves: [dynamic-punch, stone-edge, fling, attract] }
+      - { species: rhyperior, level: 70, moves: [megahorn, stone-edge, thunder-fang, earthquake] }
+      - { species: arcanine, level: 68, moves: [flare-blitz, extreme-speed, thunder-fang, crunch] }
+      - { species: tyranitar, level: 70, moves: [low-kick, fire-fang, rock-slide, earthquake] }
+      - { species: pidgeot, level: 72, moves: [return, double-team, air-slash, steel-wing] }

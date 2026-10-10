@@ -13,17 +13,13 @@ test("lists playable and planned games in release order, each once", async () =>
   const ids = games.map((g) => g.id);
   expect(new Set(ids).size).toBe(ids.length);
   expect(ids.indexOf("crystal")).toBeLessThan(ids.indexOf("emerald"));
-  expect(ids.indexOf("platinum")).toBeLessThan(
-    ids.indexOf("heartgold-soulsilver"),
+  expect(ids.indexOf("heartgold-soulsilver")).toBeLessThan(
+    ids.indexOf("black-white"),
   );
   expect(games.find((g) => g.id === "crystal")!.planned).toBe(false);
-  expect(games.find((g) => g.id === "heartgold-soulsilver")).toMatchObject({
+  expect(games.find((g) => g.id === "black-white")).toMatchObject({
     planned: true,
-    starters: [
-      { name: "Chikorita" },
-      { name: "Cyndaquil" },
-      { name: "Totodile" },
-    ],
+    starters: [{ name: "Snivy" }, { name: "Tepig" }, { name: "Oshawott" }],
   });
 });
 

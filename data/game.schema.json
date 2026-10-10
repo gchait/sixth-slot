@@ -53,21 +53,52 @@
       "additionalProperties": {
         "anyOf": [
           {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 9007199254740991,
-            "description": "The number of battles under `battles` beaten by then: 0 is before the first."
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991,
+                "description": "The number of battles under `battles` beaten by then: 0 is before the first."
+              },
+              {
+                "type": "string",
+                "const": "postgame"
+              },
+              {
+                "type": "string",
+                "const": "excluded"
+              }
+            ],
+            "description": "A stage; postgame for post-game story areas; excluded for events and rare-day places."
           },
           {
-            "type": "string",
-            "const": "postgame"
-          },
-          {
-            "type": "string",
-            "const": "excluded"
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            },
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991,
+                  "description": "The number of battles under `battles` beaten by then: 0 is before the first."
+                },
+                {
+                  "type": "string",
+                  "const": "postgame"
+                },
+                {
+                  "type": "string",
+                  "const": "excluded"
+                }
+              ],
+              "description": "A stage; postgame for post-game story areas; excluded for events and rare-day places."
+            },
+            "description": "A placement for each version, for a place the versions reach at different times."
           }
-        ],
-        "description": "A stage; postgame for post-game story areas; excluded for events and rare-day places."
+        ]
       },
       "description": "When each PokeAPI location is first reached on the standard route. location/area narrows a key to an area and @method to an encounter method; the most specific key wins. Every location with encounters needs a key."
     },
@@ -212,7 +243,7 @@
       }
     },
     "moveRelearner": {
-      "description": "When the Move Reminder can first reteach level-up moves, paid with items found without grinding; left out if the game has none.",
+      "description": "When the Move Reminder can first reteach level-up moves, paid with items found without grinding; left out if the game has none or its price needs grinding.",
       "anyOf": [
         {
           "type": "integer",
