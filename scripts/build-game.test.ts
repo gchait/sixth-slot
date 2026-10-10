@@ -487,6 +487,27 @@ describe("Black 2 & White 2", () => {
   });
 });
 
+describe("X & Y", () => {
+  let xy: GameData;
+  beforeAll(async () => {
+    xy = await loadGame("x-y");
+  });
+  const effect = (game: GameData, attack: string, defend: string) =>
+    game.typeChart[game.types.indexOf(attack)][game.types.indexOf(defend)];
+
+  test("uses generation VI's type chart, with Fairy and a weaker Steel", async () => {
+    const crystal = await loadGame("crystal");
+    expect(effect(xy, "dragon", "fairy")).toBe(0);
+    expect(effect(xy, "ghost", "steel")).toBe(1);
+    expect(effect(crystal, "ghost", "steel")).toBe(0.5);
+    expect(crystal.types).not.toContain("fairy");
+  });
+
+  test("counts Route 22's grass from the start, as the walkthrough suggests for Viola", () => {
+    expect(Math.min(...xy.sources.x.litleo.map((s) => s.stage))).toBe(0);
+  });
+});
+
 describe("game files placing a location by version", () => {
   test("evolve by that place from the latest version's stage", () => {
     const file = readGameFile("platinum");

@@ -1,8 +1,13 @@
 # Games shown on the home page as coming soon. Remove a game from here when
 # its file in data/games/ lands.
 
-- versionGroup: x-y
-  name: X & Y
-  pokedex: [kalos-central, kalos-coastal, kalos-mountain]
-  sprites: generation-vi/x-y
-  starters: [chespin, fennekin, froakie]
+- versionGroup: sun-moon
+  name: Sun & Moon
+  pokedex: [original-alola]
+  sprites: default # Generation VII sprites are GIFs only
+  starters: [rowlet, litten, popplio]
+- versionGroup: ultra-sun-ultra-moon
+  name: Ultra Sun & Ultra Moon
+  pokedex: [updated-alola]
+  sprites: default # Generation VII sprites are GIFs only
+  starters: [rowlet, litten, popplio]

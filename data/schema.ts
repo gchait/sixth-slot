@@ -43,10 +43,12 @@ const locationKey = z
   );
 
 const spriteFolder = z
-  .string()
-  .regex(/^[a-z0-9-]+(\/[a-z0-9-]+)+$/)
+  .union([
+    z.string().regex(/^[a-z0-9-]+(\/[a-z0-9-]+)+$/),
+    z.literal("default"),
+  ])
   .describe(
-    "Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository, with transparent backgrounds.",
+    "Folder under sprites/pokemon/versions/ in PokeAPI's sprite repository, with transparent backgrounds, or default for the repository's main sprites, which cover every species.",
   );
 
 const starters = z.array(identifier).min(1);

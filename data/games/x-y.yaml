@@ -1,0 +1,234 @@
+# yaml-language-server: $schema=../game.schema.json
+#
+# Pokémon X and Y, staged with Bulbapedia's walkthrough:
+# https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_X_and_Y
+
+name: X & Y
+versionGroup: x-y
+pokedex: [kalos-central, kalos-coastal, kalos-mountain]
+sprites: generation-vi/x-y
+starters: [chespin, fennekin, froakie]
+
+exclusiveGroups:
+  - [bulbasaur, charmander, squirtle] # Professor Sycamore's gift in Lumiose City
+  - [amaura, tyrunt] # Sail or Jaw Fossil in Glittering Cave
+
+locations:
+  # Before Viola (parts 1–2)
+  aquacorde-town: 0
+  kalos-route-2: 0
+  santalune-forest: 0
+  kalos-route-3: 0
+  kalos-route-22: 0 # Its grass east of Santalune City, open from the start
+  # Before Grant (parts 2–5)
+  kalos-route-4: 1
+  lumiose-city: 1 # Only South Boulevard until the blackout ends
+  kalos-route-5: 1
+  kalos-route-6: 1
+  kalos-route-7: 1 # Snorlax, with the Poké Flute from Parfum Palace
+  parfum-palace: 1
+  connecting-cave: 1
+  kalos-route-8: 1
+  ambrette-town: 1
+  kalos-route-9: 1
+  glittering-cave: 1
+  cyllage-city: 1
+  # Before Korrina (part 6)
+  kalos-route-10: 2
+  kalos-route-11: 2
+  reflection-cave: 2
+  shalour-city: 2
+  # Before Ramos (part 7)
+  tower-of-mastery: 3 # Lucario, after Korrina
+  kalos-route-12: 3
+  azure-bay: 3
+  # Before Clemont (parts 7–8): Route 13's gate opens after Ramos
+  kalos-route-13: 4
+  # Before Valerie (part 9): Route 14 opens with the Voltage Badge
+  kalos-route-14: 5
+  laverre-city: 5
+  # Before Olympia (parts 9–10): Route 15 opens after the Poké Ball Factory
+  kalos-route-15: 6
+  kalos-route-16: 6
+  lost-hotel: 6
+  frost-cavern: 6
+  kalos-route-17: 6
+  # Before Lysandre (part 11)
+  team-flare-secret-hq: 7 # Xerneas or Yveltal
+  # Before Wulfric (parts 12–13): Route 18 opens once Team Flare is gone
+  kalos-route-18: 8
+  terminus-cave: 8
+  terminus-cave/zygardes-chamber@static: postgame # Zygarde
+  couriway-town: 8
+  kalos-route-19: 8
+  kalos-route-20: 8
+  pokemon-village: 8
+  # Before the Elite Four (part 14)
+  kalos-route-21: 9
+  kalos-victory-road: 9
+  # After the Hall of Fame (parts 16–17)
+  friend-safari: postgame
+  roaming-kalos: postgame
+  sea-spirits-den: postgame
+  unknown-dungeon: postgame
+  # Bug Pokémon on Berry trees, only while growing Berries
+  kalos-berry-fields: excluded
+
+methods:
+  old-rod: 1 # Ambrette Town
+  rock-smash: 1 # TM94, Ambrette Town; used outside battle without a Badge
+  surf: 3 # From the rival after Korrina, used with the Rumble Badge
+  good-rod: 3 # Coumarine City
+  super-rod: 6 # Route 16
+
+items:
+  dawn-stone: 0 # Route 3
+  fire-stone: 1 # Lumiose City's Stone Emporium
+  leaf-stone: 1
+  water-stone: 1
+  thunder-stone: 2 # Route 10
+  moon-stone: 2
+  sun-stone: 2 # From a Hiker, for the Intriguing Stone
+  deep-sea-tooth: 3 # Azure Bay, with Surf
+  deep-sea-scale: 3
+  shiny-stone: 3 # Route 12, riding a Skiddo
+  sachet: 3 # Route 12, in both versions
+  whipped-dream: 3
+  kings-rock: 5 # From Lysandre at his café, after Clemont
+  metal-coat: 5 # Laverre City
+  protector: 6 # Route 15, with Rock Smash
+  dusk-stone: 8 # Terminus Cave
+  dragon-scale: postgame # Zygarde's chamber in Terminus Cave
+  razor-claw: postgame # Battle Maison
+  razor-fang: postgame
+
+hms:
+  cut: 1 # Parfum Palace
+  strength: 1 # Cyllage City
+  surf: 3 # Shalour City, after Korrina
+  fly: 3 # Coumarine City, before Ramos
+  waterfall: 8 # Route 19
+
+# Badges from https://bulbapedia.bulbagarden.net/wiki/HM
+fieldMoves:
+  surf: 3 # Rumble Badge
+  fly: 4 # Plant Badge
+
+encounterConditions:
+  trash-can-type-*: 0 # One trash can every day, the rest on one weekday
+
+battles:
+  # From Bulbapedia's walkthrough.
+  - id: viola
+    name: Viola
+    title: Gym Leader
+    party:
+      - { species: surskit, level: 10, moves: [quick-attack, bubble, water-sport] }
+      - { species: vivillon, level: 12, moves: [harden, infestation, tackle] }
+  - id: grant
+    name: Grant
+    title: Gym Leader
+    party:
+      - { species: amaura, level: 25, moves: [aurora-beam, rock-tomb, thunder-wave, take-down] }
+      - { species: tyrunt, level: 25, moves: [rock-tomb, bite, stomp] }
+  - id: korrina
+    name: Korrina
+    title: Gym Leader
+    party:
+      - { species: mienfoo, level: 29, moves: [power-up-punch, fake-out, double-slap] }
+      - { species: machoke, level: 28, moves: [power-up-punch, rock-tomb, leer] }
+      - { species: hawlucha, level: 32, moves: [flying-press, hone-claws, power-up-punch] }
+  - id: ramos
+    name: Ramos
+    title: Gym Leader
+    party:
+      - { species: jumpluff, level: 30, moves: [grass-knot, acrobatics, leech-seed] }
+      - { species: weepinbell, level: 31, moves: [grass-knot, acid, poison-powder, gastro-acid] }
+      - { species: gogoat, level: 34, moves: [grass-knot, bulldoze, take-down] }
+  - id: clemont
+    name: Clemont
+    title: Gym Leader
+    party:
+      - { species: emolga, level: 35, moves: [volt-switch, quick-attack, aerial-ace] }
+      - { species: magneton, level: 35, moves: [thunderbolt, electric-terrain, mirror-shot] }
+      - { species: heliolisk, level: 37, moves: [thunderbolt, quick-attack, grass-knot] }
+  - id: valerie
+    name: Valerie
+    title: Gym Leader
+    party:
+      - { species: mawile, level: 38, moves: [feint-attack, crunch, iron-defense] }
+      - { species: mr-mime, level: 39, moves: [light-screen, reflect, psychic, dazzling-gleam] }
+      - { species: sylveon, level: 42, moves: [dazzling-gleam, quick-attack, swift, charm] }
+  - id: olympia
+    name: Olympia
+    title: Gym Leader
+    party:
+      - { species: sigilyph, level: 44, moves: [psychic, air-slash, light-screen, reflect] }
+      - { species: slowking, level: 45, moves: [psychic, calm-mind, power-gem, yawn] }
+      - { species: meowstic, level: 48, moves: [psychic, calm-mind, fake-out, shadow-ball] }
+  # His last battle, in Team Flare's hideout (part 11)
+  - id: lysandre
+    name: Lysandre
+    title: Team Flare
+    party:
+      - { species: mienshao, level: 49, moves: [swords-dance, high-jump-kick, acrobatics] }
+      - { species: honchkrow, level: 49, moves: [night-slash, aerial-ace, retaliate, steel-wing] }
+      - { species: pyroar, level: 51, moves: [hyper-voice, fire-blast, dark-pulse] }
+      - { species: gyarados, level: 53, moves: [aqua-tail, earthquake, iron-head, outrage] }
+  - id: wulfric
+    name: Wulfric
+    title: Gym Leader
+    party:
+      - { species: abomasnow, level: 56, moves: [ice-beam, ice-shard, energy-ball] }
+      - { species: cryogonal, level: 55, moves: [ice-beam, confuse-ray, flash-cannon, hail] }
+      - { species: avalugg, level: 59, moves: [avalanche, crunch, curse, gyro-ball] }
+  - id: malva
+    name: Malva
+    title: Elite Four
+    party:
+      - { species: pyroar, level: 63, moves: [hyper-voice, flamethrower, wild-charge, noble-roar] }
+      - { species: torkoal, level: 63, moves: [curse, earthquake, stone-edge, flame-wheel] }
+      - { species: chandelure, level: 63, moves: [flamethrower, shadow-ball, confuse-ray, confide] }
+      - { species: talonflame, level: 65, moves: [brave-bird, quick-attack, flare-blitz, flail] }
+  - id: siebold
+    name: Siebold
+    title: Elite Four
+    party:
+      - { species: clawitzer, level: 63, moves: [water-pulse, dark-pulse, dragon-pulse, aura-sphere] }
+      - { species: gyarados, level: 63, moves: [waterfall, ice-fang, earthquake, dragon-dance] }
+      - { species: starmie, level: 63, moves: [dazzling-gleam, psychic, surf, light-screen] }
+      - { species: barbaracle, level: 65, moves: [cross-chop, stone-edge, razor-shell, x-scissor] }
+  - id: wikstrom
+    name: Wikstrom
+    title: Elite Four
+    party:
+      - { species: klefki, level: 63, moves: [dazzling-gleam, flash-cannon, torment, spikes] }
+      - { species: probopass, level: 63, moves: [earth-power, power-gem, discharge, flash-cannon] }
+      - { species: scizor, level: 63, moves: [bullet-punch, x-scissor, iron-head, night-slash] }
+      - { species: aegislash, level: 65, moves: [kings-shield, sacred-sword, shadow-claw, iron-head] }
+  - id: drasna
+    name: Drasna
+    title: Elite Four
+    party:
+      - { species: dragalge, level: 63, moves: [dragon-pulse, surf, sludge-bomb, thunderbolt] }
+      - { species: druddigon, level: 63, moves: [dragon-tail, revenge, retaliate, chip-away] }
+      - { species: altaria, level: 63, moves: [moonblast, dragon-pulse, cotton-guard, sing] }
+      - { species: noivern, level: 65, moves: [air-slash, dragon-pulse, flamethrower, super-fang] }
+  - id: diantha
+    name: Diantha
+    title: Champion
+    party:
+      - { species: hawlucha, level: 64, moves: [swords-dance, flying-press, x-scissor, poison-jab] }
+      - { species: tyrantrum, level: 65, moves: [head-smash, earthquake, dragon-claw, crunch] }
+      - { species: aurorus, level: 65, moves: [thunder, blizzard, light-screen, reflect] }
+      - { species: gourgeist, level: 65, moves: [trick-or-treat, phantom-force, seed-bomb, shadow-sneak] }
+      - { species: goodra, level: 66, moves: [dragon-pulse, muddy-water, fire-blast, focus-blast] }
+      - { species: gardevoir, level: 68, moves: [moonblast, psychic, shadow-ball, thunderbolt] }
+  # Right after the Hall of Fame, the story's last battle (part 15)
+  - id: az
+    name: AZ
+    title: Pokémon Trainer
+    party:
+      - { species: torkoal, level: 60, moves: [lava-plume, stone-edge, body-slam, return] }
+      - { species: golurk, level: 60, moves: [phantom-force, heavy-slam, mega-punch, return] }
+      - { species: sigilyph, level: 60, moves: [psychic, air-slash, cosmic-power, return] }

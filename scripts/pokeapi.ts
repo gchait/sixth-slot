@@ -8,9 +8,13 @@ import { parseCsv } from "./csv.ts";
 
 const POKEAPI_COMMIT = "2fe95532d27a9bf340575253aff50868319d8182";
 
-/** A sprite's URL, from the pinned commit of PokeAPI's sprite repository. */
+/**
+ * A sprite's URL, from the pinned commit of PokeAPI's sprite repository: in a
+ * game's folder under versions/, or the main sprites for the folder "default".
+ */
 export function spriteUrl(folder: string, national: string): string {
-  return `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/versions/${folder}/${national}.png`;
+  const path = folder === "default" ? "" : `versions/${folder}/`;
+  return `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@${SPRITES_COMMIT}/sprites/pokemon/${path}${national}.png`;
 }
 
 const cacheDir = fileURLToPath(new URL("../.cache/", import.meta.url));
