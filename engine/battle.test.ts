@@ -10,7 +10,9 @@ import {
   MATCHUP_LIMIT,
   stat,
 } from "./battle.ts";
+import { buildCandidates } from "./candidates.ts";
 import type { GameData } from "./data.ts";
+import { fireRed } from "./test-options.ts";
 
 let game: GameData;
 beforeAll(async () => {
@@ -91,12 +93,27 @@ describe("battle math", () => {
   });
 
   test("knows moves learned by earlier forms and HMs obtained by then", () => {
-    const moves = knownMoves(game, ["squirtle", "wartortle"], 20, 5);
+    const blastoise = buildCandidates(
+      game,
+      fireRed({ starter: "squirtle" }),
+    ).find((c) => c.id === "blastoise")!;
+    const moves = knownMoves(game, blastoise, 5);
     expect(moves).toContain("water-gun");
     expect(moves).toContain("surf");
-    expect(knownMoves(game, ["squirtle", "wartortle"], 20, 4)).not.toContain(
-      "surf",
-    );
+    expect(knownMoves(game, blastoise, 4)).not.toContain("surf");
+  });
+
+  test("learns an evolved form's earlier moves only from the Move Reminder", async () => {
+    const platinum = await loadGame("platinum");
+    const crobat = buildCandidates(
+      platinum,
+      fireRed({ version: "platinum", starter: "turtwig" }),
+    ).find((c) => c.id === "crobat")!;
+    const battle = platinum.battles.findIndex((b) => b.id === "volkner");
+    expect(knownMoves(platinum, crobat, battle)).toContain("cross-poison");
+    expect(
+      knownMoves({ ...platinum, moveRelearner: undefined }, crobat, battle),
+    ).not.toContain("cross-poison");
   });
 });
 

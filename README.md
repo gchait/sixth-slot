@@ -38,11 +38,13 @@ counts: how many more hits your Pokémon survives than it needs, using the game'
 own stat and damage formulas, with each move counted by its average damage per
 turn after accuracy, number of strikes and turns spent charging. A member counts
 only from the battle by which you can have it, in the form and with the moves it
-would have by then: level-up moves and the HMs obtained so far. Abilities count
-where a species is sure to have them and they change damage: immunities such as
-Levitate, and Thick Fat, Dry Skin, Huge Power and Truant. Teams where many
-members share a weakness lose a little. The search checks every valid team,
-skipping only those that provably cannot make the top ten.
+would have by then: level-up moves learned since it reached each form, all of
+them once the game's Move Reminder can reteach them, and the HMs obtained so
+far. Abilities count where a species is sure to have them and they change
+damage: immunities such as Levitate, and Thick Fat, Dry Skin, Huge Power and
+Truant. Teams where many members share a weakness lose a little. The search
+checks every valid team, skipping only those that provably cannot make the top
+ten.
 
 **What it leaves out**
 

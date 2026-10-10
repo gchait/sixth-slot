@@ -153,6 +153,9 @@ fieldMoves:
   surf: 5 # Balance Badge
   fly: 6 # Feather Badge
 
+# https://bulbapedia.bulbagarden.net/wiki/Move_Reminder
+moveRelearner: 3 # Fallarbor Town, for Heart Scales found on early routes
+
 encounterConditions:
   item-root-fossil: 4 # Mirage Tower, revived at the Devon Corporation
   item-claw-fossil: 4

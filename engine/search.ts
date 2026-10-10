@@ -65,12 +65,11 @@ export function candidateMatchup(
   const form = candidate.forms[slot.battle];
   if (form < 0) return null;
   const level = game.battles[slot.battle].level;
-  const forms = candidate.line.slice(0, form + 1);
   const opponent = game.species[slot.opponent.species];
   return matchup(
     game,
-    game.species[forms[form]],
-    knownMoves(game, forms, level, slot.battle),
+    game.species[candidate.line[form]],
+    knownMoves(game, candidate, slot.battle),
     level,
     opponent,
     slot.opponent.moves,

@@ -133,6 +133,8 @@ export interface GameData {
   /** The stage at which each damaging HM is obtained. */
   hms: Record<string, number>;
   fieldMoves: FieldMove[];
+  /** The first stage at which the Move Reminder can reteach level-up moves. */
+  moveRelearner?: number;
   starters: string[];
   exclusiveGroups: string[][];
   battles: Battle[];

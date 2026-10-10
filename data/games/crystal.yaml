@@ -154,6 +154,9 @@ fieldMoves:
   surf: 4 # Fog Badge
   fly: 5 # Storm Badge
 
+# https://bulbapedia.bulbagarden.net/wiki/Move_Reminder
+# No Move Reminder: generation II has none.
+
 encounterConditions:
   time-*: 0 # Any time of day
   swarm-no: 0

@@ -144,6 +144,11 @@ export const gameSchema = z.strictObject({
     .describe(
       "Moves used outside battle throughout the game, too often to leave to a Pokémon kept only for them, by the stage from which they work outside battle. Teams keep a member that can use each from then on.",
     ),
+  moveRelearner: storyStage
+    .optional()
+    .describe(
+      "When the Move Reminder can first reteach level-up moves, paid with items found without grinding; left out if the game has none.",
+    ),
   moves: z
     .record(identifier, storyStage)
     .default({})

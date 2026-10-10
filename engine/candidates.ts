@@ -45,6 +45,11 @@ export interface Candidate {
   /** The first battle the line can join, as an index into GameData.battles. */
   joins: number;
   /**
+   * For each form, the level it learns its own level-up moves from: the level
+   * it evolves at, or the player's level by the first battle it is held.
+   */
+  evolvedAt: number[];
+  /**
    * Where to get each member of the line, earliest first. A trade's stage
    * includes waiting for the species it asks for.
    */
@@ -173,12 +178,19 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
     );
     if (evolvesFurther) continue;
 
+    const { steps } = lineTo(species);
     candidates.push({
       id: species,
       line,
       family,
       forms,
       joins,
+      evolvedAt: line.map((_, i) =>
+        i === 0
+          ? 0
+          : (steps[i - 1].requires.level ??
+            game.battles[forms.findIndex((f) => f >= i)].level),
+      ),
       fieldMoves: game.fieldMoves
         .filter((move) => {
           // A move once learned stays known, so a line that can use the move

@@ -133,6 +133,9 @@ fieldMoves:
 trades:
   mr-mime: { stage: 3, place: "Route 2 (east side)" } # Behind a Cut tree
 
+# https://bulbapedia.bulbagarden.net/wiki/Move_Reminder
+moveRelearner: 7 # Two Island, for Tiny Mushrooms from Mt. Moon or wild Paras
+
 encounterConditions:
   item-helix-fossil: 1 # Found in Mt. Moon, revived at Cinnabar Lab
   item-dome-fossil: 1

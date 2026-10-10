@@ -211,6 +211,21 @@
         "description": "The number of battles under `battles` beaten by then: 0 is before the first."
       }
     },
+    "moveRelearner": {
+      "description": "When the Move Reminder can first reteach level-up moves, paid with items found without grinding; left out if the game has none.",
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "The number of battles under `battles` beaten by then: 0 is before the first."
+        },
+        {
+          "type": "string",
+          "const": "postgame"
+        }
+      ]
+    },
     "moves": {
       "default": {},
       "description": "Moves an evolution needs that only a tutor or TM teaches, by when it can.",

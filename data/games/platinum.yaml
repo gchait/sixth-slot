@@ -66,7 +66,6 @@ locations:
   canalave-city: 5
   iron-island: 5
   # Before Candice (parts 13–15)
-  lake-valor: 6
   lake-verity/after-galactic-intervention: 6
   sinnoh-route-211: 6
   mt-coronet/1f-route-211: 6
@@ -77,6 +76,7 @@ locations:
   acuity-lakefront: 6
   snowpoint-city: 6
   # Before Volkner (parts 15–18)
+  lake-valor: 7 # Dry until Team Galactic is gone (part 18)
   mt-coronet/1f-from-exterior: 7 # The climb to Spear Pillar (part 16)
   mt-coronet/2f: 7
   mt-coronet/3f: 7
@@ -162,6 +162,9 @@ hms:
 fieldMoves:
   fly: 4 # Cobble Badge
   surf: 5 # Fen Badge
+
+# https://bulbapedia.bulbagarden.net/wiki/Move_Reminder
+moveRelearner: 4 # Pastoria City, for Heart Scales mined in the Underground
 
 encounterConditions:
   time-*: 0 # Any time of day

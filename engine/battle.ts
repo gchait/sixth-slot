@@ -1,6 +1,7 @@
 // One-on-one matchups using the main-series stat and damage formulas, with
 // average IVs, no EVs, neutral natures and no random factor or critical hits.
 // Moves count by their average damage per turn.
+import type { Candidate } from "./candidates.ts";
 import type { GameData, Species, StatKey } from "./data.ts";
 
 const IV = 15;
@@ -118,22 +119,32 @@ export function bestMove(
 }
 
 /**
- * Moves a line knows at a battle: what it learned by `level` while being each
- * of `forms`, plus the HMs its current form can learn that are obtained by then.
+ * Moves a line knows at a battle. Each form learns its level-up moves from the
+ * level it became that form, or from the start if it was caught as that form
+ * or the game's Move Reminder can reteach them by then; an earlier form's moves
+ * count up to the current level, since evolving can wait for them. The current
+ * form also knows the HMs it can learn that are obtained by then.
  */
 export function knownMoves(
   game: GameData,
-  forms: string[],
-  level: number,
+  candidate: Candidate,
   battle: number,
 ): Set<string> {
+  const form = candidate.forms[battle];
+  const level = game.battles[battle].level;
+  const reteach =
+    game.moveRelearner !== undefined && game.moveRelearner <= battle;
   const known = new Set<string>();
-  for (const form of forms) {
-    for (const [learnedAt, move] of game.species[form].learnset) {
-      if (learnedAt <= level) known.add(move);
+  candidate.line.slice(0, form + 1).forEach((species, i) => {
+    const caught = candidate.sources.some(
+      (s) => s.species === species && s.stage <= battle,
+    );
+    const from = reteach || caught ? 0 : candidate.evolvedAt[i];
+    for (const [learnedAt, move] of game.species[species].learnset) {
+      if (learnedAt >= from && learnedAt <= level) known.add(move);
     }
-  }
-  for (const hm of game.species[forms[forms.length - 1]].hms) {
+  });
+  for (const hm of game.species[candidate.line[form]].hms) {
     if (game.hms[hm] <= battle) known.add(hm);
   }
   return known;

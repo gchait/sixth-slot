@@ -786,6 +786,7 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     checkStage(`hms.${key}`, stage);
   for (const [key, stage] of Object.entries(file.fieldMoves))
     checkStage(`fieldMoves.${key}`, stage);
+  checkStage("moveRelearner", file.moveRelearner);
   for (const [key, trade] of Object.entries(file.trades))
     checkStage(`trades.${key}`, trade.stage);
   checkStage("evolutionConditions.beauty", file.evolutionConditions.beauty);
@@ -999,6 +1000,9 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     sources,
     hms,
     fieldMoves,
+    ...(typeof file.moveRelearner === "number" && {
+      moveRelearner: file.moveRelearner,
+    }),
     starters,
     exclusiveGroups,
     battles,
