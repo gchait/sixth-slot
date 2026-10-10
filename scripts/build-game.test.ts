@@ -456,6 +456,36 @@ describe("Black & White", () => {
   });
 });
 
+describe("Black 2 & White 2", () => {
+  let b2w2: GameData;
+  beforeAll(async () => {
+    b2w2 = await loadGame("black-2-white-2");
+  });
+  const sources = (species: string) => b2w2.sources["black-2"][species] ?? [];
+
+  test("scores Ghetsis before the Elite Four, and their rematches after", () => {
+    const ids = b2w2.battles.map((b) => b.id);
+    expect(ids.slice(7, 10)).toEqual(["marlon", "ghetsis", "shauntal"]);
+    expect(b2w2.battles.filter((b) => b.postgame).map((b) => b.name)).toEqual([
+      "Shauntal",
+      "Grimsley",
+      "Caitlin",
+      "Marshal",
+      "Iris",
+    ]);
+  });
+
+  test("waits for the Quake Badge before Relic Castle's Volcarona", () => {
+    expect(sources("volcarona").map((s) => s.stage)).toEqual([5]);
+  });
+
+  test("leaves out Hidden Grottoes and the old Unova of the Hall of Fame", () => {
+    const all = Object.values(b2w2.sources["black-2"]).flat();
+    expect(all.filter((s) => /grotto/i.test(s.method))).toEqual([]);
+    expect(all.filter((s) => s.location === "Pinwheel Forest")).toEqual([]);
+  });
+});
+
 describe("game files placing a location by version", () => {
   test("evolve by that place from the latest version's stage", () => {
     const file = readGameFile("platinum");

@@ -1,0 +1,313 @@
+# yaml-language-server: $schema=../game.schema.json
+#
+# Pokémon Black 2 and White 2, staged with Bulbapedia's walkthrough:
+# https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_Black_2_and_White_2
+
+name: Black 2 & White 2
+versionGroup: black-2-white-2
+pokedex: [updated-unova]
+sprites: generation-v/black-white
+starters: [snivy, tepig, oshawott]
+
+locations:
+  # Before Cheren (parts 1–2)
+  aspertia-city: 0
+  unova-route-19: 0
+  floccesy-ranch: 0
+  unova-route-20: 0
+  floccesy-town: excluded # Gible or Dratini, from Benga after the Black Tower
+  # Before Roxie (part 3)
+  virbank-city: 1
+  virbank-complex: 1
+  # Before Burgh (part 4): the sewers open once Clyde is met at the Gym
+  castelia-city: 2
+  castelia-sewers: 2
+  relic-passage/castelia-sewers-entrance: 2
+  # Before Elesa (parts 5–6)
+  unova-route-4: 3
+  desert-resort: 3
+  relic-castle: 3
+  unova-route-16: 3
+  lostlorn-forest: 3
+  # Before Clay (part 7)
+  unova-route-5: 4
+  driftveil-drawbridge: 4
+  driftveil-city: 4 # Zorua, from Rood
+  # Before Skyla (parts 8–10)
+  relic-passage: 5
+  relic-castle/c: 5 # The lower floors, from Relic Passage
+  relic-castle/d: 5
+  unova-route-6: 5
+  chargestone-cave: 5
+  mistralton-cave: 5
+  guidance-chamber: 5
+  unova-route-7: 5
+  celestial-tower: 5
+  # Before Drayden (parts 11–12)
+  strange-house: 6
+  reversal-mountain: 6
+  reversal-mountain/b1f@static: postgame # Heatran, with the Magma Stone
+  undella-town: 6
+  undella-bay: 6
+  unova-route-13: 6
+  unova-route-12: 6
+  village-bridge: 6
+  unova-route-11: 6
+  # Before Marlon (part 13): Seaside Cave's Black Belt steps aside once Team
+  # Plasma leaves Opelucid City
+  unova-route-9: 7
+  humilau-city: 7
+  unova-route-21: 7
+  unova-route-22: 7
+  seaside-cave: 7
+  # Before Ghetsis (part 14): the Colress Machine moves the Crustle
+  seaside-cave/1f@static: 8
+  giant-chasm: 8
+  # Before the Elite Four (part 15): Route 23 opens after Ghetsis
+  unova-route-23: 9
+  unova-victory-road: 9
+  unova-victory-road-2: 9
+  # After the Hall of Fame (parts 16–22)
+  unova-route-14: postgame
+  abundant-shrine: postgame
+  unova-route-15: postgame
+  marvelous-bridge: postgame
+  clay-tunnel: postgame
+  twist-mountain: postgame
+  underground-ruins: postgame
+  rocky-mountain-room: postgame
+  glacier-room: postgame
+  iron-room: postgame
+  unova-route-8: postgame
+  icirrus-city: postgame
+  moor-of-icirrus: postgame
+  dragonspiral-tower: postgame
+  pinwheel-forest: postgame
+  nacrene-city: postgame
+  unova-route-3: postgame
+  wellspring-cave: postgame
+  striaton-city: postgame
+  dreamyard: postgame
+  unova-route-2: postgame
+  accumula-town: postgame
+  unova-route-1: postgame
+  unova-route-17: postgame
+  unova-route-18: postgame
+  p2-laboratory: postgame
+  nature-sanctuary: postgame
+  giant-chasm/forest-cave@static: postgame # Kyurem
+  # Hidden Grottoes hold a random Pokémon, and refill only by chance
+  floccesy-ranch@hidden-grotto: excluded
+  lostlorn-forest@hidden-grotto: excluded
+  unova-route-5@hidden-grotto: excluded
+  unova-route-6@hidden-grotto: excluded
+  unova-route-7@hidden-grotto: excluded
+  unova-route-13@hidden-grotto: excluded
+  unova-route-9@hidden-grotto: excluded
+  unova-route-22@hidden-grotto: excluded
+  giant-chasm@hidden-grotto: excluded
+  unova-route-23@hidden-grotto: excluded
+
+methods:
+  surf: 5 # From Cheren, on Route 6
+  surf-spots: 5
+  super-rod: postgame # From Cedric Juniper, in Nuvema Town
+  super-rod-spots: postgame
+items:
+  water-stone: 0 # Route 19
+  fire-stone: 3 # Desert Resort
+  thunder-stone: 3 # Nimbasa City
+  sun-stone: 3 # Nimbasa City, from an Ace Trainer
+  leaf-stone: 3 # Route 16
+  moon-stone: 5 # Route 6, by the Season Research Lab
+  shiny-stone: 5 # Route 6, from a girl in the rest house
+  metal-coat: 5 # Chargestone Cave
+  dusk-stone: 6 # Strange House
+  razor-claw: 8 # Giant Chasm
+  electirizer: 8 # Plasma Frigate
+  magmarizer: 8
+  razor-fang: 9 # Route 12, with Surf and Waterfall
+
+hms:
+  cut: 2 # From Roxie, after Team Plasma flees Virbank City
+  strength: 2 # Castelia Sewers, before Burgh
+  fly: 4 # From Bianca, leaving Nimbasa City
+  surf: 5 # From Cheren, on Route 6
+  waterfall: 9 # Victory Road
+  dive: postgame # Undella Town
+
+# Generation V needs no Badge for a move used outside battle:
+# https://bulbapedia.bulbagarden.net/wiki/HM
+fieldMoves:
+  fly: 4
+  surf: 5
+
+encounterConditions:
+  season-*: always # The season changes each month
+  story-progress-quake-badge: 5 # Volcarona, in Relic Castle's lowest room
+  special-encounter-couldnt-capture-before: excluded
+
+battles:
+  # Normal Mode teams, from Bulbapedia's walkthrough.
+  - id: cheren
+    name: Cheren
+    title: Gym Leader
+    party:
+      - { species: patrat, level: 11, moves: [tackle, work-up, bite] }
+      - { species: lillipup, level: 13, moves: [tackle, work-up, bite] }
+  - id: roxie
+    name: Roxie
+    title: Gym Leader
+    party:
+      - { species: koffing, level: 16, moves: [assurance, tackle, smog] }
+      - { species: whirlipede, level: 18, moves: [venoshock, protect, poison-sting, pursuit] }
+  - id: burgh
+    name: Burgh
+    title: Gym Leader
+    party:
+      - { species: swadloon, level: 22, moves: [string-shot, razor-leaf, struggle-bug, protect] }
+      - { species: dwebble, level: 22, moves: [smack-down, feint-attack, rock-polish, struggle-bug] }
+      - { species: leavanny, level: 24, moves: [razor-leaf, cut, string-shot, struggle-bug] }
+  - id: elesa
+    name: Elesa
+    title: Gym Leader
+    party:
+      - { species: emolga, level: 28, moves: [quick-attack, pursuit, volt-switch] }
+      - { species: flaaffy, level: 28, moves: [thunder-wave, volt-switch, take-down] }
+      - { species: zebstrika, level: 30, moves: [flame-charge, pursuit, volt-switch, quick-attack] }
+  - id: clay
+    name: Clay
+    title: Gym Leader
+    party:
+      - { species: krokorok, level: 31, moves: [crunch, sand-tomb, bulldoze, torment] }
+      - { species: sandslash, level: 31, moves: [crush-claw, bulldoze, fury-cutter, rollout] }
+      - { species: excadrill, level: 33, moves: [slash, rock-slide, metal-claw, bulldoze] }
+  - id: skyla
+    name: Skyla
+    title: Gym Leader
+    party:
+      - { species: swoobat, level: 37, moves: [heart-stamp, attract, acrobatics, assurance] }
+      - { species: skarmory, level: 37, moves: [air-cutter, agility, steel-wing, fury-attack] }
+      - { species: swanna, level: 39, moves: [feather-dance, roost, bubble-beam, air-slash] }
+  - id: drayden
+    name: Drayden
+    title: Gym Leader
+    party:
+      - { species: druddigon, level: 46, moves: [revenge, crunch, slash, dragon-tail] }
+      - { species: flygon, level: 46, moves: [rock-slide, earth-power, crunch, dragon-tail] }
+      - { species: haxorus, level: 48, moves: [dragon-dance, dragon-tail, slash, assurance] }
+  - id: marlon
+    name: Marlon
+    title: Gym Leader
+    party:
+      - { species: carracosta, level: 49, moves: [smack-down, shell-smash, scald, crunch] }
+      - { species: wailord, level: 49, moves: [amnesia, scald, rollout, bounce] }
+      - { species: jellicent, level: 51, moves: [brine, recover, scald, ominous-wind] }
+  - id: ghetsis
+    name: Ghetsis
+    title: Team Plasma
+    party:
+      - { species: cofagrigus, level: 50, moves: [shadow-ball, psychic, protect, toxic] }
+      - { species: seismitoad, level: 50, moves: [muddy-water, earthquake, drain-punch, sludge-wave] }
+      - { species: eelektross, level: 50, moves: [flamethrower, acrobatics, thunderbolt, crunch] }
+      - { species: drapion, level: 50, moves: [night-slash, earthquake, poison-fang, x-scissor] }
+      - { species: toxicroak, level: 50, moves: [brick-break, shadow-ball, sucker-punch, poison-jab] }
+      - { species: hydreigon, level: 52, moves: [dragon-rush, crunch, rock-slide, frustration] }
+  - id: shauntal
+    name: Shauntal
+    title: Elite Four
+    party:
+      - { species: cofagrigus, level: 56, moves: [psychic, shadow-ball, will-o-wisp, grass-knot] }
+      - { species: drifblim, level: 56, moves: [acrobatics, thunderbolt, shadow-ball, psychic] }
+      - { species: golurk, level: 56, moves: [earthquake, shadow-punch, heavy-slam, brick-break] }
+      - { species: chandelure, level: 58, moves: [fire-blast, energy-ball, shadow-ball, psychic] }
+  - id: grimsley
+    name: Grimsley
+    title: Elite Four
+    party:
+      - { species: liepard, level: 56, moves: [fake-out, night-slash, aerial-ace, attract] }
+      - { species: scrafty, level: 56, moves: [rock-tomb, brick-break, crunch, poison-jab] }
+      - { species: krookodile, level: 56, moves: [crunch, earthquake, dragon-claw, rock-tomb] }
+      - { species: bisharp, level: 58, moves: [aerial-ace, night-slash, x-scissor, metal-claw] }
+  - id: caitlin
+    name: Caitlin
+    title: Elite Four
+    party:
+      - { species: musharna, level: 56, moves: [reflect, yawn, dream-eater, charge-beam] }
+      - { species: sigilyph, level: 56, moves: [psychic, shadow-ball, ice-beam, air-slash] }
+      - { species: reuniclus, level: 56, moves: [focus-blast, psychic, energy-ball, recover] }
+      - { species: gothitelle, level: 58, moves: [calm-mind, psychic, shadow-ball, thunderbolt] }
+  - id: marshal
+    name: Marshal
+    title: Elite Four
+    party:
+      - { species: throh, level: 56, moves: [rock-tomb, bulldoze, storm-throw, payback] }
+      - { species: sawk, level: 56, moves: [payback, rock-slide, retaliate, brick-break] }
+      - { species: mienshao, level: 56, moves: [high-jump-kick, u-turn, bounce, retaliate] }
+      - { species: conkeldurr, level: 58, moves: [stone-edge, hammer-arm, retaliate, bulk-up] }
+  - id: iris
+    name: Iris
+    title: Champion
+    party:
+      - { species: hydreigon, level: 57, moves: [dragon-pulse, surf, flamethrower, charge-beam] }
+      - { species: druddigon, level: 57, moves: [dragon-tail, rock-slide, flamethrower, focus-blast] }
+      - { species: aggron, level: 57, moves: [double-edge, rock-slide, earthquake, autotomize] }
+      - { species: archeops, level: 57, moves: [acrobatics, rock-slide, dragon-claw, endeavor] }
+      - { species: lapras, level: 57, moves: [surf, ice-beam, thunderbolt, sing] }
+      - { species: haxorus, level: 59, moves: [dual-chop, dragon-dance, earthquake, x-scissor] }
+  # After the Hall of Fame (part 22)
+  - id: shauntal-rematch
+    name: Shauntal
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: cofagrigus, level: 72, moves: [shadow-ball, psychic, will-o-wisp, energy-ball] }
+      - { species: mismagius, level: 72, moves: [shadow-ball, psychic, power-gem, perish-song] }
+      - { species: froslass, level: 72, moves: [shadow-ball, psychic, blizzard, ice-shard] }
+      - { species: drifblim, level: 72, moves: [thunder, shadow-ball, psychic, acrobatics] }
+      - { species: golurk, level: 72, moves: [shadow-punch, earthquake, hammer-arm, rock-slide] }
+      - { species: chandelure, level: 74, moves: [shadow-ball, psychic, fire-blast, energy-ball] }
+  - id: grimsley-rematch
+    name: Grimsley
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: liepard, level: 72, moves: [fake-out, attract, aerial-ace, sucker-punch] }
+      - { species: honchkrow, level: 72, moves: [night-slash, aerial-ace, haze, psychic] }
+      - { species: scrafty, level: 72, moves: [high-jump-kick, head-smash, crunch, poison-jab] }
+      - { species: krookodile, level: 72, moves: [earthquake, outrage, crunch, rock-slide] }
+      - { species: houndoom, level: 72, moves: [thunder-fang, fire-blast, sludge-bomb, crunch] }
+      - { species: bisharp, level: 74, moves: [guillotine, night-slash, x-scissor, aerial-ace] }
+  - id: caitlin-rematch
+    name: Caitlin
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: musharna, level: 72, moves: [yawn, dream-eater, charge-beam, reflect] }
+      - { species: sigilyph, level: 72, moves: [air-slash, psychic, flash-cannon, ice-beam] }
+      - { species: gothitelle, level: 72, moves: [psychic, shadow-ball, flatter, thunderbolt] }
+      - { species: gallade, level: 72, moves: [close-combat, psycho-cut, leaf-blade, night-slash] }
+      - { species: reuniclus, level: 72, moves: [psychic, thunder, recover, focus-blast] }
+      - { species: metagross, level: 74, moves: [hammer-arm, bullet-punch, zen-headbutt, earthquake] }
+  - id: marshal-rematch
+    name: Marshal
+    title: Elite Four rematch
+    postgame: true
+    party:
+      - { species: throh, level: 72, moves: [payback, superpower, earthquake, stone-edge] }
+      - { species: sawk, level: 72, moves: [close-combat, stone-edge, retaliate, poison-jab] }
+      - { species: lucario, level: 72, moves: [dragon-pulse, aura-sphere, extreme-speed, shadow-ball] }
+      - { species: mienshao, level: 72, moves: [high-jump-kick, u-turn, fake-out, acrobatics] }
+      - { species: medicham, level: 72, moves: [high-jump-kick, ice-punch, thunder-punch, fire-punch] }
+      - { species: conkeldurr, level: 74, moves: [hammer-arm, bulk-up, stone-edge, earthquake] }
+  - id: iris-rematch
+    name: Iris
+    title: Champion rematch
+    postgame: true
+    party:
+      - { species: hydreigon, level: 76, moves: [dragon-pulse, surf, fire-blast, focus-blast] }
+      - { species: druddigon, level: 76, moves: [outrage, fire-punch, thunder-punch, focus-blast] }
+      - { species: aggron, level: 76, moves: [stone-edge, double-edge, earthquake, autotomize] }
+      - { species: archeops, level: 76, moves: [acrobatics, stone-edge, dragon-claw, endeavor] }
+      - { species: lapras, level: 76, moves: [hydro-pump, blizzard, thunder, sing] }
+      - { species: haxorus, level: 78, moves: [outrage, dragon-dance, earthquake, guillotine] }

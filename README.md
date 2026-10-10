@@ -5,7 +5,8 @@ teammates the game actually lets you catch, balanced for every major battle
 of the story.
 
 Supported games: **Crystal**, **FireRed & LeafGreen**, **Emerald**,
-**Platinum**, **HeartGold & SoulSilver** and **Black & White**.
+**Platinum**, **HeartGold & SoulSilver**, **Black & White** and
+**Black 2 & White 2**.
 
 ## How teams are chosen
 
