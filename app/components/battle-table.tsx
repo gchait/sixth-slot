@@ -60,6 +60,7 @@ export function BattleTable({
                       species={opponent.id}
                       size={32}
                       decorative
+                      className="self-start"
                     />
                     <span className="min-w-0 flex-1">
                       {opponent.name}{" "}

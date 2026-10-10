@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { spriteOf, type GameData } from "../../engine/data.ts";
 import { cn } from "cn";
 
@@ -16,6 +18,9 @@ export function Sprite({
   className?: string;
 }) {
   const s = game.species[species];
+  // Sprites keep their proportions and are never enlarged. Pixel art shown at
+  // its own size stays sharp; one shrunk to fit is smoothed instead.
+  const [shrunk, setShrunk] = useState(false);
   return (
     <img
       src={spriteOf(game, species)}
@@ -24,8 +29,17 @@ export function Sprite({
       height={size}
       loading="lazy"
       style={{ width: size, height: size }}
+      onLoad={(event) =>
+        setShrunk(
+          Math.max(
+            event.currentTarget.naturalWidth,
+            event.currentTarget.naturalHeight,
+          ) > size,
+        )
+      }
       className={cn(
-        "shrink-0 self-start [image-rendering:pixelated]",
+        "shrink-0 object-scale-down",
+        !shrunk && "[image-rendering:pixelated]",
         className,
       )}
     />

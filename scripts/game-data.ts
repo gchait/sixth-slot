@@ -74,7 +74,6 @@ export async function sprite(name: string, url: string): Promise<Sprite> {
 export interface GameSummary {
   id: string;
   name: string;
-  versions: string[];
   starters: Sprite[];
 }
 
@@ -94,7 +93,6 @@ export async function writeGameData(): Promise<void> {
     summaries.push({
       id,
       name: game.name,
-      versions: game.versions.map((v) => v.name),
       starters: await Promise.all(
         game.starters.map((s) =>
           sprite(game.species[s].name, spriteOf(game, s)),

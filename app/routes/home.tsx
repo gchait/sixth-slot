@@ -3,12 +3,7 @@ import { Link } from "react-router";
 
 import type { GameSummary } from "../../scripts/game-data.ts";
 import type { Route } from "./+types/home";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { Card, CardHeader, CardTitle } from "~/components/ui/card";
 
 export async function loader() {
   const text = await readFile("generated/games.json", "utf8");
@@ -64,14 +59,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               >
                 <Card className="hover:bg-accent/50 transition-colors">
                   <CardHeader className="flex items-center justify-between gap-4">
-                    <div className="space-y-1.5">
-                      <CardTitle>{game.name}</CardTitle>
-                      {game.versions.length > 1 && (
-                        <CardDescription>
-                          {game.versions.join(" · ")}
-                        </CardDescription>
-                      )}
-                    </div>
+                    <CardTitle>{game.name}</CardTitle>
                     <div className="flex h-14 shrink-0 items-center">
                       {game.starters.map((starter) => (
                         <img
