@@ -2,7 +2,8 @@ import { beforeAll, describe, expect, test } from "vitest";
 
 import { gameSchema } from "../data/schema.ts";
 import { met, type GameData } from "../engine/data.ts";
-import { buildGame, isPhysical } from "./build-game.ts";
+import { buildGame } from "./build-game.ts";
+import { isPhysical } from "./build-moves.ts";
 import { loadGame, readGameFile, readPlannedGames } from "./games.ts";
 import { loadTables, type Tables } from "./pokeapi.ts";
 

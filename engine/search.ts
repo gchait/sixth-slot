@@ -213,19 +213,32 @@ export function search(
     groupsTaken &= ~groupBits;
   };
 
-  // best[d] is, per opponent, the team's best value after d members.
+  // best[d] is, per opponent, the team's best value after d members. open[d]
+  // lists the first openCount[d] opponents below the matchup limit, the only
+  // ones a further member can improve.
   const best = Array.from(
     { length: TEAM_SIZE + 1 },
     () => new Float64Array(width),
   );
   best[0].fill(-MATCHUP_LIMIT);
+  const open = Array.from(
+    { length: TEAM_SIZE + 1 },
+    () => new Int32Array(width),
+  );
+  const openCount = new Int32Array(TEAM_SIZE + 1);
+  for (let o = 0; o < width; o++) open[0][o] = o;
+  openCount[0] = width;
   const extend = (depth: number, v: Float64Array) => {
     let score = 0;
+    let count = 0;
+    const next = open[depth + 1];
     for (let o = 0; o < width; o++) {
       const b = Math.max(best[depth][o], v[o]);
       best[depth + 1][o] = b;
       score += b * weights[o];
+      if (b < MATCHUP_LIMIT) next[count++] = o;
     }
+    openCount[depth + 1] = count;
     return score;
   };
 
@@ -278,8 +291,11 @@ export function search(
       }
       let g = 0;
       const v = value[i];
-      for (let o = 0; o < width; o++)
+      const list = open[depth];
+      for (let k = 0; k < openCount[depth]; k++) {
+        const o = list[k];
         if (v[o] > current[o]) g += (v[o] - current[o]) * weights[o];
+      }
       gain[i] = g;
     }
 
