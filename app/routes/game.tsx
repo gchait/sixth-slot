@@ -191,6 +191,30 @@ function Results({
   );
 }
 
+function Problem({
+  title,
+  detail,
+  action,
+  onAction,
+}: {
+  title: string;
+  detail?: string;
+  action: string;
+  onAction: () => void;
+}) {
+  return (
+    <Alert variant="destructive">
+      <AlertTitle>{title}</AlertTitle>
+      <AlertDescription>
+        {detail && <p>{detail}</p>}
+        <Button variant="outline" size="sm" className="mt-2" onClick={onAction}>
+          {action}
+        </Button>
+      </AlertDescription>
+    </Alert>
+  );
+}
+
 function Builder({ game }: { game: GameData }) {
   const [params, setParams] = useSearchParams();
   const query = params.toString();
@@ -229,34 +253,18 @@ function Builder({ game }: { game: GameData }) {
             </div>
           </div>
         ) : "failed" in response ? (
-          <Alert variant="destructive">
-            <AlertTitle>The search could not run</AlertTitle>
-            <AlertDescription>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-2"
-                onClick={() => window.location.reload()}
-              >
-                Reload the page
-              </Button>
-            </AlertDescription>
-          </Alert>
+          <Problem
+            title="The search could not run"
+            action="Reload the page"
+            onAction={() => window.location.reload()}
+          />
         ) : "error" in response ? (
-          <Alert variant="destructive">
-            <AlertTitle>These settings do not work together</AlertTitle>
-            <AlertDescription>
-              <p>{response.error}</p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-2"
-                onClick={() => change({ ...options, pinned: [] })}
-              >
-                Clear pinned Pokémon
-              </Button>
-            </AlertDescription>
-          </Alert>
+          <Problem
+            title="These settings do not work together"
+            detail={response.error}
+            action="Clear pinned Pokémon"
+            onAction={() => change({ ...options, pinned: [] })}
+          />
         ) : (
           <Results
             key={response.id}

@@ -67,8 +67,8 @@ export function writeOptions(
 /**
  * The options with trade evolutions allowed or not. A candidate's id is the
  * final species of its line, which trade evolutions can change, so each pinned
- * or excluded Pokémon moves to the candidates its line now ends at, if any; a
- * pin that would split into several is dropped.
+ * or excluded Pokémon moves to the candidates its line ends at with the new
+ * setting, if any; a pin that would split into several is dropped.
  */
 export function setTradeEvolutions(
   game: GameData,

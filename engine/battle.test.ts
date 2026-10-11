@@ -175,19 +175,12 @@ describe("abilities", () => {
   });
 
   test("halve Fire and Ice damage to a Pokémon sure to have Thick Fat", () => {
-    const fat = { ...game.species.snorlax, abilities: ["thick-fat"] };
-    const plain = { ...game.species.snorlax, abilities: [] };
-    for (const move of ["ember", "ice-beam"])
-      expect(
-        damageFraction(game, move, game.species.charmander, 30, fat, 30),
-      ).toBe(
-        damageFraction(game, move, game.species.charmander, 30, plain, 30) / 2,
-      );
-    expect(
-      damageFraction(game, "tackle", game.species.charmander, 30, fat, 30),
-    ).toBe(
-      damageFraction(game, "tackle", game.species.charmander, 30, plain, 30),
-    );
+    const { charmander, snorlax } = game.species;
+    const hit = (abilities: string[], move: string) =>
+      damageFraction(game, move, charmander, 30, { ...snorlax, abilities }, 30);
+    expect(hit(["thick-fat"], "ember")).toBe(hit([], "ember") / 2);
+    expect(hit(["thick-fat"], "ice-beam")).toBe(hit([], "ice-beam") / 2);
+    expect(hit(["thick-fat"], "tackle")).toBe(hit([], "tackle"));
   });
 
   test("leave out abilities a species only might have", () => {
