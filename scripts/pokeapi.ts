@@ -1,6 +1,12 @@
 // Reads PokeAPI's CSV data and sprites at pinned commits, downloading each file
 // once into .cache/.
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -19,7 +25,8 @@ const cacheDir = fileURLToPath(new URL("../.cache/", import.meta.url));
 
 /**
  * The file at a URL that pins a commit, so its content never changes: fetched
- * once into .cache/<host>/<path>, and read from there afterwards.
+ * once into .cache/<host>/<path>, and read from there afterwards. The file
+ * appears there whole or not at all.
  */
 export async function pinnedFile(url: string): Promise<Buffer> {
   const { host, pathname } = new URL(url);
@@ -28,7 +35,9 @@ export async function pinnedFile(url: string): Promise<Buffer> {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
     mkdirSync(dirname(path), { recursive: true });
-    writeFileSync(path, Buffer.from(await response.arrayBuffer()));
+    const partial = `${path}.${process.pid}.partial`;
+    writeFileSync(partial, Buffer.from(await response.arrayBuffer()));
+    renameSync(partial, path);
   }
   return readFileSync(path);
 }
