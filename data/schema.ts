@@ -173,6 +173,12 @@ export const gameSchema = z.strictObject({
     .describe(
       "Base stats PokeAPI gives wrongly for this game, by species: the stats the game has. Each must differ from PokeAPI's, so an entry fails the build once PokeAPI is corrected.",
     ),
+  correctedMovePower: z
+    .record(identifier, z.int().min(1))
+    .default({})
+    .describe(
+      "Move power PokeAPI gives wrongly for this game, by move: the power the game has. Each must differ from PokeAPI's, so an entry fails the build once PokeAPI is corrected.",
+    ),
   methods: z
     .record(identifier, storyStage)
     .default({})

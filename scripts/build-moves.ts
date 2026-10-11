@@ -155,7 +155,15 @@ export function buildMoves(
       );
     const typeId = later.find((c) => c.type_id)?.type_id ?? row.type_id;
     const effectId = later.find((c) => c.effect_id)?.effect_id ?? row.effect_id;
-    const power = Number(later.find((c) => c.power)?.power ?? row.power);
+    let power = Number(later.find((c) => c.power)?.power ?? row.power);
+    const corrected = file.correctedMovePower[row.identifier];
+    if (corrected !== undefined) {
+      if (corrected === power)
+        errors.push(
+          `correctedMovePower.${row.identifier}: PokeAPI has ${power}`,
+        );
+      power = corrected;
+    }
     const fixed = fixedDamageByEffect[effectId];
     const drawback = drawbackByEffect[effectId] ?? 1;
     if ((!power && fixed === undefined) || drawback === 0) return undefined;

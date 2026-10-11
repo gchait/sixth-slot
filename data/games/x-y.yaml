@@ -74,8 +74,8 @@ locations:
   # Bug Pokémon on Berry trees, only while growing Berries
   kalos-berry-fields: excluded
 
-# PokeAPI puts Cryogonal's Generation V-VI Defense of 30 under Attack:
-# Bulbapedia's Cryogonal gives Attack 50 and Defense 30 for Generations V-VI.
+# PokeAPI puts Cryogonal's Defense of 30 in generations V and VI under Attack:
+# Bulbapedia's Cryogonal gives Attack 50 and Defense 30 for those generations.
 correctedBaseStats:
   cryogonal: { attack: 50, defense: 30 }
 

@@ -57,6 +57,10 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     if (!(id in speciesCatalog.species))
       errors.push(`correctedBaseStats: ${id} is not in this game`);
   }
+  for (const id of Object.keys(file.correctedMovePower)) {
+    if (!(id in moveCatalog.moves))
+      errors.push(`correctedMovePower: ${id} is no damaging move of this game`);
+  }
   checkStages(file, battles.length, errors);
   const sources = buildSources(context, speciesCatalog, starters);
   const exclusiveGroups = file.exclusiveGroups.map((group) =>

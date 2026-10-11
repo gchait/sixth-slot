@@ -219,6 +219,18 @@ describe("game file checks", () => {
       "correctedBaseStats: lugia is not in this game",
     );
   });
+
+  test("rejects a move power correction PokeAPI already has, or for a move the game lacks", () => {
+    const file = readGameFile("emerald");
+    file.correctedMovePower["mist-ball"] = 70;
+    file.correctedMovePower["psystrike"] = 100;
+    expect(() => buildGame(file, tables)).toThrow(
+      "correctedMovePower.mist-ball: PokeAPI has 70",
+    );
+    expect(() => buildGame(file, tables)).toThrow(
+      "correctedMovePower: psystrike is no damaging move of this game",
+    );
+  });
 });
 
 describe("Emerald", () => {
@@ -290,6 +302,10 @@ describe("Emerald", () => {
     expect(emerald.sources.emerald.wynaut.map((s) => s.method)).toEqual([
       "Receive egg as a gift",
     ]);
+  });
+
+  test("corrects move power PokeAPI gives wrongly", () => {
+    expect(emerald.moves["luster-purge"].power).toBe(70);
   });
 
   test("keeps only regular abilities as they were in generation III", () => {

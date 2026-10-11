@@ -116,6 +116,11 @@ locations:
   mirage-island: excluded
   hoenn-route-130@walk: excluded # Mirage Island's grass
 
+# PokeAPI has Luster Purge's power from generation IX on: Bulbapedia's Luster
+# Purge gives 70 before generation IX.
+correctedMovePower:
+  luster-purge: 70
+
 methods:
   old-rod: 1 # Dewford Town
   feebas-tile-fishing: 1 # Any rod
