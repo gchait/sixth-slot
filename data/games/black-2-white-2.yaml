@@ -108,6 +108,11 @@ locations:
   giant-chasm@hidden-grotto: excluded
   unova-route-23@hidden-grotto: excluded
 
+# PokeAPI puts Cryogonal's Generation V-VI Defense of 30 under Attack:
+# Bulbapedia's Cryogonal gives Attack 50 and Defense 30 for Generations V-VI.
+correctedBaseStats:
+  cryogonal: { attack: 50, defense: 30 }
+
 methods:
   surf: 5 # From Cheren, on Route 6
   surf-spots: 5

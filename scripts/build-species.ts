@@ -106,6 +106,15 @@ export function buildSpecies(
       const past = pastFor(pastStats.get(statRow.stat_id) ?? [], generation);
       stats[key] = Number((past[0] ?? statRow).base_stat);
     }
+    const corrected = file.correctedBaseStats[row.identifier] ?? {};
+    for (const [stat, value] of Object.entries(corrected)) {
+      const key = statIdentifiers[stat];
+      if (stats[key] === value)
+        errors.push(
+          `correctedBaseStats.${row.identifier}: PokeAPI has ${stat} ${value}`,
+        );
+      stats[key] = value;
+    }
 
     // Regular abilities as they were in this generation, slot by slot; a past
     // row without an ability means the slot did not exist yet.

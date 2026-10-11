@@ -74,6 +74,11 @@ locations:
   # Bug Pokémon on Berry trees, only while growing Berries
   kalos-berry-fields: excluded
 
+# PokeAPI puts Cryogonal's Generation V-VI Defense of 30 under Attack:
+# Bulbapedia's Cryogonal gives Attack 50 and Defense 30 for Generations V-VI.
+correctedBaseStats:
+  cryogonal: { attack: 50, defense: 30 }
+
 methods:
   old-rod: 1 # Ambrette Town
   rock-smash: 1 # TM94, Ambrette Town; used outside battle without a Badge

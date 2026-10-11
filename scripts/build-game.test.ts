@@ -207,6 +207,18 @@ describe("game file checks", () => {
       "missingEncounters: PokeAPI has venonat at national-park@walk",
     );
   });
+
+  test("rejects a base stat correction PokeAPI already has, or for a species the game lacks", () => {
+    const file = readGameFile("x-y");
+    file.correctedBaseStats.cryogonal.hp = 70;
+    file.correctedBaseStats.lugia = { speed: 110 };
+    expect(() => buildGame(file, tables)).toThrow(
+      "correctedBaseStats.cryogonal: PokeAPI has hp 70",
+    );
+    expect(() => buildGame(file, tables)).toThrow(
+      "correctedBaseStats: lugia is not in this game",
+    );
+  });
 });
 
 describe("Emerald", () => {
@@ -521,6 +533,10 @@ describe("X & Y", () => {
     expect(effect(xy, "ghost", "steel")).toBe(1);
     expect(effect(crystal, "ghost", "steel")).toBe(0.5);
     expect(crystal.types).not.toContain("fairy");
+  });
+
+  test("corrects base stats PokeAPI gives wrongly", () => {
+    expect(xy.species.cryogonal.stats).toMatchObject({ atk: 50, def: 30 });
   });
 
   test("counts Route 22's grass from the start, as the walkthrough suggests for Viola", () => {

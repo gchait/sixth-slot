@@ -177,6 +177,51 @@
         }
       }
     },
+    "correctedBaseStats": {
+      "default": {},
+      "description": "Base stats PokeAPI gives wrongly for this game, by species: the stats the game has. Each must differ from PokeAPI's, so an entry fails the build once PokeAPI is corrected.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "hp": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "attack": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "defense": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "special-attack": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "special-defense": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "speed": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "methods": {
       "default": {},
       "description": "Encounter methods that need an item or Badge first; unlisted methods need nothing.",

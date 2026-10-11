@@ -53,6 +53,10 @@ export function buildGame(file: GameFile, t: Tables): GameData {
     speciesCatalog.regionalSpecies(s, "starters"),
   );
   const battles = buildBattles(context, moveCatalog, speciesCatalog, starters);
+  for (const id of Object.keys(file.correctedBaseStats)) {
+    if (!(id in speciesCatalog.species))
+      errors.push(`correctedBaseStats: ${id} is not in this game`);
+  }
   checkStages(file, battles.length, errors);
   const sources = buildSources(context, speciesCatalog, starters);
   const exclusiveGroups = file.exclusiveGroups.map((group) =>

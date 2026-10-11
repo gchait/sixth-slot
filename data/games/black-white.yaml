@@ -95,6 +95,11 @@ locations:
   unova-route-15: postgame
   marvelous-bridge: postgame
 
+# PokeAPI puts Cryogonal's Generation V-VI Defense of 30 under Attack:
+# Bulbapedia's Cryogonal gives Attack 50 and Defense 30 for Generations V-VI.
+correctedBaseStats:
+  cryogonal: { attack: 50, defense: 30 }
+
 methods:
   surf: 6 # From Alder, after Skyla
   surf-spots: 6

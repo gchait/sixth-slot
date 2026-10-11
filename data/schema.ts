@@ -155,6 +155,24 @@ export const gameSchema = z.strictObject({
     .describe(
       "Encounters the game has that PokeAPI lacks, added to PokeAPI's in every version and staged like them. Each must be missing from PokeAPI, so an entry fails the build once PokeAPI is corrected.",
     ),
+  correctedBaseStats: z
+    .record(
+      identifier,
+      z
+        .strictObject({
+          hp: z.int().min(1),
+          attack: z.int().min(1),
+          defense: z.int().min(1),
+          "special-attack": z.int().min(1),
+          "special-defense": z.int().min(1),
+          speed: z.int().min(1),
+        })
+        .partial(),
+    )
+    .default({})
+    .describe(
+      "Base stats PokeAPI gives wrongly for this game, by species: the stats the game has. Each must differ from PokeAPI's, so an entry fails the build once PokeAPI is corrected.",
+    ),
   methods: z
     .record(identifier, storyStage)
     .default({})
