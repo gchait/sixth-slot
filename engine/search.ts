@@ -132,6 +132,11 @@ export function search(
   const required = [starters[0], ...pinned].filter(
     (c, i, list) => list.indexOf(c) === i,
   );
+  if (required.length > TEAM_SIZE) {
+    throw new Error(
+      `${game.species[starters[0].id].name} and ${required.length - 1} pinned Pokémon do not fit in a team of ${TEAM_SIZE}`,
+    );
+  }
 
   const slots = opponentsFor(game, options);
   const width = slots.length;

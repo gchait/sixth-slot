@@ -157,6 +157,19 @@ describe("search", () => {
     );
   });
 
+  test("explains pins that do not fit in one team", () => {
+    const pinned = buildCandidates(game, options())
+      .filter((c) => c.family !== "charmander")
+      .slice(0, TEAM_SIZE)
+      .map((c) => c.id);
+    expect(() =>
+      search(
+        game,
+        options({ pinned, uniqueTypes: false, carryFieldMoves: false }),
+      ),
+    ).toThrow("Charizard and 6 pinned Pokémon do not fit in a team of 6");
+  });
+
   test("explains when no team can keep a member for every field move", () => {
     const pinned = ["raticate", "primeape", "graveler", "mr-mime", "jolteon"];
     expect(() => search(game, options({ pinned }))).toThrow(
