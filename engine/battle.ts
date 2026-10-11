@@ -7,6 +7,7 @@ import type { GameData, Species, StatKey } from "./data.ts";
 const IV = 15;
 
 export function stat(species: Species, key: StatKey, level: number): number {
+  if (key === "hp" && species.id === "shedinja") return 1;
   const base = Math.floor(((2 * species.stats[key] + IV) * level) / 100);
   return key === "hp" ? base + level + 10 : base + 5;
 }
@@ -130,11 +131,12 @@ export function bestMove(
 }
 
 /**
- * Moves a line knows at a battle. Each form learns its level-up moves from the
- * level it became that form, or from the start if it was caught as that form
- * or the game's Move Reminder can reteach them by then; an earlier form's moves
- * count up to the current level, since evolving can wait for them. The current
- * form also knows the HMs it can learn that are obtained by then.
+ * Moves a line knows at a battle. Each form the Pokémon can have been learns
+ * its level-up moves from the level it became that form, or from the start if
+ * it was caught as that form or the game's Move Reminder can reteach them by
+ * then; an earlier form's moves count up to the current level, since evolving
+ * can wait for them. The current form also knows the HMs it can learn that are
+ * obtained by then.
  */
 export function knownMoves(
   game: GameData,
@@ -146,7 +148,9 @@ export function knownMoves(
   const reteach =
     game.moveRelearner !== undefined && game.moveRelearner <= battle;
   const known = new Set<string>();
-  candidate.line.slice(0, form + 1).forEach((species, i) => {
+  const first = candidate.firstForms[battle];
+  candidate.line.slice(first, form + 1).forEach((species, offset) => {
+    const i = first + offset;
     const caught = candidate.sources.some(
       (s) => s.species === species && s.stage <= battle,
     );

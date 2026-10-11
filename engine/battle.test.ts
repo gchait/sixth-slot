@@ -30,6 +30,11 @@ describe("battle math", () => {
     );
   });
 
+  test("gives Shedinja 1 HP at every level", async () => {
+    const emerald = await loadGame("emerald");
+    expect(stat(emerald.species.shedinja, "hp", 50)).toBe(1);
+  });
+
   test("multiplies effectiveness across both types", () => {
     const water = game.types.indexOf("water");
     expect(effectiveness(game, water, game.species.geodude)).toBe(4);
@@ -130,6 +135,18 @@ describe("battle math", () => {
       knownMoves({ ...platinum, moveRelearner: undefined }, crobat, battle),
     ).not.toContain("cross-poison");
   });
+
+  test("knows no moves of an earlier form the Pokémon cannot have been", async () => {
+    // Crystal's Jynx can only be caught as Jynx; Smoochum learns Psychic.
+    const crystal = await loadGame("crystal");
+    const jynx = buildCandidates(
+      crystal,
+      fireRed({ version: "crystal", starter: "chikorita" }),
+    ).find((c) => c.id === "jynx")!;
+    const battle = crystal.battles.findIndex((b) => b.id === "clair");
+    expect(jynx.forms[battle]).toBe(1);
+    expect(knownMoves(crystal, jynx, battle)).not.toContain("psychic");
+  });
 });
 
 describe("abilities", () => {
@@ -144,6 +161,33 @@ describe("abilities", () => {
         30,
       ),
     ).toBe(0);
+  });
+
+  test("double physical damage for Huge and Pure Power and halve all for Truant", () => {
+    const { rattata } = game.species;
+    const hit = (abilities: string[], move: string) =>
+      damageFraction(game, move, { ...rattata, abilities }, 30, rattata, 30);
+    expect(hit(["huge-power"], "tackle")).toBe(hit([], "tackle") * 2);
+    expect(hit(["pure-power"], "tackle")).toBe(hit([], "tackle") * 2);
+    expect(hit(["huge-power"], "ember")).toBe(hit([], "ember"));
+    expect(hit(["truant"], "tackle")).toBe(hit([], "tackle") / 2);
+    expect(hit(["truant"], "sonic-boom")).toBe(hit([], "sonic-boom") / 2);
+  });
+
+  test("halve Fire and Ice damage to a Pokémon sure to have Thick Fat", () => {
+    const fat = { ...game.species.snorlax, abilities: ["thick-fat"] };
+    const plain = { ...game.species.snorlax, abilities: [] };
+    for (const move of ["ember", "ice-beam"])
+      expect(
+        damageFraction(game, move, game.species.charmander, 30, fat, 30),
+      ).toBe(
+        damageFraction(game, move, game.species.charmander, 30, plain, 30) / 2,
+      );
+    expect(
+      damageFraction(game, "tackle", game.species.charmander, 30, fat, 30),
+    ).toBe(
+      damageFraction(game, "tackle", game.species.charmander, 30, plain, 30),
+    );
   });
 
   test("leave out abilities a species only might have", () => {

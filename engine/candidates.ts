@@ -47,6 +47,11 @@ export interface Candidate {
    * or -1 when no member of the line is obtainable yet.
    */
   forms: number[];
+  /**
+   * For each battle, the index into `line` of the earliest form the player's
+   * Pokémon can have been on its way to that battle's form, or -1 with it.
+   */
+  firstForms: number[];
   /** The first battle the line can join, as an index into GameData.battles. */
   joins: number;
   /**
@@ -139,28 +144,39 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
     );
   }
 
-  function formsOf(line: string[], steps: Evolution[]): number[] {
+  /** The form by battle of a Pokémon obtained as `line[start]`, or -1 before. */
+  function formsFrom(line: string[], steps: Evolution[], start: number) {
     const heldSince = line.map(() => Infinity);
     return game.battles.map((_, battle) => {
       let form = -1;
-      line.forEach((species, i) => {
-        const obtainable = (sources[species] ?? []).some(
-          (s) => opensAt(s) <= battle,
-        );
-        const evolved =
-          i > 0 &&
-          form === i - 1 &&
-          canEvolve(steps[i - 1], battle, heldSince[i - 1]);
-        if (obtainable || evolved) form = i;
-        if (form === i) heldSince[i] = Math.min(heldSince[i], battle);
-      });
+      for (let i = start; i < line.length; i++) {
+        const obtained =
+          i === start
+            ? (sources[line[i]] ?? []).some((s) => opensAt(s) <= battle)
+            : form === i - 1 &&
+              canEvolve(steps[i - 1], battle, heldSince[i - 1]);
+        if (!obtained) break;
+        form = i;
+        heldSince[i] = Math.min(heldSince[i], battle);
+      }
       return form;
     });
   }
 
-  function formsTo(species: string): { line: string[]; forms: number[] } {
+  /**
+   * The furthest form by battle of any one Pokémon of the line, and the form it
+   * is obtained as.
+   */
+  function formsTo(species: string) {
     const { line, steps } = lineTo(species);
-    return { line, forms: formsOf(line, steps) };
+    const paths = line.map((_, start) => formsFrom(line, steps, start));
+    const forms = game.battles.map((_, battle) =>
+      Math.max(...paths.map((path) => path[battle])),
+    );
+    const firstForms = forms.map((form, battle) =>
+      form < 0 ? -1 : paths.findIndex((path) => path[battle] === form),
+    );
+    return { line, forms, firstForms };
   }
 
   /** The first battle the species itself can be held for, or -1. */
@@ -185,7 +201,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
   );
   const candidates: Candidate[] = [];
   for (const species of Object.keys(game.species)) {
-    const { line, forms } = formsTo(species);
+    const { line, forms, firstForms } = formsTo(species);
     const family = line[0];
     if (otherStarters.has(family)) continue;
     if (
@@ -214,6 +230,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
       ),
       family,
       forms,
+      firstForms,
       joins,
       evolvedAt: line.map((_, i) =>
         i === 0
@@ -228,7 +245,7 @@ export function buildCandidates(game: GameData, options: Options): Candidate[] {
           const form = forms[move.stage];
           const level = game.battles[move.stage].level;
           return line
-            .slice(0, form + 1)
+            .slice(firstForms[move.stage], form + 1)
             .some(
               (s) => (game.species[s].fieldMoves[move.id] ?? Infinity) <= level,
             );

@@ -70,8 +70,8 @@ with their real teams and moves.
 A member counts only from the battle by which you can have it, in the form and
 with the moves it would have by then:
 
-- level-up moves learned since it reached each form, and all of them once the
-  game's Move Reminder can reteach them;
+- the level-up moves of each form it can have been, learned since it reached
+  that form, and all of them once the game's Move Reminder can reteach them;
 - the damaging HMs obtained so far;
 - the abilities it is sure to have that change damage: immunities such as
   Levitate and Flash Fire, Thick Fat, Dry Skin, Huge Power, Pure Power and
