@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group";
+import { choice } from "~/lib/styles";
 import { cn } from "cn";
 
 function Setting({
@@ -112,11 +113,9 @@ export function Controls({
                 aria-pressed={selected}
                 onClick={() => set({ starter, pinned: [], banned: [] })}
                 className={cn(
-                  "flex flex-col items-center rounded-lg border p-2 text-xs transition-colors",
-                  "focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]",
-                  selected
-                    ? "border-primary bg-accent font-medium"
-                    : "hover:bg-accent/50",
+                  "flex flex-col items-center p-2 text-xs",
+                  choice(selected),
+                  selected && "font-medium",
                 )}
               >
                 <Sprite game={game} species={starter} size={56} decorative />

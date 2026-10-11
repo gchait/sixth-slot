@@ -10,6 +10,7 @@ import { buildGame } from "./build-game.ts";
 import { loadTables, type Tables } from "./pokeapi.ts";
 
 const gamesDir = fileURLToPath(new URL("../data/games/", import.meta.url));
+
 export function gameIds(): string[] {
   return readdirSync(gamesDir)
     .filter((f) => f.endsWith(".yaml"))

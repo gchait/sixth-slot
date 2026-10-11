@@ -77,10 +77,10 @@ export function buildEvolutions(
           Object.entries(row).filter(([column]) => !perRow.has(column)),
         ),
       );
-    const genders = new Set(methods.map((m) => m.gender_id));
+    const genderIds = new Set(methods.map((m) => m.gender_id));
     const distinct = new Map(
       methods.map((m) => {
-        const method = genders.size > 1 ? { ...m, gender_id: "" } : m;
+        const method = genderIds.size > 1 ? { ...m, gender_id: "" } : m;
         return [JSON.stringify(method), method];
       }),
     );
@@ -196,9 +196,7 @@ export function buildEvolutions(
       label.push(`knowing ${moveNames.get(row.known_move_id) ?? move}`);
     }
     if (row.known_move_type_id) {
-      const typeName = t.types.find(
-        (ty) => ty.id === row.known_move_type_id,
-      )!.identifier;
+      const typeName = types[typeIndex.get(row.known_move_type_id)!];
       const level = learnLevel(
         from,
         (id) => moveRowsById.get(id)!.type_id === row.known_move_type_id,

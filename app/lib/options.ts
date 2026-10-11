@@ -1,24 +1,18 @@
 import { defaultOptions, type Options } from "../../engine/candidates.ts";
 import type { GameData } from "../../engine/data.ts";
 
-const switchKeys = [
-  "uniqueTypes",
-  "allowLegendaries",
-  "allowTradeEvolutions",
-  "includePostgame",
-  "carryFieldMoves",
-] as const;
-
-type Switch = (typeof switchKeys)[number];
-
 /** URL parameter names of the on-off options. */
-const switches: Record<Switch, string> = {
+const switches = {
   uniqueTypes: "unique",
   allowLegendaries: "legendaries",
   allowTradeEvolutions: "trades",
   includePostgame: "postgame",
   carryFieldMoves: "field",
-};
+} as const;
+
+type Switch = keyof typeof switches;
+
+const switchKeys = Object.keys(switches) as Switch[];
 
 const list = (value: string | null) =>
   value ? value.split(",").filter(Boolean) : [];

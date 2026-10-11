@@ -1,6 +1,6 @@
-// Schema for the hand-curated files in data/games/. The
-// build validates every file against it, and `pnpm data:schema` exports it,
-// descriptions included, as JSON Schema for editors.
+// Schema for the hand-curated files in data/games/. The build validates every
+// file against it, and `pnpm data:schema` exports it, descriptions included,
+// as JSON Schema for editors.
 import { z } from "zod";
 
 const identifier = z
@@ -35,11 +35,20 @@ const locationPlacement = z.union([
     ),
 ]);
 
+const place = "[a-z0-9-]+(/[a-z0-9-]+)?";
+
 const locationKey = z
   .string()
   .regex(
-    /^[a-z0-9-]+(\/[a-z0-9-]+)?(@[a-z0-9-]+)?$/,
+    new RegExp(`^${place}(@[a-z0-9-]+)?$`),
     "use location, location/area, optionally followed by @method",
+  );
+
+const encounterKey = z
+  .string()
+  .regex(
+    new RegExp(`^${place}@[a-z0-9-]+$`),
+    "use location or location/area, followed by @method",
   );
 
 const spriteFolder = z
@@ -132,12 +141,7 @@ export const gameSchema = z.strictObject({
     ),
   missingEncounters: z
     .record(
-      z
-        .string()
-        .regex(
-          /^[a-z0-9-]+(\/[a-z0-9-]+)?@[a-z0-9-]+$/,
-          "use location or location/area, followed by @method",
-        ),
+      encounterKey,
       z
         .array(
           z.strictObject({

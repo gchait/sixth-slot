@@ -4,6 +4,8 @@ import { Link } from "react-router";
 import type { GameSummary } from "../../scripts/game-data.ts";
 import type { Route } from "./+types/home";
 import { Card, CardHeader, CardTitle } from "~/components/ui/card";
+import { focusRing } from "~/lib/styles";
+import { cn } from "cn";
 
 export async function loader() {
   const text = await readFile("generated/games.json", "utf8");
@@ -55,7 +57,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <li key={game.id}>
               <Link
                 to={`/${game.id}/`}
-                className="block rounded-xl focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]"
+                className={cn("block rounded-xl", focusRing)}
               >
                 <Card className="hover:bg-accent/50 transition-colors">
                   <CardHeader className="flex items-center justify-between gap-4">

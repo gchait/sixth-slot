@@ -235,14 +235,13 @@ export function buildSources(
         inArea,
         location.identifier,
       ];
-      const pokemon = speciesById.get(
-        pokemonSpecies.get(encounter.pokemon_id)!,
-      )!.identifier;
+      const speciesId = pokemonSpecies.get(encounter.pokemon_id)!;
+      const speciesIdentifier = speciesById.get(speciesId)!.identifier;
       const wrong = keys.find((key) =>
-        file.wrongEncounters[key]?.includes(pokemon),
+        file.wrongEncounters[key]?.includes(speciesIdentifier),
       );
       if (wrong) {
-        matchedWrong.add(`${wrong} ${pokemon}`);
+        matchedWrong.add(`${wrong} ${speciesIdentifier}`);
         continue;
       }
       const placement = inVersion(
@@ -262,10 +261,8 @@ export function buildSources(
         methodStage === "postgame"
       )
         continue;
-      const speciesId = pokemonSpecies.get(encounter.pokemon_id)!;
       if (!regional.has(speciesId)) continue;
 
-      const speciesIdentifier = speciesById.get(speciesId)!.identifier;
       let stage = Math.max(placement, methodStage);
       let gives: string | undefined;
       let givesAny = false;
@@ -345,13 +342,11 @@ export function buildSources(
       const existing = merged.get(key);
       if (!existing) {
         merged.set(key, source);
-      } else {
-        if ("levels" in existing && "levels" in source) {
-          existing.levels = [
-            Math.min(existing.levels[0], source.levels[0]),
-            Math.max(existing.levels[1], source.levels[1]),
-          ];
-        }
+      } else if ("levels" in existing && "levels" in source) {
+        existing.levels = [
+          Math.min(existing.levels[0], source.levels[0]),
+          Math.max(existing.levels[1], source.levels[1]),
+        ];
       }
     }
     const bySpecies: Record<string, Source[]> = {};

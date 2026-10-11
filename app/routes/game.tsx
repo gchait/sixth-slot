@@ -16,6 +16,7 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
 import { readOptions, writeOptions } from "~/lib/options";
+import { choice } from "~/lib/styles";
 import { useSearch } from "~/lib/use-search";
 import { cn } from "cn";
 
@@ -154,11 +155,8 @@ function Results({
                   onClick={() => select(i)}
                   aria-current={i === selected}
                   className={cn(
-                    "flex w-full items-center gap-2 rounded-lg border px-3 py-1 text-left transition-colors",
-                    "focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]",
-                    i === selected
-                      ? "border-primary bg-accent"
-                      : "hover:bg-accent/50",
+                    "flex w-full items-center gap-2 px-3 py-1 text-left",
+                    choice(i === selected),
                   )}
                 >
                   <span className="text-muted-foreground w-6 text-sm">

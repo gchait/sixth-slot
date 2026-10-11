@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 import { parseCsv } from "./csv.ts";
 
 const POKEAPI_COMMIT = "2fe95532d27a9bf340575253aff50868319d8182";
+/** The commit of PokeAPI's sprite repository the site loads images from. */
+const SPRITES_COMMIT = "35fdbe9bdec8f519f882c3edc3c0185f08af4d86";
 
 /** A sprite's URL, from the pinned commit of PokeAPI's sprite repository. */
 export function spriteUrl(folder: string, national: string): string {
@@ -44,9 +46,6 @@ export function englishNames(table: Table, idKey: string): Map<string, string> {
       .map((row) => [row[idKey], row.name]),
   );
 }
-
-/** The commit of PokeAPI's sprite repository the site loads images from. */
-const SPRITES_COMMIT = "35fdbe9bdec8f519f882c3edc3c0185f08af4d86";
 
 export type Table = Record<string, string>[];
 
