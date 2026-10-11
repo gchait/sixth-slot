@@ -129,6 +129,27 @@ test("scores post-game battles when asked to", async ({ page }) => {
   ).toHaveCount(2);
 });
 
+test("keeps a pin across trade evolutions", async ({ page }) => {
+  await page.goto(`${builder}?pin=kadabra`);
+  await expect(
+    page.getByRole("button", { name: "Remove Kadabra" }),
+  ).toBeVisible();
+  await page.getByRole("switch", { name: "Trade evolutions" }).click();
+  await expect(page).toHaveURL(/pin=alakazam/);
+  await expect(
+    page.getByRole("heading", { name: "Alakazam", level: 3 }),
+  ).toBeVisible();
+});
+
+test("offers a reload when the search cannot run", async ({ page }) => {
+  await page.route(/search\.worker/, (route) => route.abort());
+  await page.goto(builder);
+  await expect(page.getByText("The search could not run")).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Reload the page" }),
+  ).toBeVisible();
+});
+
 for (const id of gameIds()) {
   test(`${id} fits a narrow phone screen`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });

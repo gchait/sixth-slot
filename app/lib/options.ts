@@ -1,4 +1,8 @@
-import { defaultOptions, type Options } from "../../engine/candidates.ts";
+import {
+  buildCandidates,
+  defaultOptions,
+  type Options,
+} from "../../engine/candidates.ts";
 import type { GameData } from "../../engine/data.ts";
 
 /** URL parameter names of the on-off options. */
@@ -58,4 +62,39 @@ export function writeOptions(
   if (options.pinned.length > 0) params.set("pin", options.pinned.join(","));
   if (options.banned.length > 0) params.set("ban", options.banned.join(","));
   return params;
+}
+
+/**
+ * The options with trade evolutions allowed or not. A candidate's id is the
+ * final species of its line, which trade evolutions can change, so each pinned
+ * or excluded Pokémon moves to the candidates its line now ends at, if any; a
+ * pin that would split into several is dropped.
+ */
+export function setTradeEvolutions(
+  game: GameData,
+  options: Options,
+  allowTradeEvolutions: boolean,
+): Options {
+  const next = { ...options, allowTradeEvolutions };
+  if (options.pinned.length === 0 && options.banned.length === 0) return next;
+  const before = buildCandidates(game, options);
+  const after = buildCandidates(game, next);
+  const successors = (id: string) => {
+    const line = before.find((c) => c.id === id)?.line ?? [id];
+    const ids = after
+      .filter((c) => c.line.includes(id) || line.includes(c.id))
+      .map((c) => c.id);
+    return ids.length > 0 ? ids : [id];
+  };
+  const unique = (ids: string[]) => [...new Set(ids)];
+  return {
+    ...next,
+    pinned: unique(
+      options.pinned.flatMap((id) => {
+        const ids = successors(id);
+        return ids.length === 1 ? ids : [];
+      }),
+    ),
+    banned: unique(options.banned.flatMap(successors)),
+  };
 }

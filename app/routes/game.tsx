@@ -228,6 +228,20 @@ function Builder({ game }: { game: GameData }) {
               ))}
             </div>
           </div>
+        ) : "failed" in response ? (
+          <Alert variant="destructive">
+            <AlertTitle>The search could not run</AlertTitle>
+            <AlertDescription>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-2"
+                onClick={() => window.location.reload()}
+              >
+                Reload the page
+              </Button>
+            </AlertDescription>
+          </Alert>
         ) : "error" in response ? (
           <Alert variant="destructive">
             <AlertTitle>These settings do not work together</AlertTitle>

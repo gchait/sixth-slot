@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group";
+import { setTradeEvolutions } from "~/lib/options";
 import { choice } from "~/lib/styles";
 import { cn } from "cn";
 
@@ -146,7 +147,9 @@ export function Controls({
           label="Trade evolutions"
           hint="Assume you can trade to evolve, e.g. Kadabra into Alakazam."
           checked={options.allowTradeEvolutions}
-          onChange={(allowTradeEvolutions) => set({ allowTradeEvolutions })}
+          onChange={(allowTradeEvolutions) =>
+            onChange(setTradeEvolutions(game, options, allowTradeEvolutions))
+          }
         />
         {game.battles.some((b) => b.postgame) && (
           <Setting
