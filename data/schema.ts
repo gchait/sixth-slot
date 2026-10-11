@@ -130,6 +130,27 @@ export const gameSchema = z.strictObject({
     .describe(
       "Species PokeAPI lists under a location key that the game does not have there, left out. Each must match an encounter, so an entry fails the build once PokeAPI is corrected.",
     ),
+  missingEncounters: z
+    .record(
+      z
+        .string()
+        .regex(
+          /^[a-z0-9-]+(\/[a-z0-9-]+)?@[a-z0-9-]+$/,
+          "use location or location/area, followed by @method",
+        ),
+      z
+        .array(
+          z.strictObject({
+            species: identifier,
+            levels: z.tuple([z.int().min(1), z.int().min(1)]),
+          }),
+        )
+        .min(1),
+    )
+    .default({})
+    .describe(
+      "Encounters the game has that PokeAPI lacks, added to PokeAPI's in every version and staged like them. Each must be missing from PokeAPI, so an entry fails the build once PokeAPI is corrected.",
+    ),
   methods: z
     .record(identifier, storyStage)
     .default({})

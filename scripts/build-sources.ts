@@ -42,6 +42,75 @@ const methodName = (name: string) =>
       `Ambushed by a wild Pokémon from ${article} ${place.toLowerCase()}`,
   );
 
+/** Encounter rows for the game file's missingEncounters, shaped like PokeAPI's. */
+function missingEncounters({
+  file,
+  t,
+  errors,
+  versionGroup,
+  speciesByIdentifier,
+  defaultPokemon,
+}: BuildContext): Record<string, string>[] {
+  const locations = indexBy(t.locations, "identifier");
+  const methods = indexBy(t.encounter_methods, "identifier");
+  const slots = indexBy(t.encounter_slots, "id");
+  const versions = t.versions.filter(
+    (v) => v.version_group_id === versionGroup.id,
+  );
+  const rows: Record<string, string>[] = [];
+  for (const [key, list] of Object.entries(file.missingEncounters)) {
+    const [place, methodIdentifier] = key.split("@");
+    const [locationIdentifier, areaIdentifier = ""] = place.split("/");
+    const location = locations.get(locationIdentifier);
+    const method = methods.get(methodIdentifier);
+    const area = t.location_areas.find(
+      (a) => a.location_id === location?.id && a.identifier === areaIdentifier,
+    );
+    const slot = t.encounter_slots.find(
+      (s) =>
+        s.version_group_id === versionGroup.id &&
+        s.encounter_method_id === method?.id,
+    );
+    if (!area || !slot) {
+      errors.push(
+        `missingEncounters: ${key} is no area and method of this game`,
+      );
+      continue;
+    }
+    for (const { species, levels } of list) {
+      const row = speciesByIdentifier.get(species);
+      if (!row) {
+        errors.push(`missingEncounters: unknown species ${species}`);
+        continue;
+      }
+      const pokemonId = defaultPokemon.get(row.id)!;
+      for (const version of versions) {
+        const listed = t.encounters.some(
+          (e) =>
+            e.version_id === version.id &&
+            e.location_area_id === area.id &&
+            e.pokemon_id === pokemonId &&
+            Number(e.min_level) === levels[0] &&
+            Number(e.max_level) === levels[1] &&
+            slots.get(e.encounter_slot_id)!.encounter_method_id === method!.id,
+        );
+        if (listed)
+          errors.push(`missingEncounters: PokeAPI has ${species} at ${key}`);
+        rows.push({
+          id: `missing:${version.id}:${key}:${species}`,
+          version_id: version.id,
+          location_area_id: area.id,
+          encounter_slot_id: slot.id,
+          pokemon_id: pokemonId,
+          min_level: String(levels[0]),
+          max_level: String(levels[1]),
+        });
+      }
+    }
+  }
+  return rows;
+}
+
 /** Every location key must exist in PokeAPI. */
 function checkLocationKeys({ file, t, errors }: BuildContext) {
   const locationsByIdentifier = indexBy(t.locations, "identifier");
@@ -52,6 +121,7 @@ function checkLocationKeys({ file, t, errors }: BuildContext) {
   for (const key of [
     ...Object.keys(file.locations),
     ...Object.keys(file.wrongEncounters),
+    ...Object.keys(file.missingEncounters),
   ]) {
     const [place, method] = key.split("@");
     const [location, area] = place.split("/");
@@ -144,12 +214,13 @@ export function buildSources(
   }
   const unmappedConditions = new Set<string>();
   const matchedWrong = new Set<string>();
+  const encounters = [...t.encounters, ...missingEncounters(context)];
   const sources: Record<string, Record<string, Source[]>> = {};
   for (const version of t.versions.filter(
     (v) => v.version_group_id === versionGroup.id,
   )) {
     const merged = new Map<string, Source & { species: string }>();
-    for (const encounter of t.encounters.filter(
+    for (const encounter of encounters.filter(
       (e) => e.version_id === version.id,
     )) {
       const area = areas.get(encounter.location_area_id)!;

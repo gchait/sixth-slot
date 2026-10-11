@@ -156,16 +156,16 @@ fails, listing every location, encounter condition, item or evolution a file
 does not place.
 
 Every fact comes from a source: PokeAPI, or Bulbapedia for stages and battles.
-Where Bulbapedia or the game's [pret](https://github.com/pret) decompilation, if
-it has one, shows PokeAPI is wrong, they win. When the source of a fact is not
-obvious, a comment says where it is.
+Where Bulbapedia shows PokeAPI is wrong, Bulbapedia wins, and the game's
+[pret](https://github.com/pret) decompilation, if it has one, wins over both.
+When the source of a fact is not obvious, a comment says where it is.
 
 ## Credits
 
 Game data comes from [PokeAPI](https://pokeapi.co), and sprites are loaded from
 its sprite repository. Story order, trainer teams and game mechanics come from
-[Bulbapedia](https://bulbapedia.bulbagarden.net), and corrections to PokeAPI's
-encounters from Bulbapedia and the [pret](https://github.com/pret)
+[Bulbapedia](https://bulbapedia.bulbagarden.net). Corrections to PokeAPI come
+from Bulbapedia, and corrections to both from the [pret](https://github.com/pret)
 decompilations.
 
 Pokémon is © Nintendo, Creatures Inc. and GAME FREAK inc. This is an

@@ -196,6 +196,17 @@ describe("game file checks", () => {
       "needs items.moon-stone, which has no story stage",
     );
   });
+
+  test("rejects a missing encounter PokeAPI already lists", () => {
+    const file = readGameFile("crystal");
+    file.missingEncounters["national-park@walk"].push({
+      species: "venonat",
+      levels: [10, 10],
+    });
+    expect(() => buildGame(file, tables)).toThrow(
+      "missingEncounters: PokeAPI has venonat at national-park@walk",
+    );
+  });
 });
 
 describe("Emerald", () => {
@@ -283,6 +294,17 @@ describe("Crystal", () => {
   });
   const stagesOf = (species: string) =>
     (crystal.sources.crystal[species] ?? []).map((s) => s.stage);
+
+  test("adds the Bug-Catching Contest, which PokeAPI lacks", () => {
+    expect(crystal.sources.crystal.scyther).toEqual([
+      {
+        stage: 2,
+        location: "National Park",
+        method: "Walking in tall grass or a cave",
+        levels: [13, 14],
+      },
+    ]);
+  });
 
   test("has no abilities, which generation III introduced", () => {
     expect(

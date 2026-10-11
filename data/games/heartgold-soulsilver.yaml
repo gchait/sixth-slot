@@ -241,9 +241,9 @@ battles:
     name: Bugsy
     title: Gym Leader
     party:
-      - { species: scyther, level: 17, moves: [u-turn, quick-attack, leer, focus-energy] }
-      - { species: metapod, level: 15, moves: [tackle] }
+      - { species: scyther, level: 17, moves: [quick-attack, leer, u-turn, focus-energy] }
       - { species: kakuna, level: 15, moves: [poison-sting] }
+      - { species: metapod, level: 15, moves: [tackle] }
   - id: whitney
     name: Whitney
     title: Gym Leader
@@ -282,28 +282,28 @@ battles:
     name: Clair
     title: Gym Leader
     party:
-      - { species: gyarados, level: 38, moves: [bite, twister, dragon-rage, dragon-pulse] }
-      - { species: dragonair, level: 38, moves: [thunder-wave, slam, aqua-tail, dragon-pulse] }
-      - { species: dragonair, level: 38, moves: [thunder-wave, slam, fire-blast, dragon-pulse] }
-      - { species: kingdra, level: 41, moves: [hydro-pump, smokescreen, hyper-beam, dragon-pulse] }
+      - { species: gyarados, level: 38, moves: [twister, dragon-rage, bite, dragon-pulse] }
+      - { species: dragonair, level: 38, moves: [thunder-wave, fire-blast, slam, dragon-pulse] }
+      - { species: dragonair, level: 38, moves: [thunder-wave, aqua-tail, slam, dragon-pulse] }
+      - { species: kingdra, level: 41, moves: [smokescreen, hydro-pump, hyper-beam, dragon-pulse] }
   - id: will
     name: Will
     title: Elite Four
     party:
       - { species: xatu, level: 40, moves: [u-turn, me-first, confuse-ray, psychic] }
-      - { species: jynx, level: 41, moves: [lovely-kiss, double-slap, ice-punch, psychic] }
-      - { species: slowbro, level: 41, moves: [curse, amnesia, water-pulse, psychic] }
+      - { species: jynx, level: 41, moves: [double-slap, lovely-kiss, ice-punch, psychic] }
       - { species: exeggutor, level: 41, moves: [reflect, hypnosis, egg-bomb, psychic] }
+      - { species: slowbro, level: 41, moves: [curse, amnesia, water-pulse, psychic] }
       - { species: xatu, level: 42, moves: [aerial-ace, ominous-wind, confuse-ray, psychic] }
   - id: koga
     name: Koga
     title: Elite Four
     party:
-      - { species: ariados, level: 40, moves: [spider-web, baton-pass, giga-drain, poison-jab] }
-      - { species: forretress, level: 43, moves: [swift, explosion, protect, toxic-spikes] }
-      - { species: muk, level: 42, moves: [gunk-shot, minimize, screech, toxic] }
-      - { species: venomoth, level: 41, moves: [psychic, gust, supersonic, toxic] }
-      - { species: crobat, level: 44, moves: [quick-attack, wing-attack, double-team, poison-fang] }
+      - { species: ariados, level: 40, moves: [poison-jab, spider-web, baton-pass, giga-drain] }
+      - { species: venomoth, level: 41, moves: [supersonic, gust, psychic, toxic] }
+      - { species: forretress, level: 43, moves: [protect, swift, explosion, toxic-spikes] }
+      - { species: muk, level: 42, moves: [minimize, screech, gunk-shot, toxic] }
+      - { species: crobat, level: 44, moves: [double-team, quick-attack, wing-attack, poison-fang] }
   - id: bruno
     name: Bruno
     title: Elite Four
@@ -318,9 +318,9 @@ battles:
     title: Elite Four
     party:
       - { species: umbreon, level: 42, moves: [double-team, confuse-ray, feint-attack, payback] }
-      - { species: vileplume, level: 42, moves: [stun-spore, petal-dance, acid, moonlight] }
-      - { species: murkrow, level: 44, moves: [sucker-punch, feint-attack, pluck, whirlwind] }
-      - { species: gengar, level: 45, moves: [focus-blast, destiny-bond, spite, lick] }
+      - { species: vileplume, level: 42, moves: [stun-spore, acid, moonlight, petal-dance] }
+      - { species: gengar, level: 45, moves: [lick, spite, focus-blast, destiny-bond] }
+      - { species: murkrow, level: 44, moves: [pluck, whirlwind, sucker-punch, feint-attack] }
       - { species: houndoom, level: 47, moves: [nasty-plot, dark-pulse, flamethrower, crunch] }
   - id: lance
     name: Lance
@@ -338,10 +338,10 @@ battles:
     title: Gym Leader
     postgame: true
     party:
-      - { species: raichu, level: 51, moves: [thunder-wave, shock-wave, quick-attack, double-team] }
+      - { species: raichu, level: 51, moves: [thunder-wave, quick-attack, shock-wave, double-team] }
       - { species: electrode, level: 47, moves: [thunder-wave, double-team, shock-wave, light-screen] }
-      - { species: electrode, level: 47, moves: [screech, double-team, self-destruct, charge-beam] }
       - { species: magneton, level: 47, moves: [supersonic, double-team, shock-wave, mirror-shot] }
+      - { species: electrode, level: 47, moves: [screech, double-team, self-destruct, charge-beam] }
       - { species: electabuzz, level: 53, moves: [quick-attack, shock-wave, light-screen, low-kick] }
   - id: sabrina
     name: Sabrina
@@ -365,30 +365,30 @@ battles:
     title: Gym Leader
     postgame: true
     party:
-      - { species: jumpluff, level: 51, moves: [leech-seed, u-turn, giga-drain, sunny-day] }
+      - { species: jumpluff, level: 51, moves: [u-turn, leech-seed, sunny-day, giga-drain] }
       - { species: tangela, level: 52, moves: [ancient-power, wring-out, giga-drain, sleep-powder] }
-      - { species: victreebel, level: 56, moves: [sunny-day, grass-knot, leaf-storm, razor-leaf] }
-      - { species: bellossom, level: 56, moves: [sunny-day, solar-beam, giga-drain, synthesis] }
+      - { species: victreebel, level: 56, moves: [sunny-day, synthesis, grass-knot, leaf-storm] }
+      - { species: bellossom, level: 56, moves: [sunny-day, synthesis, giga-drain, solar-beam] }
   - id: janine
     name: Janine
     title: Gym Leader
     postgame: true
     party:
-      - { species: crobat, level: 47, moves: [confuse-ray, screech, wing-attack, supersonic] }
-      - { species: weezing, level: 44, moves: [sludge-bomb, toxic, explosion, double-hit] }
-      - { species: ariados, level: 47, moves: [swagger, night-shade, poison-jab, pin-missile] }
-      - { species: ariados, level: 47, moves: [psychic, poison-jab, scary-face, pin-missile] }
-      - { species: venomoth, level: 50, moves: [double-team, psychic, sludge-bomb, signal-beam] }
+      - { species: crobat, level: 47, moves: [screech, supersonic, confuse-ray, wing-attack] }
+      - { species: weezing, level: 44, moves: [double-hit, sludge-bomb, toxic, explosion] }
+      - { species: ariados, level: 47, moves: [scary-face, poison-jab, pin-missile, psychic] }
+      - { species: ariados, level: 47, moves: [pin-missile, poison-jab, swagger, night-shade] }
+      - { species: venomoth, level: 50, moves: [sludge-bomb, double-team, signal-beam, psychic] }
   - id: brock
     name: Brock
     title: Gym Leader
     postgame: true
     party:
-      - { species: graveler, level: 51, moves: [defense-curl, rollout, earthquake, rock-slide] }
-      - { species: rhyhorn, level: 51, moves: [earthquake, sandstorm, scary-face, horn-drill] }
-      - { species: omastar, level: 53, moves: [protect, spike-cannon, ancient-power, brine] }
-      - { species: kabutops, level: 52, moves: [endure, giga-drain, aqua-jet, rock-slide] }
-      - { species: onix, level: 54, moves: [screech, sandstorm, iron-tail, rock-slide] }
+      - { species: graveler, level: 51, moves: [defense-curl, rock-slide, rollout, earthquake] }
+      - { species: rhyhorn, level: 51, moves: [sandstorm, scary-face, earthquake, horn-drill] }
+      - { species: omastar, level: 53, moves: [ancient-power, brine, protect, spike-cannon] }
+      - { species: onix, level: 54, moves: [iron-tail, rock-slide, screech, sandstorm] }
+      - { species: kabutops, level: 52, moves: [rock-slide, aqua-jet, endure, giga-drain] }
   - id: blaine
     name: Blaine
     title: Gym Leader
@@ -438,34 +438,34 @@ battles:
     title: Elite Four rematch
     postgame: true
     party:
-      - { species: skuntank, level: 61, moves: [toxic, dig, sucker-punch, explosion] }
-      - { species: venomoth, level: 63, moves: [baton-pass, double-team, silver-wind, psychic] }
-      - { species: toxicroak, level: 60, moves: [swagger, x-scissor, cross-chop, gunk-shot] }
-      - { species: swalot, level: 62, moves: [sludge-bomb, amnesia, pain-split, yawn] }
-      - { species: crobat, level: 64, moves: [fly, cross-poison, mean-look, toxic] }
+      - { species: skuntank, level: 61, moves: [sucker-punch, dig, toxic, explosion] }
+      - { species: venomoth, level: 63, moves: [double-team, baton-pass, psychic, silver-wind] }
+      - { species: toxicroak, level: 60, moves: [cross-chop, x-scissor, swagger, gunk-shot] }
       - { species: muk, level: 62, moves: [minimize, screech, swagger, toxic] }
+      - { species: crobat, level: 64, moves: [toxic, mean-look, fly, cross-poison] }
+      - { species: swalot, level: 62, moves: [yawn, amnesia, pain-split, sludge-bomb] }
   - id: bruno-rematch
     name: Bruno
     title: Elite Four rematch
     postgame: true
     party:
-      - { species: hitmontop, level: 62, moves: [close-combat, earthquake, counter, quick-attack] }
-      - { species: hitmonlee, level: 61, moves: [close-combat, blaze-kick, reversal, swagger] }
-      - { species: hitmonchan, level: 61, moves: [close-combat, drain-punch, bullet-punch, substitute] }
-      - { species: hariyama, level: 62, moves: [bulk-up, low-kick, payback, bullet-punch] }
-      - { species: lucario, level: 64, moves: [close-combat, iron-tail, counter, extreme-speed] }
-      - { species: machamp, level: 64, moves: [dynamic-punch, stone-edge, bullet-punch, foresight] }
+      - { species: hitmontop, level: 62, moves: [counter, quick-attack, close-combat, earthquake] }
+      - { species: hitmonlee, level: 61, moves: [swagger, close-combat, reversal, blaze-kick] }
+      - { species: hitmonchan, level: 61, moves: [substitute, drain-punch, close-combat, bullet-punch] }
+      - { species: hariyama, level: 62, moves: [low-kick, payback, bullet-punch, bulk-up] }
+      - { species: machamp, level: 64, moves: [bullet-punch, foresight, stone-edge, dynamic-punch] }
+      - { species: lucario, level: 64, moves: [extreme-speed, close-combat, counter, iron-tail] }
   - id: karen-rematch
     name: Karen
     title: Elite Four rematch
     postgame: true
     party:
-      - { species: weavile, level: 62, moves: [ice-punch, night-slash, low-kick, ice-shard] }
-      - { species: absol, level: 62, moves: [detect, perish-song, night-slash, psycho-cut] }
+      - { species: weavile, level: 62, moves: [ice-shard, night-slash, ice-punch, low-kick] }
       - { species: spiritomb, level: 62, moves: [curse, confuse-ray, pain-split, sucker-punch] }
+      - { species: absol, level: 62, moves: [night-slash, psycho-cut, detect, perish-song] }
+      - { species: honchkrow, level: 64, moves: [drill-peck, whirlwind, sucker-punch, thunder-wave] }
       - { species: houndoom, level: 63, moves: [nasty-plot, dark-pulse, flamethrower, sludge-bomb] }
-      - { species: honchkrow, level: 64, moves: [thunder-wave, whirlwind, drill-peck, sucker-punch] }
-      - { species: umbreon, level: 64, moves: [confuse-ray, curse, payback, sucker-punch] }
+      - { species: umbreon, level: 64, moves: [curse, payback, confuse-ray, sucker-punch] }
   - id: lance-rematch
     name: Lance
     title: Champion rematch
@@ -627,9 +627,9 @@ battles:
     party:
       - { species: golem, level: 55, moves: [sandstorm, rock-slide, rock-polish, earthquake] }
       - { species: relicanth, level: 54, moves: [head-smash, aqua-tail, earthquake, rest] }
-      - { species: omastar, level: 56, moves: [protect, sandstorm, brine, ancient-power] }
-      - { species: kabutops, level: 55, moves: [rock-slide, aqua-jet, endure, giga-drain] }
+      - { species: omastar, level: 56, moves: [ancient-power, brine, protect, sandstorm] }
       - { species: onix, level: 61, moves: [stealth-rock, rock-slide, rock-polish, sandstorm] }
+      - { species: kabutops, level: 55, moves: [rock-slide, aqua-jet, endure, giga-drain] }
       - { species: rampardos, level: 57, moves: [earthquake, stone-edge, avalanche, rock-polish] }
   - id: blaine-rematch
     name: Blaine

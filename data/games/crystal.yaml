@@ -124,6 +124,22 @@ locations:
 wrongEncounters:
   johto-route-35@walk: [meowth]
 
+# The Bug-Catching Contest, held on Tuesdays, Thursdays and Saturdays:
+# data/wild/bug_contest_mons.asm and maps/Route35NationalParkGate.asm in
+# https://github.com/pret/pokecrystal.
+missingEncounters:
+  national-park@walk:
+    - { species: caterpie, levels: [7, 18] }
+    - { species: weedle, levels: [7, 18] }
+    - { species: metapod, levels: [9, 18] }
+    - { species: kakuna, levels: [9, 18] }
+    - { species: butterfree, levels: [12, 15] }
+    - { species: beedrill, levels: [12, 15] }
+    - { species: venonat, levels: [10, 16] }
+    - { species: paras, levels: [10, 17] }
+    - { species: scyther, levels: [13, 14] }
+    - { species: pinsir, levels: [13, 14] }
+
 methods:
   old-rod: 1 # Route 32
   headbutt-low: 2 # TM02, Ilex Forest
@@ -240,9 +256,9 @@ battles:
     title: Elite Four
     party:
       - { species: xatu, level: 40, moves: [quick-attack, future-sight, psychic, confuse-ray] }
+      - { species: jynx, level: 41, moves: [ice-punch, double-slap, psychic, lovely-kiss] }
       - { species: exeggutor, level: 41, moves: [reflect, egg-bomb, psychic, leech-seed] }
       - { species: slowbro, level: 41, moves: [curse, amnesia, body-slam, psychic] }
-      - { species: jynx, level: 41, moves: [ice-punch, double-slap, psychic, lovely-kiss] }
       - { species: xatu, level: 42, moves: [quick-attack, future-sight, psychic, confuse-ray] }
   - id: koga
     name: Koga
@@ -268,18 +284,18 @@ battles:
     party:
       - { species: umbreon, level: 42, moves: [feint-attack, confuse-ray, mean-look, sand-attack] }
       - { species: vileplume, level: 42, moves: [stun-spore, acid, petal-dance, moonlight] }
-      - { species: murkrow, level: 44, moves: [feint-attack, whirlwind, pursuit, quick-attack] }
       - { species: gengar, level: 45, moves: [lick, spite, curse, destiny-bond] }
+      - { species: murkrow, level: 44, moves: [feint-attack, whirlwind, pursuit, quick-attack] }
       - { species: houndoom, level: 47, moves: [crunch, flamethrower, roar, pursuit] }
   - id: lance
     name: Lance
     title: Champion
     party:
       - { species: gyarados, level: 44, moves: [rain-dance, surf, flail, hyper-beam] }
-      - { species: dragonite, level: 47, moves: [twister, thunder-wave, blizzard, hyper-beam] }
-      - { species: charizard, level: 46, moves: [flamethrower, wing-attack, slash, hyper-beam] }
-      - { species: aerodactyl, level: 46, moves: [rock-slide, ancient-power, wing-attack, hyper-beam] }
       - { species: dragonite, level: 47, moves: [twister, thunder-wave, thunder, hyper-beam] }
+      - { species: dragonite, level: 47, moves: [twister, thunder-wave, blizzard, hyper-beam] }
+      - { species: aerodactyl, level: 46, moves: [rock-slide, ancient-power, wing-attack, hyper-beam] }
+      - { species: charizard, level: 46, moves: [flamethrower, wing-attack, slash, hyper-beam] }
       - { species: dragonite, level: 50, moves: [safeguard, outrage, fire-blast, hyper-beam] }
   # Kanto's Gym Leaders and Red, in the walkthrough's order after the Champion.
   - id: lt-surge
@@ -288,8 +304,8 @@ battles:
     postgame: true
     party:
       - { species: raichu, level: 44, moves: [thunderbolt, thunder, thunder-wave, quick-attack] }
-      - { species: magneton, level: 40, moves: [zap-cannon, lock-on, double-team, swift] }
       - { species: electrode, level: 40, moves: [screech, double-team, swift, explosion] }
+      - { species: magneton, level: 40, moves: [zap-cannon, lock-on, double-team, swift] }
       - { species: electrode, level: 40, moves: [screech, double-team, swift, explosion] }
       - { species: electabuzz, level: 46, moves: [thunder-punch, thunder, light-screen, quick-attack] }
   - id: sabrina
@@ -327,7 +343,7 @@ battles:
       - { species: weezing, level: 36, moves: [sludge-bomb, smog, toxic, explosion] }
       - { species: weezing, level: 36, moves: [sludge-bomb, smog, toxic, explosion] }
       - { species: ariados, level: 33, moves: [string-shot, night-shade, giga-drain, scary-face] }
-      - { species: venomoth, level: 39, moves: [toxic, psychic, double-team, supersonic] }
+      - { species: venomoth, level: 39, moves: [foresight, double-team, gust, psychic] }
   - id: brock
     name: Brock
     title: Gym Leader

@@ -322,9 +322,9 @@ battles:
     postgame: true
     party:
       - { species: banette, level: 61, moves: [shadow-claw, feint-attack, thunderbolt, will-o-wisp] }
-      - { species: mismagius, level: 63, moves: [shadow-ball, thunderbolt, psychic, magical-leaf] }
       - { species: drifblim, level: 61, moves: [psychic, silver-wind, ominous-wind, baton-pass] }
       - { species: dusknoir, level: 62, moves: [shadow-punch, rock-slide, double-team, protect] }
+      - { species: mismagius, level: 63, moves: [shadow-ball, thunderbolt, psychic, magical-leaf] }
       - { species: gengar, level: 65, moves: [focus-blast, thunder, shadow-ball, psychic] }
   - id: maylene-rematch
     name: Maylene
@@ -343,8 +343,8 @@ battles:
     party:
       - { species: sharpedo, level: 61, moves: [night-slash, slash, aqua-jet, endure] }
       - { species: quagsire, level: 61, moves: [surf, earthquake, stone-edge, yawn] }
-      - { species: floatzel, level: 63, moves: [brine, crunch, ice-fang, aqua-jet] }
       - { species: gyarados, level: 62, moves: [bite, avalanche, aqua-tail, giga-impact] }
+      - { species: floatzel, level: 63, moves: [brine, crunch, ice-fang, aqua-jet] }
       - { species: ludicolo, level: 65, moves: [surf, energy-ball, ice-beam, focus-blast] }
   - id: byron-rematch
     name: Byron
@@ -352,8 +352,8 @@ battles:
     postgame: true
     party:
       - { species: skarmory, level: 61, moves: [drill-peck, night-slash, rock-tomb, stealth-rock] }
-      - { species: magnezone, level: 62, moves: [thunderbolt, flash-cannon, thunder-wave, supersonic] }
       - { species: steelix, level: 61, moves: [gyro-ball, ice-fang, dragon-breath, sandstorm] }
+      - { species: magnezone, level: 62, moves: [thunderbolt, flash-cannon, thunder-wave, supersonic] }
       - { species: bastiodon, level: 63, moves: [metal-burst, ancient-power, iron-defense, rest] }
       - { species: aggron, level: 65, moves: [metal-burst, stone-edge, earthquake, avalanche] }
   - id: candice-rematch
@@ -383,8 +383,8 @@ battles:
     party:
       - { species: yanmega, level: 65, moves: [bug-buzz, air-slash, u-turn, double-team] }
       - { species: scizor, level: 65, moves: [x-scissor, iron-head, night-slash, quick-attack] }
-      - { species: heracross, level: 67, moves: [megahorn, close-combat, night-slash, stone-edge] }
       - { species: vespiquen, level: 66, moves: [attack-order, defend-order, heal-order, power-gem] }
+      - { species: heracross, level: 67, moves: [megahorn, close-combat, night-slash, stone-edge] }
       - { species: drapion, level: 69, moves: [x-scissor, cross-poison, ice-fang, aerial-ace] }
   - id: bertha-rematch
     name: Bertha

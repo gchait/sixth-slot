@@ -251,8 +251,8 @@ battles:
     party:
       - { species: hydreigon, level: 57, moves: [dragon-pulse, surf, flamethrower, charge-beam] }
       - { species: druddigon, level: 57, moves: [dragon-tail, rock-slide, flamethrower, focus-blast] }
-      - { species: aggron, level: 57, moves: [double-edge, rock-slide, earthquake, autotomize] }
       - { species: archeops, level: 57, moves: [acrobatics, rock-slide, dragon-claw, endeavor] }
+      - { species: aggron, level: 57, moves: [double-edge, rock-slide, earthquake, autotomize] }
       - { species: lapras, level: 57, moves: [surf, ice-beam, thunderbolt, sing] }
       - { species: haxorus, level: 59, moves: [dual-chop, dragon-dance, earthquake, x-scissor] }
   # After the Hall of Fame (part 22)
@@ -265,7 +265,7 @@ battles:
       - { species: mismagius, level: 72, moves: [shadow-ball, psychic, power-gem, perish-song] }
       - { species: froslass, level: 72, moves: [shadow-ball, psychic, blizzard, ice-shard] }
       - { species: drifblim, level: 72, moves: [thunder, shadow-ball, psychic, acrobatics] }
-      - { species: golurk, level: 72, moves: [shadow-punch, earthquake, hammer-arm, rock-slide] }
+      - { species: golurk, level: 72, moves: [shadow-punch, earthquake, hammer-arm, stone-edge] }
       - { species: chandelure, level: 74, moves: [shadow-ball, psychic, fire-blast, energy-ball] }
   - id: grimsley-rematch
     name: Grimsley
@@ -307,7 +307,7 @@ battles:
     party:
       - { species: hydreigon, level: 76, moves: [dragon-pulse, surf, fire-blast, focus-blast] }
       - { species: druddigon, level: 76, moves: [outrage, fire-punch, thunder-punch, focus-blast] }
-      - { species: aggron, level: 76, moves: [stone-edge, double-edge, earthquake, autotomize] }
       - { species: archeops, level: 76, moves: [acrobatics, stone-edge, dragon-claw, endeavor] }
+      - { species: aggron, level: 76, moves: [stone-edge, double-edge, earthquake, autotomize] }
       - { species: lapras, level: 76, moves: [hydro-pump, blizzard, thunder, sing] }
       - { species: haxorus, level: 78, moves: [outrage, dragon-dance, earthquake, guillotine] }
