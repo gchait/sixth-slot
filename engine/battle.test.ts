@@ -150,6 +150,23 @@ describe("battle math", () => {
 });
 
 describe("abilities", () => {
+  test("let only super-effective moves hit an opponent sure to have Wonder Guard", async () => {
+    const emerald = await loadGame("emerald");
+    const { shedinja, linoone } = emerald.species;
+    const moves = ["headbutt", "shadow-ball"];
+    expect(
+      matchup(emerald, linoone, ["headbutt"], 50, shedinja, [], 50).score,
+    ).toBe(-MATCHUP_LIMIT);
+    expect(matchup(emerald, linoone, moves, 50, shedinja, [], 50).move).toBe(
+      "shadow-ball",
+    );
+    // A member's Wonder Guard is left out.
+    expect(
+      matchup(emerald, shedinja, ["shadow-ball"], 50, linoone, ["surf"], 50)
+        .threat,
+    ).toBe("surf");
+  });
+
   test("make a Pokémon sure to have Levitate immune to Ground", () => {
     expect(
       damageFraction(

@@ -38,9 +38,8 @@ const immunities: Record<string, { type: string; since?: number }> = {
 
 /**
  * How much of a move's damage the defender takes: the type chart, then the
- * abilities it is sure to have that block or change the type's damage. Wonder Guard is
- * left out: it turns on status, weather and other indirect damage, which
- * matchups do not model, so crediting it would overrate Shedinja.
+ * abilities it is sure to have that block or change the type's damage. Wonder
+ * Guard is left to `matchup`.
  */
 export function effectiveness(
   game: GameData,
@@ -177,6 +176,12 @@ export interface Matchup {
   threat: string | null;
 }
 
+/**
+ * The member against one opponent. An opponent sure to have Wonder Guard takes
+ * damage only from super-effective moves. A member's Wonder Guard is left out:
+ * status, weather and other indirect damage get past it, which matchups do not
+ * model, so crediting it would overrate Shedinja.
+ */
 export function matchup(
   game: GameData,
   member: Species,
@@ -186,9 +191,14 @@ export function matchup(
   opponentMoves: string[],
   opponentLevel: number,
 ): Matchup {
+  const usable = always(opponent, "wonder-guard")
+    ? [...memberMoves].filter(
+        (move) => effectiveness(game, game.moves[move].type, opponent) > 1,
+      )
+    : memberMoves;
   const dealt = bestMove(
     game,
-    memberMoves,
+    usable,
     member,
     memberLevel,
     opponent,

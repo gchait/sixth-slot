@@ -75,7 +75,7 @@ with the moves it would have by then:
 - the damaging HMs obtained so far;
 - the abilities it is sure to have that change damage: immunities such as
   Levitate and Flash Fire, Thick Fat, Dry Skin, Huge Power, Pure Power and
-  Truant.
+  Truant. Wonder Guard counts for opponents only.
 
 The search checks every valid team, skipping only those that provably cannot
 make the top ten.
@@ -164,9 +164,8 @@ When the source of a fact is not obvious, a comment says where it is.
 
 Game data comes from [PokeAPI](https://pokeapi.co), and sprites are loaded from
 its sprite repository. Story order, trainer teams and game mechanics come from
-[Bulbapedia](https://bulbapedia.bulbagarden.net). Corrections to PokeAPI come
-from Bulbapedia, and corrections to both from the [pret](https://github.com/pret)
-decompilations.
+[Bulbapedia](https://bulbapedia.bulbagarden.net) and the
+[pret](https://github.com/pret) decompilations.
 
 Pokémon is © Nintendo, Creatures Inc. and GAME FREAK inc. This is an
 unofficial fan project, not affiliated with or endorsed by them. It distributes
